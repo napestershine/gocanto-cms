@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: 
+
+Sitemap: http://w-simple.com/seo/sitemap
