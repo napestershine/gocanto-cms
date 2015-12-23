@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter Email Helpers
  *
  * @package		CodeIgniter
@@ -29,34 +30,33 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Validate email address
  *
  * @access	public
  * @return	bool
  */
-if (! function_exists('valid_email')) {
+if (!function_exists('valid_email')) {
     function valid_email($address)
     {
-        return (! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $address)) ? false : true;
+        return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $address)) ? false : true;
     }
 }
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Send an email
  *
  * @access	public
  * @return	bool
  */
-if (! function_exists('send_email')) {
+if (!function_exists('send_email')) {
     function send_email($recipient, $subject = 'Test email', $message = 'Hello World')
     {
         return mail($recipient, $subject, $message);
     }
 }
-
 
 /* End of file email_helper.php */
 /* Location: ./system/helpers/email_helper.php */

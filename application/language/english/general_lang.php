@@ -1,9 +1,9 @@
 <?php
     //header
-    $lang=[
+    $lang = [
 
             'general_web_small_summary' => 'We are a full service design company who creates beautiful and informative websites that generate results for our clients. We specialize in small to medium sized business and are experts in web design, on line marketing and eCommerce website design',
-            
+
             'general_web_title_sumary' => 'W-Simple Designs Websites!',
 
             'general_web_button_order' => 'Order Now',

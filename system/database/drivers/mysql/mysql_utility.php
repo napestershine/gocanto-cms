@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,66 +19,68 @@
 // ------------------------------------------------------------------------
 
 /**
- * MySQL Utility Class
+ * MySQL Utility Class.
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_mysql_utility extends CI_DB_utility
 {
     /**
-     * List databases
+     * List databases.
      *
-     * @access	private
-     * @return	bool
+     * @return bool
      */
     public function _list_databases()
     {
-        return "SHOW DATABASES";
+        return 'SHOW DATABASES';
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Optimize table query
+     * Optimize table query.
      *
      * Generates a platform-specific query so that a table can be optimized
      *
-     * @access	private
      * @param	string	the table name
-     * @return	object
+     *
+     * @return object
      */
     public function _optimize_table($table)
     {
-        return "OPTIMIZE TABLE ".$this->db->_escape_identifiers($table);
+        return 'OPTIMIZE TABLE '.$this->db->_escape_identifiers($table);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Repair table query
+     * Repair table query.
      *
      * Generates a platform-specific query so that a table can be repaired
      *
-     * @access	private
      * @param	string	the table name
-     * @return	object
+     *
+     * @return object
      */
     public function _repair_table($table)
     {
-        return "REPAIR TABLE ".$this->db->_escape_identifiers($table);
+        return 'REPAIR TABLE '.$this->db->_escape_identifiers($table);
     }
 
     // --------------------------------------------------------------------
+
     /**
-     * MySQL Export
+     * MySQL Export.
      *
-     * @access	private
      * @param	array	Preferences
-     * @return	mixed
+     *
+     * @return mixed
      */
-    public function _backup($params = array())
+    public function _backup($params = [])
     {
         if (count($params) == 0) {
             return false;
@@ -88,14 +91,14 @@ class CI_DB_mysql_utility extends CI_DB_utility
 
         // Build the output
         $output = '';
-        foreach ((array)$tables as $table) {
+        foreach ((array) $tables as $table) {
             // Is the table in the "ignore" list?
-            if (in_array($table, (array)$ignore, true)) {
+            if (in_array($table, (array) $ignore, true)) {
                 continue;
             }
 
             // Get the table schema
-            $query = $this->db->query("SHOW CREATE TABLE `".$this->db->database.'`.`'.$table.'`');
+            $query = $this->db->query('SHOW CREATE TABLE `'.$this->db->database.'`.`'.$table.'`');
 
             // No result means the table name was invalid
             if ($query === false) {
@@ -135,12 +138,12 @@ class CI_DB_mysql_utility extends CI_DB_utility
 
             $i = 0;
             $field_str = '';
-            $is_int = array();
+            $is_int = [];
             while ($field = mysql_fetch_field($query->result_id)) {
                 // Most versions of MySQL store timestamp as a string
                 $is_int[$i] = (in_array(
                                         strtolower(mysql_field_type($query->result_id, $i)),
-                                        array('tinyint', 'smallint', 'mediumint', 'int', 'bigint'), //, 'timestamp'),
+                                        ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'], //, 'timestamp'),
                                         true)
                                         ) ? true : false;
 
@@ -150,8 +153,7 @@ class CI_DB_mysql_utility extends CI_DB_utility
             }
 
             // Trim off the end comma
-            $field_str = preg_replace("/, $/", "", $field_str);
-
+            $field_str = preg_replace('/, $/', '', $field_str);
 
             // Build the insert string
             foreach ($query->result_array() as $row) {
@@ -177,7 +179,7 @@ class CI_DB_mysql_utility extends CI_DB_utility
                 }
 
                 // Remove the comma at the end of the string
-                $val_str = preg_replace("/, $/", "", $val_str);
+                $val_str = preg_replace('/, $/', '', $val_str);
 
                 // Build the INSERT string
                 $output .= 'INSERT INTO '.$table.' ('.$field_str.') VALUES ('.$val_str.');'.$newline;

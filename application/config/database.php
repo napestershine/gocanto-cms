@@ -1,4 +1,5 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /*
@@ -50,10 +51,6 @@
 $active_group = 'default';
 $active_record = true;
 
-
-
-
-
 if (preg_match('/^(localhost|simple.web|127\.\d\.\d\.\d|192\.168(\.\d{1,3}){2})/', $_SERVER['SERVER_NAME'])) {
     $db['default']['hostname'] = 'localhost';
     $db['default']['username'] = 'homestead';
@@ -87,8 +84,6 @@ if (preg_match('/^(localhost|simple.web|127\.\d\.\d\.\d|192\.168(\.\d{1,3}){2})/
     $db['default']['autoinit'] = true;
     $db['default']['stricton'] = false;
 }
-
-
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

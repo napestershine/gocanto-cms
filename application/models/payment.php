@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -20,24 +22,24 @@ class payment extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->table='payment';
-        $this->current_user=false;
+        $this->table = 'payment';
+        $this->current_user = false;
         if ($this->session->userdata('wp-user')) {
             $this->current_user = $this->session->userdata('wp-user');
-            $this->admin = $this->current_user['id_profile']==1?true:false;
+            $this->admin = $this->current_user['id_profile'] == 1 ? true : false;
         }
     }
 
     public function getRows($options)
     {
-        $defaults = ['fields'=>'*','where'=>'', 'limit' =>'', 'order'=>' ORDER BY datetime DESC'];
+        $defaults = ['fields' => '*', 'where' => '', 'limit' => '', 'order' => ' ORDER BY datetime DESC'];
 
         $options = $options + $defaults;
 
-        $sql="SELECT ".$options['fields']."
+        $sql = 'SELECT '.$options['fields']."
                        FROM $this->table ".
-                       $options['where']." ".
-                       $options['order']." ".
+                       $options['where'].' '.
+                       $options['order'].' '.
                        $options['limit'];
 
         $query = $this->db->query($sql);
@@ -53,6 +55,7 @@ class payment extends CI_Model
                 LIMIT 1 ";
 
         $query = $this->db->query($sql);
+
         return $query->row();
     }
 
@@ -65,6 +68,7 @@ class payment extends CI_Model
 
         $query = $this->db->query($sql);
         $array = $query->row();
+
         return $array->$field;
     }
 
@@ -85,9 +89,7 @@ class payment extends CI_Model
         $this->db->delete($this->table);
     }
 
-
-
-    public function email_client($id='')
+    public function email_client($id = '')
     {
         $query = $this->db->query("SELECT (SELECT w.email
                                            FROM `wpanel_users` w
@@ -101,7 +103,7 @@ class payment extends CI_Model
         return $email->email;
     }
 
-    public function name_client($id='')
+    public function name_client($id = '')
     {
         $query = $this->db->query("SELECT (SELECT CONCAT( w.name, CONCAT(' ', w.last_name ) )
                                            FROM `wpanel_users` w

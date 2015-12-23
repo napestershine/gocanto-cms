@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter String Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Trim Slashes
  *
  * Removes any leading/trailing slashes from a string:
@@ -44,7 +45,7 @@
  * @param	string
  * @return	string
  */
-if (! function_exists('trim_slashes')) {
+if (!function_exists('trim_slashes')) {
     function trim_slashes($str)
     {
         return trim($str, '/');
@@ -53,7 +54,7 @@ if (! function_exists('trim_slashes')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Strip Slashes
  *
  * Removes slashes contained in a string or in an array
@@ -62,7 +63,7 @@ if (! function_exists('trim_slashes')) {
  * @param	mixed	string or array
  * @return	mixed	string or array
  */
-if (! function_exists('strip_slashes')) {
+if (!function_exists('strip_slashes')) {
     function strip_slashes($str)
     {
         if (is_array($str)) {
@@ -79,7 +80,7 @@ if (! function_exists('strip_slashes')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Strip Quotes
  *
  * Removes single and double quotes from a string
@@ -88,16 +89,16 @@ if (! function_exists('strip_slashes')) {
  * @param	string
  * @return	string
  */
-if (! function_exists('strip_quotes')) {
+if (!function_exists('strip_quotes')) {
     function strip_quotes($str)
     {
-        return str_replace(array('"', "'"), '', $str);
+        return str_replace(['"', "'"], '', $str);
     }
 }
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Quotes to Entities
  *
  * Converts single and double quotes to entities
@@ -106,16 +107,16 @@ if (! function_exists('strip_quotes')) {
  * @param	string
  * @return	string
  */
-if (! function_exists('quotes_to_entities')) {
+if (!function_exists('quotes_to_entities')) {
     function quotes_to_entities($str)
     {
-        return str_replace(array("\'", "\"", "'", '"'), array("&#39;", "&quot;", "&#39;", "&quot;"), $str);
+        return str_replace(["\'", '"', "'", '"'], ['&#39;', '&quot;', '&#39;', '&quot;'], $str);
     }
 }
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Reduce Double Slashes
  *
  * Converts double slashes in a string to a single slash,
@@ -131,16 +132,16 @@ if (! function_exists('quotes_to_entities')) {
  * @param	string
  * @return	string
  */
-if (! function_exists('reduce_double_slashes')) {
+if (!function_exists('reduce_double_slashes')) {
     function reduce_double_slashes($str)
     {
-        return preg_replace("#(^|[^:])//+#", "\\1/", $str);
+        return preg_replace('#(^|[^:])//+#', '\\1/', $str);
     }
 }
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Reduce Multiples
  *
  * Reduces multiple instances of a particular character.  Example:
@@ -157,7 +158,7 @@ if (! function_exists('reduce_double_slashes')) {
  * @param	bool	TRUE/FALSE - whether to trim the character from the beginning/end
  * @return	string
  */
-if (! function_exists('reduce_multiples')) {
+if (!function_exists('reduce_multiples')) {
     function reduce_multiples($str, $character = ',', $trim = false)
     {
         $str = preg_replace('#'.preg_quote($character, '#').'{2,}#', $character, $str);
@@ -172,7 +173,7 @@ if (! function_exists('reduce_multiples')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Create a Random String
  *
  * Useful for generating passwords or hashes.
@@ -182,7 +183,7 @@ if (! function_exists('reduce_multiples')) {
  * @param	integer	number of characters
  * @return	string
  */
-if (! function_exists('random_string')) {
+if (!function_exists('random_string')) {
     function random_string($type = 'alnum', $len = 8)
     {
         switch ($type) {
@@ -205,9 +206,10 @@ if (! function_exists('random_string')) {
                     }
 
                     $str = '';
-                    for ($i=0; $i < $len; $i++) {
-                        $str .= substr($pool, mt_rand(0, strlen($pool) -1), 1);
+                    for ($i = 0; $i < $len; $i++) {
+                        $str .= substr($pool, mt_rand(0, strlen($pool) - 1), 1);
                     }
+
                     return $str;
                 break;
             case 'unique'    :
@@ -218,7 +220,7 @@ if (! function_exists('random_string')) {
             case 'encrypt'    :
             case 'sha1'    :
 
-                        $CI =& get_instance();
+                        $CI = &get_instance();
                         $CI->load->helper('security');
 
                         return do_hash(uniqid(mt_rand(), true), 'sha1');
@@ -230,12 +232,13 @@ if (! function_exists('random_string')) {
 // ------------------------------------------------------------------------
 
 /**
- * Add's _1 to a string or increment the ending number to allow _2, _3, etc
+ * Add's _1 to a string or increment the ending number to allow _2, _3, etc.
  *
- * @param   string  $str  required
- * @param   string  $separator  What should the duplicate number be appended with
- * @param   string  $first  Which number should be used for the first dupe increment
- * @return  string
+ * @param string $str       required
+ * @param string $separator What should the duplicate number be appended with
+ * @param string $first     Which number should be used for the first dupe increment
+ *
+ * @return string
  */
 function increment_string($str, $separator = '_', $first = 1)
 {
@@ -246,7 +249,7 @@ function increment_string($str, $separator = '_', $first = 1)
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Alternator
  *
  * Allows strings to be alternated.  See docs...
@@ -255,23 +258,25 @@ function increment_string($str, $separator = '_', $first = 1)
  * @param	string (as many parameters as needed)
  * @return	string
  */
-if (! function_exists('alternator')) {
+if (!function_exists('alternator')) {
     function alternator()
     {
         static $i;
 
         if (func_num_args() == 0) {
             $i = 0;
+
             return '';
         }
         $args = func_get_args();
+
         return $args[($i++ % count($args))];
     }
 }
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Repeater function
  *
  * @access	public
@@ -279,13 +284,12 @@ if (! function_exists('alternator')) {
  * @param	integer	number of repeats
  * @return	string
  */
-if (! function_exists('repeater')) {
+if (!function_exists('repeater')) {
     function repeater($data, $num = 1)
     {
-        return (($num > 0) ? str_repeat($data, $num) : '');
+        return ($num > 0) ? str_repeat($data, $num) : '';
     }
 }
-
 
 /* End of file string_helper.php */
 /* Location: ./system/helpers/string_helper.php */

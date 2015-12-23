@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html class="no-js" lang="es">
     <head>
-        <title><?=isset($content->title)?ucfirst($content->title):$config['title']?></title>
+        <title><?=isset($content->title) ? ucfirst($content->title) : $config['title']?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="google-site-verification" content="<?=$config['google-site-verification']?>" />
-        <meta name="description" content="<?=isset($content->title)?ucfirst($content->text_small):$config['description']?>">
+        <meta name="description" content="<?=isset($content->title) ? ucfirst($content->text_small) : $config['description']?>">
         <meta name="author" content="<?=$config['author']?>">
         <meta name="copyright" content="<?=$config['copyright']?>">
         <meta name="keywords" lang="en" content="<?=$config['keywords']?>" />
@@ -35,14 +35,14 @@
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@<?=$config['twitter_user']?>">
-        <meta name="twitter:image" content="<?=isset($content->image)?base_url().$content->image:base_url().'img/favicons/android-chrome-192x192.png'?>">
-        <meta name="twitter:title" content="<?=isset($content->title)?ucfirst($content->title):$config['title']?>">
-        <meta name="twitter:description" content="<?=substr(isset($content->title)?ucfirst($content->text_small):$config['description'], 0, 197).'...'?>">
+        <meta name="twitter:image" content="<?=isset($content->image) ? base_url().$content->image : base_url().'img/favicons/android-chrome-192x192.png'?>">
+        <meta name="twitter:title" content="<?=isset($content->title) ? ucfirst($content->title) : $config['title']?>">
+        <meta name="twitter:description" content="<?=substr(isset($content->title) ? ucfirst($content->text_small) : $config['description'], 0, 197).'...'?>">
 
-        <meta property="og:title" content="<?=isset($content->title)?ucfirst($content->title):$config['title']?>" />
+        <meta property="og:title" content="<?=isset($content->title) ? ucfirst($content->title) : $config['title']?>" />
         <meta property="og:type" content="article" />
-        <meta property="og:description" content="<?=isset($content->title)?ucfirst($content->text_small):$config['description']?>" />
-        <meta property="og:image" content="<?=isset($content->image)?base_url().$content->image:base_url().'img/favicons/android-chrome-192x192.png'?>" >
+        <meta property="og:description" content="<?=isset($content->title) ? ucfirst($content->text_small) : $config['description']?>" />
+        <meta property="og:image" content="<?=isset($content->image) ? base_url().$content->image : base_url().'img/favicons/android-chrome-192x192.png'?>" >
        
         <meta property="fb:app_id" content="<?=$config['fb_app_id']?>" />
         <script>
@@ -78,7 +78,8 @@
                                 <a href="<?=base_url()?>"><img src="<?=base_url()?>img/top_icons/home.png" alt="<?=$language->line('header_home')?>" width="25" height="25" >&nbsp;<?=$language->line('header_home')?></a>
                             </li>
                             <li class="divider"></li> -->
-                            <?php if (empty($wp_user)&&false) { ?>
+                            <?php if (empty($wp_user) && false) {
+    ?>
                             <li>
                                 <a href="<?=base_url().'wpanel/access/login'?>"><img src="<?=base_url()?>img/lock_w.png" alt="<?=$language->line('header_signIn')?>" width="25" height="25" >&nbsp;<?=$language->line('header_signIn')?></a>
                             </li>
@@ -86,34 +87,39 @@
                             <li>
                                 <a href="<?=base_url().'wpanel/access/signup'?>"><img src="<?=base_url()?>img/user_w.png" alt="<?=$language->line('header_signUp')?>" width="25" height="25" >&nbsp;<?=$language->line('header_signUp')?></a>
                             </li>
-                            <?php } ?>
+                            <?php 
+} ?>
                             <li class="has-dropdown">
                                 <a href="#"><img  src="<?=base_url()?>img/top_icons/who_we_are.png" width="25" height="25" alt="<?=$language->line('sideBar_category')?>" >&nbsp;&nbsp;<?=$language->line('sideBar_category')?></a>
                                 <ul class="dropdown">
-                                    <?php foreach ($firstMenuSideBar as $array) { ?>
+                                    <?php foreach ($firstMenuSideBar as $array) {
+    ?>
                                     <li>
                                         <a href="<?=base_url().'content/body/'.str_replace(' ', '-', formatString(convert_accented_characters($array['title']), 3))?>">
                                             <?=formatString($array['title'])?>
                                         </a>
                                     </li>
-                                    <?php } ?>
+                                    <?php 
+} ?>
                                 </ul>
                             </li>
                             <li class="divider"></li>
                             <li class="has-dropdown">
                                 <a href="#"><img  src="<?=base_url()?>img/top_icons/why_us.png" width="25" height="25" alt="<?=$language->line('sideBar_why_us')?>" >&nbsp;&nbsp;<?=$language->line('sideBar_why_us')?>&nbsp;&nbsp;</a>
                                 <ul class="dropdown">
-                                    <?php foreach ($secondMenuSideBar as $array) {?>
+                                    <?php foreach ($secondMenuSideBar as $array) {
+    ?>
                                     <li>
                                         <a href="<?=base_url().'content/body/'.str_replace(' ', '-', formatString(convert_accented_characters($array['title']), 3))?>">
                                             <?=formatString($array['title'])?>
                                         </a>
                                     </li>
-                                    <?php }
+                                    <?php 
+}
                                     foreach ($weOfferMenu as $menu) {
                                         ?>
                                     <li>
-                                        <a href="<?=base_url().(is_null($menu['url'])?'content/body/'.$menu['id']:$menu['url'])?>"><?= formatString($menu['title']) ?></a>
+                                        <a href="<?=base_url().(is_null($menu['url']) ? 'content/body/'.$menu['id'] : $menu['url'])?>"><?= formatString($menu['title']) ?></a>
                                     </li>
                                     <?php 
                                     } ?>
@@ -150,19 +156,19 @@
             $wsimpleFlashMsg = [];
             $openFlashMsg = '';
 
-            if (trim($success)!='') {
+            if (trim($success) != '') {
                 $wsimpleFlashMsg = [
-                    'title' => $language->line('services_process_success_title'),
-                    'message' => $success,
+                    'title'      => $language->line('services_process_success_title'),
+                    'message'    => $success,
                     'alertClass' => 'success',
-                    'bodyClass' => 'success-box-body'
+                    'bodyClass'  => 'success-box-body',
                 ];
-            } elseif (trim($error)!='') {
+            } elseif (trim($error) != '') {
                 $wsimpleFlashMsg = [
-                    'title' =>  $language->line('services_process_error_title'),
-                    'message' => $error,
+                    'title'      => $language->line('services_process_error_title'),
+                    'message'    => $error,
                     'alertClass' => 'alert',
-                    'bodyClass' => 'alert-box-body'
+                    'bodyClass'  => 'alert-box-body',
                 ];
             }
 

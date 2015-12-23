@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class FacebookResponse
- * @package Facebook
+ * Class FacebookResponse.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -95,7 +94,7 @@ class FacebookResponse
   }
 
   /**
-   * Returns the raw response
+   * Returns the raw response.
    *
    * @return string
    */
@@ -105,7 +104,7 @@ class FacebookResponse
   }
 
   /**
-   * Returns true if ETag matched the one sent with a request
+   * Returns true if ETag matched the one sent with a request.
    *
    * @return bool
    */
@@ -115,7 +114,7 @@ class FacebookResponse
   }
 
   /**
-   * Returns the ETag
+   * Returns the ETag.
    *
    * @return string
    */
@@ -147,12 +146,13 @@ class FacebookResponse
    */
   public function getGraphObjectList($type = 'Facebook\GraphObject')
   {
-      $out = array();
+      $out = [];
       $data = $this->responseData->data;
       $dataLength = count($data);
       for ($i = 0; $i < $dataLength; $i++) {
           $out[] = (new GraphObject($data[$i]))->cast($type);
       }
+
       return $out;
   }
 
@@ -194,6 +194,7 @@ class FacebookResponse
           if (isset($params['type']) && strpos($this->request->getPath(), $params['type']) !== false) {
               unset($params['type']);
           }
+
           return new FacebookRequest(
         $this->request->getSession(),
         $this->request->getMethod(),
@@ -201,7 +202,7 @@ class FacebookResponse
         $params
       );
       } else {
-          return null;
+          return;
       }
   }
 }

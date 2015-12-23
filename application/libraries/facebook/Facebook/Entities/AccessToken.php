@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\Entities;
 
@@ -29,8 +28,7 @@ use Facebook\FacebookSession;
 use Facebook\GraphSessionInfo;
 
 /**
- * Class AccessToken
- * @package Facebook
+ * Class AccessToken.
  */
 class AccessToken
 {
@@ -113,6 +111,7 @@ class AccessToken
       if ($this->expiresAt) {
           return $this->expiresAt->getTimestamp() > time() + (60 * 60 * 2);
       }
+
       return false;
   }
 
@@ -123,12 +122,13 @@ class AccessToken
    * @param string|null $appSecret App secret value to use
    * @param string|null $machineId
    *
-   * @return boolean
+   * @return bool
    */
   public function isValid($appId = null, $appSecret = null, $machineId = null)
   {
       $accessTokenInfo = $this->getInfo($appId, $appSecret);
       $machineId = $machineId ?: $this->machineId;
+
       return static::validateAccessToken($accessTokenInfo, $appId, $machineId);
   }
 
@@ -142,7 +142,7 @@ class AccessToken
    * @param string|null $appId Application ID to use
    * @param string|null $machineId
    *
-   * @return boolean
+   * @return bool
    */
   public static function validateAccessToken(GraphSessionInfo $tokenInfo,
                                              $appId = null, $machineId = null)
@@ -174,10 +174,10 @@ class AccessToken
    */
   public static function getAccessTokenFromCode($code, $appId = null, $appSecret = null, $machineId = null)
   {
-      $params = array(
-      'code' => $code,
+      $params = [
+      'code'         => $code,
       'redirect_uri' => '',
-    );
+    ];
 
       if ($machineId) {
           $params['machine_id'] = $machineId;
@@ -199,10 +199,10 @@ class AccessToken
   {
       $accessToken = (string) $accessToken;
 
-      $params = array(
+      $params = [
       'access_token' => $accessToken,
       'redirect_uri' => '',
-    );
+    ];
 
       return static::requestCode($params, $appId, $appSecret);
   }
@@ -217,10 +217,10 @@ class AccessToken
    */
   public function extend($appId = null, $appSecret = null)
   {
-      $params = array(
-      'grant_type' => 'fb_exchange_token',
+      $params = [
+      'grant_type'        => 'fb_exchange_token',
       'fb_exchange_token' => $this->accessToken,
-    );
+    ];
 
       return static::requestAccessToken($params, $appId, $appSecret);
   }
@@ -232,28 +232,30 @@ class AccessToken
    * @param string|null $appId
    * @param string|null $appSecret
    *
-   * @return AccessToken
-   *
    * @throws FacebookRequestException
+   *
+   * @return AccessToken
    */
   public static function requestAccessToken(array $params, $appId = null, $appSecret = null)
   {
       $response = static::request('/oauth/access_token', $params, $appId, $appSecret);
       $data = $response->getResponse();
 
-    /**
+    /*
      * @TODO fix this malarkey - getResponse() should always return an object
      * @see https://github.com/facebook/facebook-php-sdk-v4/issues/36
      */
     if (is_array($data)) {
         if (isset($data['access_token'])) {
             $expiresAt = isset($data['expires']) ? time() + $data['expires'] : 0;
+
             return new static($data['access_token'], $expiresAt);
         }
     } elseif ($data instanceof \stdClass) {
         if (isset($data->access_token)) {
             $expiresAt = isset($data->expires_in) ? time() + $data->expires_in : 0;
             $machineId = isset($data->machine_id) ? (string) $data->machine_id : null;
+
             return new static((string) $data->access_token, $expiresAt, $machineId);
         }
     }
@@ -272,9 +274,9 @@ class AccessToken
    * @param string|null $appId
    * @param string|null $appSecret
    *
-   * @return string
-   *
    * @throws FacebookRequestException
+   *
+   * @return string
    */
   public static function requestCode(array $params, $appId = null, $appSecret = null)
   {
@@ -300,9 +302,9 @@ class AccessToken
    * @param string|null $appId
    * @param string|null $appSecret
    *
-   * @return \Facebook\FacebookResponse
-   *
    * @throws FacebookRequestException
+   *
+   * @return \Facebook\FacebookResponse
    */
   protected static function request($endpoint, array $params, $appId = null, $appSecret = null)
   {
@@ -324,6 +326,7 @@ class AccessToken
       $endpoint,
       $params
     );
+
       return $request->execute();
   }
 
@@ -337,7 +340,7 @@ class AccessToken
    */
   public function getInfo($appId = null, $appSecret = null)
   {
-      $params = array('input_token' => $this->accessToken);
+      $params = ['input_token' => $this->accessToken];
 
       $request = new FacebookRequest(
       FacebookSession::newAppSession($appId, $appSecret),

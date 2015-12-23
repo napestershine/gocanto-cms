@@ -5,7 +5,7 @@
 		<?=$content->summary?>
 		</small>
 		</h4>
-		<?php $this->load->view('partial/toolBar.php', ['content'=>$content, 'language'=>$language, 'socialButtons'=>1]); ?>
+		<?php $this->load->view('partial/toolBar.php', ['content' => $content, 'language' => $language, 'socialButtons' => 1]); ?>
 		<hr>
 		
 		<div class="row">
@@ -13,13 +13,16 @@
 				<?php $this->load->view('partial/blogList.php'); ?>
 			</div>
 		</div>
-		<?php if ($links){ ?>
+		<?php if ($links) {
+    ?>
 		<hr>
 		<div class="row">
 			<div class="large-12 columns">
-				<?php echo $links; ?>
+				<?php echo $links;
+    ?>
 			</div>
 		</div>
-		<?php } ?>
+		<?php 
+} ?>
 	</article>
 </div>

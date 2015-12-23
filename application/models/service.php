@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -20,15 +22,15 @@ class service extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->table='services';
-        $this->current_user=false;
+        $this->table = 'services';
+        $this->current_user = false;
         if ($this->session->userdata('wp-user')) {
             $this->current_user = $this->session->userdata('wp-user');
-            $this->admin = $this->current_user['id_profile']==1?true:false;
+            $this->admin = $this->current_user['id_profile'] == 1 ? true : false;
         }
     }
 
-    public function getPlans($where="", $limit=" LIMIT 3", $full_detail=true)
+    public function getPlans($where = '', $limit = ' LIMIT 3', $full_detail = true)
     {
         $plans = $this->db->query("SELECT
                     				a.id AS id,
@@ -47,7 +49,7 @@ class service extends CI_Model
                     		");
         $i = 0;
         foreach ($plans->result_array() as $array) { //plans
-            $i=$array['id'];
+            $i = $array['id'];
             $result[$i]['id'] = $array['id'];
             $result[$i]['name'] = formatString($array['name']);
             $result[$i]['month'] = numberFormat($array['month'], 2);
@@ -56,37 +58,40 @@ class service extends CI_Model
             $result[$i]['year'] = numberFormat($array['year'], 2);
             $result[$i]['text_small'] = $array['text_small'];
             $result[$i]['content_id'] = $array['content_id'];
-            $details = $this->db->query("SELECT description
-                            				FROM ".$this->table."_details
+            $details = $this->db->query('SELECT description
+                            				FROM '.$this->table."_details
                             				WHERE id_plan = '".$array['id']."'
                             				ORDER BY id
-                            				".($full_detail?'':" LIMIT 3")."
-                            			");
-            $j=0;
+                            				".($full_detail ? '' : ' LIMIT 3').'
+                            			');
+            $j = 0;
             foreach ($details->result_array() as $detail) { //details
                 $result[$i]['details'][$j++] = formatString($detail['description']);
             }
             $i++;
         }
+
         return $result;
     }
+
     // example "1_3" id=1 period of pay = 3 = quarterly
+
     public function getPrice($stripe_id)
     {
         $stripe_id = explode('_', $stripe_id);
         $id = $stripe_id[1];
         switch ($stripe_id[1]) {
             case '3':
-                $plan='quarterly';
+                $plan = 'quarterly';
                 break;
             case '6':
-                $plan='semesterly';
+                $plan = 'semesterly';
                 break;
             case '12':
-                $plan='yearly';
+                $plan = 'yearly';
                 break;
             default:
-                $plan='monthly';
+                $plan = 'monthly';
                 break;
         }
 
@@ -97,7 +102,7 @@ class service extends CI_Model
 
         $query = $this->db->query($sql);
 
-        return $query->num_rows()? $query->row()->price : false;
+        return $query->num_rows() ? $query->row()->price : false;
     }
 
     public function get_name($plan)
@@ -109,19 +114,20 @@ class service extends CI_Model
 			WHERE id = '".$plan."'
 		");
         $array = $plans->row();
+
         return $array->name;
     }
 
-    public function getRows($options =[])
+    public function getRows($options = [])
     {
-        $defaults = ['fields'=>'*','where'=>'', 'limit' =>'', 'order'=>' ORDER BY name DESC'];
+        $defaults = ['fields' => '*', 'where' => '', 'limit' => '', 'order' => ' ORDER BY name DESC'];
 
         $options = $options + $defaults;
 
-        $sql="SELECT ".$options['fields']."
+        $sql = 'SELECT '.$options['fields']."
                        FROM $this->table ".
-                       $options['where']." ".
-                       $options['order']." ".
+                       $options['where'].' '.
+                       $options['order'].' '.
                        $options['limit'];
 
         $query = $this->db->query($sql);
@@ -131,19 +137,20 @@ class service extends CI_Model
 
     public function getDetails($data = [])
     {
-        $defaults =  ['id_plan' => '', 'fields' => '*', 'limit' => ' LIMIT 50', 'order' => ' ORDER BY RAND()'];
+        $defaults = ['id_plan' => '', 'fields' => '*', 'limit' => ' LIMIT 50', 'order' => ' ORDER BY RAND()'];
 
         $data = $data + $defaults;
 
-        $query = $this->db->query("
-            SELECT ".$data['fields']."
+        $query = $this->db->query('
+            SELECT '.$data['fields'].'
 
             FROM services_details
 
-            ".($data['id_plan'] != '' ? " WHERE id_plan = '".$data['id_plan']."' " : "")."
+            '.($data['id_plan'] != '' ? " WHERE id_plan = '".$data['id_plan']."' " : '').'
 
-            ".$data['order'].' '.$data['limit']
+            '.$data['order'].' '.$data['limit']
         );
+
         return $query->result_array();
     }
 
@@ -155,6 +162,7 @@ class service extends CI_Model
                 LIMIT 1 ";
 
         $query = $this->db->query($sql);
+
         return $query->row();
     }
 
@@ -167,12 +175,13 @@ class service extends CI_Model
 
         $query = $this->db->query($sql);
         $array = $query->row();
+
         return $array->$field;
     }
 
     public function getSubscriptions($sub = '')
     {
-        $query = $this->db->query("
+        $query = $this->db->query('
             SELECT
                 b.id AS sub_id,
                 b.id_user AS sub_user,
@@ -187,10 +196,10 @@ class service extends CI_Model
 
             FROM services a Join subscriptions b ON a.id = b.id_service
 
-            ".($sub!=''?" WHERE b.id = '".$sub."'":"")."
+            '.($sub != '' ? " WHERE b.id = '".$sub."'" : '').'
 
             ORDER BY b.updated_at DESC
-        ");
+        ');
 
         return $sub == '' ? $query->result_array() : $query->row();
     }

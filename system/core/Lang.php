@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,51 +19,49 @@
 // ------------------------------------------------------------------------
 
 /**
- * Language Class
+ * Language Class.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Language
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/language.html
  */
 class CI_Lang
 {
     /**
-     * List of translations
+     * List of translations.
      *
      * @var array
      */
-    public $language    = array();
+    public $language = [];
     /**
-     * List of loaded language files
+     * List of loaded language files.
      *
      * @var array
      */
-    public $is_loaded    = array();
+    public $is_loaded = [];
 
     /**
-     * Constructor
-     *
-     * @access	public
+     * Constructor.
      */
     public function __construct()
     {
-        log_message('debug', "Language Class Initialized");
+        log_message('debug', 'Language Class Initialized');
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Load a language file
+     * Load a language file.
      *
-     * @access	public
      * @param	mixed	the name of the language file to be loaded. Can be an array
      * @param	string	the language (english, etc.)
      * @param	bool	return loaded array of translations
-     * @param 	bool	add suffix to $langfile
+     * @param bool	add suffix to $langfile
      * @param 	string	alternative path to look for language file
-     * @return	mixed
+     *
+     * @return mixed
      */
     public function load($langfile = '', $idiom = '', $return = false, $add_suffix = true, $alt_path = '')
     {
@@ -78,22 +77,22 @@ class CI_Lang
             return;
         }
 
-        $config =& get_config();
+        $config = &get_config();
 
         if ($idiom == '') {
-            $deft_lang = (! isset($config['language'])) ? 'english' : $config['language'];
+            $deft_lang = (!isset($config['language'])) ? 'english' : $config['language'];
             $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
         }
 
         // Determine where the language file is and load it
         if ($alt_path != '' && file_exists($alt_path.'language/'.$idiom.'/'.$langfile)) {
-            include($alt_path.'language/'.$idiom.'/'.$langfile);
+            include $alt_path.'language/'.$idiom.'/'.$langfile;
         } else {
             $found = false;
 
             foreach (get_instance()->load->get_package_paths(true) as $package_path) {
                 if (file_exists($package_path.'language/'.$idiom.'/'.$langfile)) {
-                    include($package_path.'language/'.$idiom.'/'.$langfile);
+                    include $package_path.'language/'.$idiom.'/'.$langfile;
                     $found = true;
                     break;
                 }
@@ -104,9 +103,9 @@ class CI_Lang
             }
         }
 
-
-        if (! isset($lang)) {
+        if (!isset($lang)) {
             log_message('error', 'Language file contains no data: language/'.$idiom.'/'.$langfile);
+
             return;
         }
 
@@ -119,21 +118,22 @@ class CI_Lang
         unset($lang);
 
         log_message('debug', 'Language file loaded: language/'.$idiom.'/'.$langfile);
+
         return true;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Fetch a single line of text from the language array
+     * Fetch a single line of text from the language array.
      *
-     * @access	public
-     * @param	string	$line	the language line
-     * @return	string
+     * @param string $line the language line
+     *
+     * @return string
      */
     public function line($line = '')
     {
-        $value = ($line == '' or ! isset($this->language[$line])) ? false : $this->language[$line];
+        $value = ($line == '' or !isset($this->language[$line])) ? false : $this->language[$line];
 
         // Because killer robots like unicorns!
         if ($value === false) {

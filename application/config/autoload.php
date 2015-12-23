@@ -1,4 +1,5 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /*
@@ -39,8 +40,7 @@
 |
 */
 
-$autoload['packages'] = array();
-
+$autoload['packages'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -54,8 +54,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session');
-
+$autoload['libraries'] = ['session'];
 
 /*
 | -------------------------------------------------------------------
@@ -66,8 +65,7 @@ $autoload['libraries'] = array('session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'functions_helper', 'text', 'language');
-
+$autoload['helper'] = ['url', 'functions_helper', 'text', 'language'];
 
 /*
 | -------------------------------------------------------------------
@@ -82,8 +80,7 @@ $autoload['helper'] = array('url', 'functions_helper', 'text', 'language');
 |
 */
 
-$autoload['config'] = array('twitter');
-
+$autoload['config'] = ['twitter'];
 
 /*
 | -------------------------------------------------------------------
@@ -98,8 +95,7 @@ $autoload['config'] = array('twitter');
 |
 */
 
-$autoload['language'] = array();
-
+$autoload['language'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -111,8 +107,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
-
+$autoload['model'] = [];
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

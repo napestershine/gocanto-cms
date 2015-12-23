@@ -25,7 +25,7 @@
         'tickets_successful_message_admin' => 'Your support ticket has been created successfully!',
 
         'tickets_in_process' => 'We will work in your request as soon as possible. This process usually takes few hours. <br> <small>You will be notified by email when we find out a solution.</small>',
-        
+
         'tickets_support' => 'Support',
 
         'tickets_closet_message' => 'This ticket was closed, however, you can reopen it if you are still having the same problem.',
@@ -60,5 +60,5 @@
 
         'tickets_email_message_admin' => 'You can reply this ticket clicking the below url.',
 
-        'tickets_email_message_user' => 'The ticket has been answered. Whether you want to read it or give a reply on it,  you need to log in into our admin area, or click on the below url. Thank you for using our Technical Support.'
+        'tickets_email_message_user' => 'The ticket has been answered. Whether you want to read it or give a reply on it,  you need to log in into our admin area, or click on the below url. Thank you for using our Technical Support.',
     ];

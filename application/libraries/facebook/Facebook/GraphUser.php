@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class GraphUser
- * @package Facebook
+ * Class GraphUser.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -50,7 +49,7 @@ class GraphUser extends GraphObject
   {
       return $this->getProperty('name');
   }
-  
+
   /**
    * Returns the email for the user as a string if present.
    *
@@ -60,7 +59,7 @@ class GraphUser extends GraphObject
   {
       return $this->getProperty('email');
   }
-  
+
   /**
    * Returns the locale for the user as a string if present.
    *
@@ -100,7 +99,7 @@ class GraphUser extends GraphObject
   {
       return $this->getProperty('last_name');
   }
-  
+
   /**
    * Returns the gender for the user as a string if present.
    *
@@ -132,7 +131,8 @@ class GraphUser extends GraphObject
       if ($value) {
           return new \DateTime($value);
       }
-      return null;
+
+      return;
   }
 
   /**

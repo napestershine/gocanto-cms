@@ -101,7 +101,6 @@ if (defined('ENVIRONMENT')) {
     // The controller function you wish to be called.
     // $routing['function']	= '';
 
-
 /*
  * -------------------------------------------------------------------
  *  CUSTOM CONFIG VALUES
@@ -118,8 +117,6 @@ if (defined('ENVIRONMENT')) {
  *
  */
     // $assign_to_config['name_of_config_item'] = 'value of config item';
-
-
 
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
@@ -144,8 +141,8 @@ if (defined('ENVIRONMENT')) {
     $system_path = rtrim($system_path, '/').'/';
 
     // Is the system path correct?
-    if (! is_dir($system_path)) {
-        exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
+    if (!is_dir($system_path)) {
+        exit('Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME));
     }
 
 /*
@@ -161,7 +158,7 @@ if (defined('ENVIRONMENT')) {
     define('EXT', '.php');
 
     // Path to the system folder
-    define('BASEPATH', str_replace("\\", "/", $system_path));
+    define('BASEPATH', str_replace('\\', '/', $system_path));
 
     // Path to the front controller (this file)
     define('FCPATH', str_replace(SELF, '', __FILE__));
@@ -169,13 +166,12 @@ if (defined('ENVIRONMENT')) {
     // Name of the "system folder"
     define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
-
     // The path to the "application" folder
     if (is_dir($application_folder)) {
         define('APPPATH', $application_folder.'/');
     } else {
-        if (! is_dir(BASEPATH.$application_folder.'/')) {
-            exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: ".SELF);
+        if (!is_dir(BASEPATH.$application_folder.'/')) {
+            exit('Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF);
         }
 
         define('APPPATH', BASEPATH.$application_folder.'/');

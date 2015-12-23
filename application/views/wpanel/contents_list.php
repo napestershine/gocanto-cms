@@ -1,5 +1,5 @@
 <?php
-if (empty($wp_user) && $wp_user['id']=='') {
+if (empty($wp_user) && $wp_user['id'] == '') {
     redirect(base_url().'wpanel');
     die();
     exit();
@@ -36,20 +36,17 @@ if (empty($wp_user) && $wp_user['id']=='') {
 				<div class="large-6 medium-6 small-6 columns">
 					<select name="cboListContentFilter" class="large-10 columns" id="cboListContentFilter" domain = "<?=base_url()?>" >
 						<?php 
-							foreach ($type_list as $value)
-							{
-								$selected='';
-								if (isset($type))
-								{
-									$selected=$value==$type?'selected':'';
-								} 
-								elseif ($value=='Blog')
-								{
-									$selected='selected';
-								}
-						?>
+                            foreach ($type_list as $value) {
+                                $selected = '';
+                                if (isset($type)) {
+                                    $selected = $value == $type ? 'selected' : '';
+                                } elseif ($value == 'Blog') {
+                                    $selected = 'selected';
+                                }
+                                ?>
 								<option value="<?=$value?>" <?=$selected?>><?=str_replace('_', ' ', $value)?></option>
-						<?php } ?>
+						<?php 
+                            } ?>
 					</select>
 				</div>
 				<div class="large-6 medium-6 small-6 columns">

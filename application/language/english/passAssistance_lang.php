@@ -1,12 +1,11 @@
 <?php
-    
+
     $lang = [
 
-
-		'login_required' => 'Required',
+        'login_required' => 'Required',
 
         'reset_here_label' => 'here',
-        
+
         'login_forgot_continue' => 'Continue',
 
         'login_forgot_title' => 'Password Assistance',
@@ -34,7 +33,7 @@
         'passAss_reset_token_error_title' => 'Token Error',
 
         'passAss_reset_token_error_msg' => 'There was a terrible error trying to get the user information because the token given was not found in our records. Please try again!',
-        
+
         'passAss_reset_no_mach_pass_title' => 'Password not match',
 
         'passAss_reset_no_mach_pass_msg' => 'The passwords given were not the same. Please, check them out and try again!',
@@ -49,8 +48,6 @@
 
         'passAss_reset_change_ok_title' => 'The password was changed successfully!',
 
-        'passAss_reset_change_ok_msg' => 'We are glad to inform you that we were able to change your password account without problems.'
+        'passAss_reset_change_ok_msg' => 'We are glad to inform you that we were able to change your password account without problems.',
 
     ];
-
-    

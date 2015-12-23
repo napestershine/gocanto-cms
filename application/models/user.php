@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -22,40 +24,39 @@ class user extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->last_id = '';
-        $this->table='wpanel_users';
-        $this->current_user=false;
+        $this->table = 'wpanel_users';
+        $this->current_user = false;
         if ($this->session->userdata('wp-user')) {
             $this->current_user = $this->session->userdata('wp-user');
-            $this->admin = $this->current_user['id_profile']==1?true:false;
+            $this->admin = $this->current_user['id_profile'] == 1 ? true : false;
         }
     }
 
-
-    public function getRow($id='')
+    public function getRow($id = '')
     {
-        if ($id=='') {
+        if ($id == '') {
             $id = $this->current_user['id'];
         }
 
         $query = $this->db->query("SELECT * FROM $this->table WHERE id = '".$id."' LIMIT 1 ");
+
         return $query->row();
     }
 
-    public function get($id='')
-       {
-          return $this->getRow($id);
-       }
+    public function get($id = '')
+    {
+        return $this->getRow($id);
+    }
 
     public function getId()
     {
         return $this->current_user['id'];
     }
 
-
     public function exists($email, $select = '')
     {
-        if ($select=='') {
-            $select='email';
+        if ($select == '') {
+            $select = 'email';
         }
 
         $query = $this->db->query("SELECT $select
@@ -85,6 +86,7 @@ class user extends CI_Model
                                     FROM $this->table
                                     WHERE fb_id LIKE '$fb_id'
                                 ");
+
         return $query->num_rows() ? true : false;
     }
 
@@ -134,7 +136,7 @@ class user extends CI_Model
 
     public function getStripeId($id)
     {
-        if ($id=='') {
+        if ($id == '') {
             $id = $this->current_user['id'];
         }
         $query = $this->db->query("SELECT stripe_id
@@ -149,12 +151,13 @@ class user extends CI_Model
     public function insert($array)
     {
         $this->db->insert($this->table, $array);
+
         return $this->last_id = $this->db->insert_id();
     }
 
-    public function update($array, $id='')
+    public function update($array, $id = '')
     {
-        if ($id=='') {
+        if ($id == '') {
             $id = $this->current_user['id'];
         }
         $this->db->where('id', $id);
@@ -172,19 +175,21 @@ class user extends CI_Model
                                    FROM $this->table $where
                                    LIMIT 1 ");
         $array = $query->row();
+
         return $array->$field;
     }
 
     public function full_name($id)
     {
-        if ($id=='') {
+        if ($id == '') {
             $id = $this->current_user['id'];
         }
         $query = $this->db->query("SELECT name, last_name
                                    FROM $this->table
                                    WHERE id = '$id'
                                    LIMIT 1 ");
-        $array =  $query->row();
+        $array = $query->row();
+
         return $array->first_name.' '.$array->last_name;
     }
 }

@@ -19,17 +19,16 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
-use Facebook\HttpClients\FacebookHttpable;
 use Facebook\HttpClients\FacebookCurlHttpClient;
+use Facebook\HttpClients\FacebookHttpable;
 use Facebook\HttpClients\FacebookStreamHttpClient;
 
 /**
- * Class FacebookRequest
- * @package Facebook
+ * Class FacebookRequest.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -147,7 +146,7 @@ class FacebookRequest
 
   /**
    * setHttpClientHandler - Returns an instance of the HTTP client
-   * handler
+   * handler.
    *
    * @param \Facebook\HttpClients\FacebookHttpable
    */
@@ -158,7 +157,7 @@ class FacebookRequest
 
   /**
    * getHttpClientHandler - Returns an instance of the HTTP client
-   * data handler
+   * data handler.
    *
    * @return FacebookHttpable
    */
@@ -167,6 +166,7 @@ class FacebookRequest
       if (static::$httpClientHandler) {
           return static::$httpClientHandler;
       }
+
       return function_exists('curl_init') ? new FacebookCurlHttpClient() : new FacebookStreamHttpClient();
   }
 
@@ -195,12 +195,12 @@ class FacebookRequest
       }
       $this->etag = $etag;
 
-      $params = ($parameters ?: array());
+      $params = ($parameters ?: []);
       if ($session
-      && ! isset($params['access_token'])) {
+      && !isset($params['access_token'])) {
           $params['access_token'] = $session->getToken();
       }
-      if (! isset($params['appsecret_proof'])
+      if (!isset($params['appsecret_proof'])
       && FacebookSession::useAppSecretProof()) {
           $params['appsecret_proof'] = $this->getAppSecretProof(
         $params['access_token']
@@ -223,16 +223,17 @@ class FacebookRequest
       } else {
           $baseUrl = static::BASE_GRAPH_URL;
       }
-      return $baseUrl . '/' . $this->version . '/' . ltrim($this->path, '/');
+
+      return $baseUrl.'/'.$this->version.'/'.ltrim($this->path, '/');
   }
 
   /**
    * execute - Makes the request to Facebook and returns the result.
    *
-   * @return FacebookResponse
-   *
    * @throws FacebookSDKException
    * @throws FacebookRequestException
+   *
+   * @return FacebookResponse
    */
   public function execute()
   {
@@ -241,11 +242,11 @@ class FacebookRequest
 
       if ($this->method === 'GET') {
           $url = self::appendParamsToUrl($url, $params);
-          $params = array();
+          $params = [];
       }
 
       $connection = self::getHttpClientHandler();
-      $connection->addRequestHeader('User-Agent', 'fb-php-' . self::VERSION);
+      $connection->addRequestHeader('User-Agent', 'fb-php-'.self::VERSION);
       $connection->addRequestHeader('Accept-Encoding', '*'); // Support all available encodings.
 
     // ETag
@@ -266,8 +267,9 @@ class FacebookRequest
 
       $decodedResult = json_decode($result);
       if ($decodedResult === null) {
-          $out = array();
+          $out = [];
           parse_str($result, $out);
+
           return new FacebookResponse($this, $out, $result, $etagHit, $etagReceived);
       }
       if (isset($decodedResult->error)) {
@@ -282,7 +284,7 @@ class FacebookRequest
   }
 
   /**
-   * Generate and return the appsecret_proof value for an access_token
+   * Generate and return the appsecret_proof value for an access_token.
    *
    * @param string $token
    *
@@ -301,14 +303,14 @@ class FacebookRequest
    *
    * @return string
    */
-  public static function appendParamsToUrl($url, array $params = array())
+  public static function appendParamsToUrl($url, array $params = [])
   {
       if (!$params) {
           return $url;
       }
 
       if (strpos($url, '?') === false) {
-          return $url . '?' . http_build_query($params, null, '&');
+          return $url.'?'.http_build_query($params, null, '&');
       }
 
       list($path, $query_string) = explode('?', $url, 2);
@@ -317,6 +319,6 @@ class FacebookRequest
     // Favor params from the original URL over $params
     $params = array_merge($params, $query_array);
 
-      return $path . '?' . http_build_query($params, null, '&');
+      return $path.'?'.http_build_query($params, null, '&');
   }
 }

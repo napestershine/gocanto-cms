@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter File Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Read File
  *
  * Opens the file specfied in the path and returns it as a string.
@@ -38,10 +39,10 @@
  * @param	string	path to file
  * @return	string
  */
-if (! function_exists('read_file')) {
+if (!function_exists('read_file')) {
     function read_file($file)
     {
-        if (! file_exists($file)) {
+        if (!file_exists($file)) {
             return false;
         }
 
@@ -49,7 +50,7 @@ if (! function_exists('read_file')) {
             return file_get_contents($file);
         }
 
-        if (! $fp = @fopen($file, FOPEN_READ)) {
+        if (!$fp = @fopen($file, FOPEN_READ)) {
             return false;
         }
 
@@ -57,7 +58,7 @@ if (! function_exists('read_file')) {
 
         $data = '';
         if (filesize($file) > 0) {
-            $data =& fread($fp, filesize($file));
+            $data = &fread($fp, filesize($file));
         }
 
         flock($fp, LOCK_UN);
@@ -69,7 +70,7 @@ if (! function_exists('read_file')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Write File
  *
  * Writes data to the file specified in the path.
@@ -80,10 +81,10 @@ if (! function_exists('read_file')) {
  * @param	string	file data
  * @return	bool
  */
-if (! function_exists('write_file')) {
+if (!function_exists('write_file')) {
     function write_file($path, $data, $mode = FOPEN_WRITE_CREATE_DESTRUCTIVE)
     {
-        if (! $fp = @fopen($path, $mode)) {
+        if (!$fp = @fopen($path, $mode)) {
             return false;
         }
 
@@ -98,7 +99,7 @@ if (! function_exists('write_file')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Delete Files
  *
  * Deletes all files contained in the supplied directory path.
@@ -111,18 +112,18 @@ if (! function_exists('write_file')) {
  * @param	bool	whether to delete any directories found in the path
  * @return	bool
  */
-if (! function_exists('delete_files')) {
+if (!function_exists('delete_files')) {
     function delete_files($path, $del_dir = false, $level = 0)
     {
         // Trim the trailing slash
         $path = rtrim($path, DIRECTORY_SEPARATOR);
 
-        if (! $current_dir = @opendir($path)) {
+        if (!$current_dir = @opendir($path)) {
             return false;
         }
 
         while (false !== ($filename = @readdir($current_dir))) {
-            if ($filename != "." and $filename != "..") {
+            if ($filename != '.' and $filename != '..') {
                 if (is_dir($path.DIRECTORY_SEPARATOR.$filename)) {
                     // Ignore empty folders
                     if (substr($filename, 0, 1) != '.') {
@@ -145,7 +146,7 @@ if (! function_exists('delete_files')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Get Filenames
  *
  * Reads the specified directory and builds an array containing the filenames.
@@ -157,15 +158,15 @@ if (! function_exists('delete_files')) {
  * @param	bool	internal variable to determine recursion status - do not use in calls
  * @return	array
  */
-if (! function_exists('get_filenames')) {
+if (!function_exists('get_filenames')) {
     function get_filenames($source_dir, $include_path = false, $_recursion = false)
     {
-        static $_filedata = array();
+        static $_filedata = [];
 
         if ($fp = @opendir($source_dir)) {
             // reset the array and make sure $source_dir has a trailing slash on the initial call
             if ($_recursion === false) {
-                $_filedata = array();
+                $_filedata = [];
                 $source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             }
 
@@ -176,6 +177,7 @@ if (! function_exists('get_filenames')) {
                     $_filedata[] = ($include_path == true) ? $source_dir.$file : $file;
                 }
             }
+
             return $_filedata;
         } else {
             return false;
@@ -185,7 +187,7 @@ if (! function_exists('get_filenames')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Get Directory File Information
  *
  * Reads the specified directory and builds an array containing the filenames,
@@ -199,16 +201,16 @@ if (! function_exists('get_filenames')) {
  * @param	bool	internal variable to determine recursion status - do not use in calls
  * @return	array
  */
-if (! function_exists('get_dir_file_info')) {
+if (!function_exists('get_dir_file_info')) {
     function get_dir_file_info($source_dir, $top_level_only = true, $_recursion = false)
     {
-        static $_filedata = array();
+        static $_filedata = [];
         $relative_path = $source_dir;
 
         if ($fp = @opendir($source_dir)) {
             // reset the array and make sure $source_dir has a trailing slash on the initial call
             if ($_recursion === false) {
-                $_filedata = array();
+                $_filedata = [];
                 $source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             }
 
@@ -231,7 +233,7 @@ if (! function_exists('get_dir_file_info')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
 * Get File Info
 *
 * Given a file and path, returns the name, path, size, date modified
@@ -244,10 +246,10 @@ if (! function_exists('get_dir_file_info')) {
 * @param	mixed	array or comma separated string of information returned
 * @return	array
 */
-if (! function_exists('get_file_info')) {
-    function get_file_info($file, $returned_values = array('name', 'server_path', 'size', 'date'))
+if (!function_exists('get_file_info')) {
+    function get_file_info($file, $returned_values = ['name', 'server_path', 'size', 'date'])
     {
-        if (! file_exists($file)) {
+        if (!file_exists($file)) {
             return false;
         }
 
@@ -291,7 +293,7 @@ if (! function_exists('get_file_info')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Get Mime by Extension
  *
  * Translates a file extension into a mime type based on config/mimes.php.
@@ -304,21 +306,21 @@ if (! function_exists('get_file_info')) {
  * @param	string	path to file
  * @return	mixed
  */
-if (! function_exists('get_mime_by_extension')) {
+if (!function_exists('get_mime_by_extension')) {
     function get_mime_by_extension($file)
     {
         $extension = strtolower(substr(strrchr($file, '.'), 1));
 
         global $mimes;
 
-        if (! is_array($mimes)) {
+        if (!is_array($mimes)) {
             if (defined('ENVIRONMENT') and is_file(APPPATH.'config/'.ENVIRONMENT.'/mimes.php')) {
-                include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
+                include APPPATH.'config/'.ENVIRONMENT.'/mimes.php';
             } elseif (is_file(APPPATH.'config/mimes.php')) {
-                include(APPPATH.'config/mimes.php');
+                include APPPATH.'config/mimes.php';
             }
 
-            if (! is_array($mimes)) {
+            if (!is_array($mimes)) {
                 return false;
             }
         }
@@ -338,7 +340,7 @@ if (! function_exists('get_mime_by_extension')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Symbolic Permissions
  *
  * Takes a numeric value representing a file's permissions and returns
@@ -348,7 +350,7 @@ if (! function_exists('get_mime_by_extension')) {
  * @param	int
  * @return	string
  */
-if (! function_exists('symbolic_permissions')) {
+if (!function_exists('symbolic_permissions')) {
     function symbolic_permissions($perms)
     {
         if (($perms & 0xC000) == 0xC000) {
@@ -390,7 +392,7 @@ if (! function_exists('symbolic_permissions')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Octal Permissions
  *
  * Takes a numeric value representing a file's permissions and returns
@@ -400,13 +402,12 @@ if (! function_exists('symbolic_permissions')) {
  * @param	int
  * @return	string
  */
-if (! function_exists('octal_permissions')) {
+if (!function_exists('octal_permissions')) {
     function octal_permissions($perms)
     {
         return substr(sprintf('%o', $perms), -3);
     }
 }
-
 
 /* End of file file_helper.php */
 /* Location: ./system/helpers/file_helper.php */

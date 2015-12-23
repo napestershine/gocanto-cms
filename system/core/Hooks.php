@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,58 +19,56 @@
 // ------------------------------------------------------------------------
 
 /**
- * CodeIgniter Hooks Class
+ * CodeIgniter Hooks Class.
  *
  * Provides a mechanism to extend the base system without hacking.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Libraries
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/encryption.html
  */
 class CI_Hooks
 {
     /**
-     * Determines wether hooks are enabled
+     * Determines wether hooks are enabled.
      *
      * @var bool
      */
-    public $enabled        = false;
+    public $enabled = false;
     /**
-     * List of all hooks set in config/hooks.php
+     * List of all hooks set in config/hooks.php.
      *
      * @var array
      */
-    public $hooks            = array();
+    public $hooks = [];
     /**
-     * Determines wether hook is in progress, used to prevent infinte loops
+     * Determines wether hook is in progress, used to prevent infinte loops.
      *
      * @var bool
      */
-    public $in_progress    = false;
+    public $in_progress = false;
 
     /**
-     * Constructor
-     *
+     * Constructor.
      */
     public function __construct()
     {
         $this->_initialize();
-        log_message('debug', "Hooks Class Initialized");
+        log_message('debug', 'Hooks Class Initialized');
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Initialize the Hooks Preferences
+     * Initialize the Hooks Preferences.
      *
-     * @access	private
-     * @return	void
+     * @return void
      */
     public function _initialize()
     {
-        $CFG =& load_class('Config', 'core');
+        $CFG = &load_class('Config', 'core');
 
         // If hooks are not enabled in the config file
         // there is nothing else to do
@@ -82,34 +81,33 @@ class CI_Hooks
         // If there are no hooks, we're done.
 
         if (defined('ENVIRONMENT') and is_file(APPPATH.'config/'.ENVIRONMENT.'/hooks.php')) {
-            include(APPPATH.'config/'.ENVIRONMENT.'/hooks.php');
+            include APPPATH.'config/'.ENVIRONMENT.'/hooks.php';
         } elseif (is_file(APPPATH.'config/hooks.php')) {
-            include(APPPATH.'config/hooks.php');
+            include APPPATH.'config/hooks.php';
         }
 
-
-        if (! isset($hook) or ! is_array($hook)) {
+        if (!isset($hook) or !is_array($hook)) {
             return;
         }
 
-        $this->hooks =& $hook;
+        $this->hooks = &$hook;
         $this->enabled = true;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Call Hook
+     * Call Hook.
      *
      * Calls a particular hook
      *
-     * @access	private
      * @param	string	the hook name
-     * @return	mixed
+     *
+     * @return mixed
      */
     public function _call_hook($which = '')
     {
-        if (! $this->enabled or ! isset($this->hooks[$which])) {
+        if (!$this->enabled or !isset($this->hooks[$which])) {
             return false;
         }
 
@@ -127,17 +125,17 @@ class CI_Hooks
     // --------------------------------------------------------------------
 
     /**
-     * Run Hook
+     * Run Hook.
      *
      * Runs a particular hook
      *
-     * @access	private
      * @param	array	the hook details
-     * @return	bool
+     *
+     * @return bool
      */
     public function _run_hook($data)
     {
-        if (! is_array($data)) {
+        if (!is_array($data)) {
             return false;
         }
 
@@ -156,13 +154,13 @@ class CI_Hooks
         // Set file path
         // -----------------------------------
 
-        if (! isset($data['filepath']) or ! isset($data['filename'])) {
+        if (!isset($data['filepath']) or !isset($data['filename'])) {
             return false;
         }
 
         $filepath = APPPATH.$data['filepath'].'/'.$data['filename'];
 
-        if (! file_exists($filepath)) {
+        if (!file_exists($filepath)) {
             return false;
         }
 
@@ -170,9 +168,9 @@ class CI_Hooks
         // Set class/function name
         // -----------------------------------
 
-        $class        = false;
-        $function    = false;
-        $params        = '';
+        $class = false;
+        $function = false;
+        $params = '';
 
         if (isset($data['class']) and $data['class'] != '') {
             $class = $data['class'];
@@ -201,21 +199,22 @@ class CI_Hooks
         // -----------------------------------
 
         if ($class !== false) {
-            if (! class_exists($class)) {
-                require($filepath);
+            if (!class_exists($class)) {
+                require $filepath;
             }
 
-            $HOOK = new $class;
+            $HOOK = new $class();
             $HOOK->$function($params);
         } else {
-            if (! function_exists($function)) {
-                require($filepath);
+            if (!function_exists($function)) {
+                require $filepath;
             }
 
             $function($params);
         }
 
         $this->in_progress = false;
+
         return true;
     }
 }

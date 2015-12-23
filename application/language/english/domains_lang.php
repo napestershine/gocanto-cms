@@ -30,7 +30,7 @@
     $lang['domains_purchase_domain'] = 'Purchase domain';
 
     //accordion
-    
+
     $lang['domains_your_brand'] = 'Your brand in Internet';
 
     $lang['domains_your_brand_title01'] = 'The domains are essential for the people who is in the Internet can find you quickly';

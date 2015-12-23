@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright   Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,12 +19,14 @@
 // ------------------------------------------------------------------------
 
 /**
- * oci8 Result Class
+ * oci8 Result Class.
  *
  * This class extends the parent result class: CI_DB_result
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_oci8_result extends CI_DB_result
@@ -38,7 +41,7 @@ class CI_DB_oci8_result extends CI_DB_result
      * Oracle doesn't have a graceful way to retun the number of rows
      * so we have to use what amounts to a hack.
      *
-     * @return  integer
+     * @return int
      */
     public function num_rows()
     {
@@ -57,10 +60,9 @@ class CI_DB_oci8_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Number of fields in the result set
+     * Number of fields in the result set.
      *
-     * @access  public
-     * @return  integer
+     * @return int
      */
     public function num_fields()
     {
@@ -77,40 +79,39 @@ class CI_DB_oci8_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Fetch Field Names
+     * Fetch Field Names.
      *
      * Generates an array of column names
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function list_fields()
     {
-        $field_names = array();
+        $field_names = [];
         for ($c = 1, $fieldCount = $this->num_fields(); $c <= $fieldCount; $c++) {
             $field_names[] = oci_field_name($this->stmt_id, $c);
         }
+
         return $field_names;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Field data
+     * Field data.
      *
      * Generates an array of objects containing field meta-data
      *
-     * @access  public
-     * @return  array
+     * @return array
      */
     public function field_data()
     {
-        $retval = array();
+        $retval = [];
         for ($c = 1, $fieldCount = $this->num_fields(); $c <= $fieldCount; $c++) {
-            $F            = new stdClass();
-            $F->name        = oci_field_name($this->stmt_id, $c);
-            $F->type        = oci_field_type($this->stmt_id, $c);
-            $F->max_length        = oci_field_size($this->stmt_id, $c);
+            $F = new stdClass();
+            $F->name = oci_field_name($this->stmt_id, $c);
+            $F->type = oci_field_type($this->stmt_id, $c);
+            $F->max_length = oci_field_size($this->stmt_id, $c);
 
             $retval[] = $F;
         }
@@ -121,9 +122,9 @@ class CI_DB_oci8_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Free the result
+     * Free the result.
      *
-     * @return	null
+     * @return null
      */
     public function free_result()
     {
@@ -136,32 +137,32 @@ class CI_DB_oci8_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Result - associative array
+     * Result - associative array.
      *
      * Returns the result set as an array
      *
-     * @access  protected
-     * @return  array
+     * @return array
      */
     protected function _fetch_assoc()
     {
         $id = ($this->curs_id) ? $this->curs_id : $this->stmt_id;
+
         return oci_fetch_assoc($id);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Result - object
+     * Result - object.
      *
      * Returns the result set as an object
      *
-     * @access  protected
-     * @return  object
+     * @return object
      */
     protected function _fetch_object()
     {
         $id = ($this->curs_id) ? $this->curs_id : $this->stmt_id;
+
         return @oci_fetch_object($id);
     }
 
@@ -170,8 +171,7 @@ class CI_DB_oci8_result extends CI_DB_result
     /**
      * Query result.  "array" version.
      *
-     * @access  public
-     * @return  array
+     * @return array
      */
     public function result_array()
     {
@@ -190,21 +190,19 @@ class CI_DB_oci8_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Data Seek
+     * Data Seek.
      *
      * Moves the internal pointer to the desired offset.  We call
      * this internally before fetching results to make sure the
      * result set starts at zero
      *
-     * @access	protected
-     * @return	array
+     * @return array
      */
     protected function _data_seek($n = 0)
     {
         return false; // Not needed
     }
 }
-
 
 /* End of file oci8_result.php */
 /* Location: ./system/database/drivers/oci8/oci8_result.php */

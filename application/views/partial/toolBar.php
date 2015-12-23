@@ -3,22 +3,22 @@
 	<div class="large-6 columns">
 		<small>
 		<?php
-			if ($content->type=='Blog')
-			{
-		if (isset($content->author) && trim($content->author)!='') {
-		echo '<strong>'.$language->line('general_published_by').'</strong> <a href="'.$config['not_click'].'">'.formatString($content->author).'</a> ';
-		}
-		if (isset($content->date) && trim($content->date)!='') {
-		echo 'on '.formatDate($content->date);
-		}
-		}else{
-		echo formatString($language->line('general_lets_get_started'), 2);
-		}
-		?>
+            if ($content->type == 'Blog') {
+                if (isset($content->author) && trim($content->author) != '') {
+                    echo '<strong>'.$language->line('general_published_by').'</strong> <a href="'.$config['not_click'].'">'.formatString($content->author).'</a> ';
+                }
+                if (isset($content->date) && trim($content->date) != '') {
+                    echo 'on '.formatDate($content->date);
+                }
+            } else {
+                echo formatString($language->line('general_lets_get_started'), 2);
+            }
+        ?>
 		</small>
 	</div>
 	
-	<?php if (isset($socialButtons) && $socialButtons == '1'){ ?>
+	<?php if (isset($socialButtons) && $socialButtons == '1') {
+    ?>
 	<div class="large-6 columns">
 		
 		<div id="fb-root"></div>
@@ -40,6 +40,7 @@
 		</div>
 		
 	</div>
-	<?php } ?>
+	<?php 
+} ?>
 	
 </div>

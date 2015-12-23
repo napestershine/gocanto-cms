@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -78,26 +80,27 @@ class whois extends CI_Model
 
         $aux = explode('.', $domain);
 
-        if (end($aux)=='ve') {
+        if (end($aux) == 've') {
             $this->nic_ve($domain);
-            $this->tld_domain = $aux[count($aux)-2].'.'.array_pop($aux);
+            $this->tld_domain = $aux[count($aux) - 2].'.'.array_pop($aux);
+
             return;
         }
 
         $domain = empty($aux[1]) ? $domain.'.com' : $domain; //if the domain does not have type we put it
 
-        if (substr(strtolower($domain), 0, 7) == "http://") {
+        if (substr(strtolower($domain), 0, 7) == 'http://') {
             $domain = substr($domain, 7);
         } // remove http:// if included
 
-        if (substr(strtolower($domain), 0, 4) == "www.") {
+        if (substr(strtolower($domain), 0, 4) == 'www.') {
             $domain = substr($domain, 4);
         }//remove www from domain
 
         if (preg_match("/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/", $domain)) {
-            $this->out = $this->queryWhois("whois.lacnic.net", $domain);
+            $this->out = $this->queryWhois('whois.lacnic.net', $domain);
         } elseif (preg_match("/^([-a-z0-9]{2,100})\.([a-z\.]{2,8})$/i", $domain)) {
-            $domain_parts = explode(".", $domain);
+            $domain_parts = explode('.', $domain);
             $this->tld_domain = $tld = strtolower(array_pop($domain_parts));
             $server = $this->servers[$tld][0];
 
@@ -108,8 +111,8 @@ class whois extends CI_Model
 
             $this->out = $this->queryWhois($server, $domain);
 
-            while (preg_match_all("/Whois Server: (.*)/", $this->out, $matches)) {
-                $server=array_pop($matches[1]);
+            while (preg_match_all('/Whois Server: (.*)/', $this->out, $matches)) {
+                $server = array_pop($matches[1]);
                 $this->out = $this->queryWhois($server, $domain);
             }
             //return $res;
@@ -127,7 +130,7 @@ class whois extends CI_Model
         $page = file_get_contents($url);
         $pattern = '/No match for/';
         $start = strpos($page, '<pre>') + 5;
-        $end  = strpos($page, '</pre>');
+        $end = strpos($page, '</pre>');
 
         if (preg_match($pattern, $page, $info_ve)) {
             $this->available = 1;
@@ -135,12 +138,12 @@ class whois extends CI_Model
             $this->available = 0;
             $this->error_number = 1;
         }
-        $this->out = substr($page, $start, $end-$start);
+        $this->out = substr($page, $start, $end - $start);
     }
 
     private function get_servers()
     {
-        $array = array();
+        $array = [];
         $plans = $this->db->query("
 			SELECT
 				id,
@@ -156,7 +159,7 @@ class whois extends CI_Model
 				WHERE id_plan = '".$p['id']."'
 				ORDER BY id
 			");
-            $i=0;
+            $i = 0;
             foreach ($s_whois->result_array() as $whois) {
                 $array[str_replace('.', '', $p['name'])][$i++] = $whois['server'];
             }
@@ -169,12 +172,12 @@ class whois extends CI_Model
         if (@fsockopen($server, 43, $errno, $errstr, 20)) {
             $fp = @fsockopen($server, 43, $errno, $errstr, 20); // or die("Socket Error " . $errno . " - " . $errstr);
 
-            if ($server=="whois.verisign-grs.com") {
-                $domain="=".$domain;
+            if ($server == 'whois.verisign-grs.com') {
+                $domain = '='.$domain;
             }
 
-            fputs($fp, $domain . "\r\n");
-            $out = "";
+            fwrite($fp, $domain."\r\n");
+            $out = '';
             while (!feof($fp)) {
                 $out .= fgets($fp);
             }

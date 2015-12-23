@@ -43,15 +43,15 @@
         'services_email_message_admin' => 'You can see this Service clicking the below url.',
 
         'services_label_id' => 'id',
-        
+
         'services_label_status' => 'Status',
 
         'services_label_plan_bought' => 'Plan Bought',
-        
+
         'services_label_services' => 'Services Name',
-        
+
         'services_label_actions' => 'Actions',
-        
+
         'services_label_created_at' => 'Created At',
 
         'services_label_updated_at' => 'Updated At',
@@ -83,17 +83,17 @@
         'services_what_they_offer' => 'What [prod] plans offer',
 
         //purchase process
-        
+
         'services_process_success_title' => 'Information processed successfully.',
 
         'services_process_error_title' => 'The process went wrong.',
 
-        'services_if_still_problem' => '<br/> If you still have the problem, you can send us a message doing click on [contactlink], and we will be willing to help you out as soon as possible.',    
+        'services_if_still_problem' => '<br/> If you still have the problem, you can send us a message doing click on [contactlink], and we will be willing to help you out as soon as possible.',
 
         'services_process_email_error' => 'There was an error while we were expecting your purchase information. Please, try again.',
-        
+
         'services_process_plan_error' => 'We were informed that your purchase information was not the same as the one you given in our purchase form.',
-         
-        'services_successfully_activated' => 'Your subscription was activated successfully. You will be able to track all your services [track]. If you have any question, you can contact us doing click on [contactlink]'
+
+        'services_successfully_activated' => 'Your subscription was activated successfully. You will be able to track all your services [track]. If you have any question, you can contact us doing click on [contactlink]',
 
     ];

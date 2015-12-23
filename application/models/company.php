@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -21,6 +23,7 @@ class company extends CI_Model
     public function getRow()
     {
         $query = $this->db->query("SELECT * FROM company WHERE id = '1' LIMIT 1 ");
+
         return $query->row();
     }
 }

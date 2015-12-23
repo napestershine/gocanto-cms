@@ -6,7 +6,7 @@
 		</small>
 		</h4>
 		
-		<?php $this->load->view('partial/toolBar.php', ['content'=>$content, 'language'=>$language]); ?>
+		<?php $this->load->view('partial/toolBar.php', ['content' => $content, 'language' => $language]); ?>
 	
 		<hr>
 		<div class="row">

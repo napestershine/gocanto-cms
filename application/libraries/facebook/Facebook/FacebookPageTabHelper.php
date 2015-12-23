@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class FacebookPageTabHelper
- * @package Facebook
+ * Class FacebookPageTabHelper.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  */
 class FacebookPageTabHelper extends FacebookCanvasLoginHelper
@@ -65,13 +64,14 @@ class FacebookPageTabHelper extends FacebookCanvasLoginHelper
       if (isset($this->pageData[$key])) {
           return $this->pageData[$key];
       }
+
       return $default;
   }
 
   /**
    * Returns true if the page is liked by the user.
    *
-   * @return boolean
+   * @return bool
    */
   public function isLiked()
   {
@@ -81,7 +81,7 @@ class FacebookPageTabHelper extends FacebookCanvasLoginHelper
   /**
    * Returns true if the user is an admin.
    *
-   * @return boolean
+   * @return bool
    */
   public function isAdmin()
   {

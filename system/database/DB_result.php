@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,34 +19,35 @@
 // ------------------------------------------------------------------------
 
 /**
- * Database Result Class
+ * Database Result Class.
  *
  * This is the platform-independent result class.
  * This class will not be called directly. Rather, the adapter
  * class for the specific database will extend and instantiate it.
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_result
 {
-    public $conn_id                = null;
-    public $result_id                = null;
-    public $result_array            = array();
-    public $result_object            = array();
-    public $custom_result_object    = array();
-    public $current_row            = 0;
-    public $num_rows                = 0;
-    public $row_data                = null;
-
+    public $conn_id = null;
+    public $result_id = null;
+    public $result_array = [];
+    public $result_object = [];
+    public $custom_result_object = [];
+    public $current_row = 0;
+    public $num_rows = 0;
+    public $row_data = null;
 
     /**
      * Query result.  Acts as a wrapper function for the following functions.
      *
-     * @access	public
      * @param	string	can be "object" or "array"
-     * @return	mixed	either a result object or array
+     *
+     * @return mixed either a result object or array
      */
     public function result($type = 'object')
     {
@@ -64,6 +66,7 @@ class CI_DB_result
      * Custom query result.
      *
      * @param class_name A string that represents the type of object you want back
+     *
      * @return array of objects
      */
     public function custom_result_object($class_name)
@@ -73,12 +76,12 @@ class CI_DB_result
         }
 
         if ($this->result_id === false or $this->num_rows() == 0) {
-            return array();
+            return [];
         }
 
         // add the data to the object
         $this->_data_seek(0);
-        $result_object = array();
+        $result_object = [];
 
         while ($row = $this->_fetch_object()) {
             $object = new $class_name();
@@ -99,8 +102,7 @@ class CI_DB_result
     /**
      * Query result.  "object" version.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function result_object()
     {
@@ -112,7 +114,7 @@ class CI_DB_result
         // will return FALSE since there isn't a valid SQL resource so
         // we'll simply return an empty array.
         if ($this->result_id === false or $this->num_rows() == 0) {
-            return array();
+            return [];
         }
 
         $this->_data_seek(0);
@@ -128,8 +130,7 @@ class CI_DB_result
     /**
      * Query result.  "array" version.
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function result_array()
     {
@@ -141,7 +142,7 @@ class CI_DB_result
         // will return FALSE since there isn't a valid SQL resource so
         // we'll simply return an empty array.
         if ($this->result_id === false or $this->num_rows() == 0) {
-            return array();
+            return [];
         }
 
         $this->_data_seek(0);
@@ -157,16 +158,16 @@ class CI_DB_result
     /**
      * Query result.  Acts as a wrapper function for the following functions.
      *
-     * @access	public
      * @param	string
      * @param	string	can be "object" or "array"
-     * @return	mixed	either a result object or array
+     *
+     * @return mixed either a result object or array
      */
     public function row($n = 0, $type = 'object')
     {
-        if (! is_numeric($n)) {
+        if (!is_numeric($n)) {
             // We cache the row data for subsequent uses
-            if (! is_array($this->row_data)) {
+            if (!is_array($this->row_data)) {
                 $this->row_data = $this->row_array(0);
             }
 
@@ -190,15 +191,14 @@ class CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Assigns an item into a particular column slot
+     * Assigns an item into a particular column slot.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function set_row($key, $value = null)
     {
         // We cache the row data for subsequent uses
-        if (! is_array($this->row_data)) {
+        if (!is_array($this->row_data)) {
             $this->row_data = $this->row_array(0);
         }
 
@@ -210,7 +210,7 @@ class CI_DB_result
             return;
         }
 
-        if ($key != '' and ! is_null($value)) {
+        if ($key != '' and !is_null($value)) {
             $this->row_data[$key] = $value;
         }
     }
@@ -218,10 +218,9 @@ class CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Returns a single result row - custom object version
+     * Returns a single result row - custom object version.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function custom_row_object($n, $type)
     {
@@ -239,10 +238,9 @@ class CI_DB_result
     }
 
     /**
-     * Returns a single result row - object version
+     * Returns a single result row - object version.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function row_object($n = 0)
     {
@@ -262,10 +260,9 @@ class CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Returns a single result row - array version
+     * Returns a single result row - array version.
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function row_array($n = 0)
     {
@@ -282,14 +279,12 @@ class CI_DB_result
         return $result[$this->current_row];
     }
 
-
     // --------------------------------------------------------------------
 
     /**
-     * Returns the "first" row
+     * Returns the "first" row.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function first_row($type = 'object')
     {
@@ -298,16 +293,16 @@ class CI_DB_result
         if (count($result) == 0) {
             return $result;
         }
+
         return $result[0];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Returns the "last" row
+     * Returns the "last" row.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function last_row($type = 'object')
     {
@@ -316,16 +311,16 @@ class CI_DB_result
         if (count($result) == 0) {
             return $result;
         }
-        return $result[count($result) -1];
+
+        return $result[count($result) - 1];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Returns the "next" row
+     * Returns the "next" row.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function next_row($type = 'object')
     {
@@ -345,10 +340,9 @@ class CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Returns the "previous" row
+     * Returns the "previous" row.
      *
-     * @access	public
-     * @return	object
+     * @return object
      */
     public function previous_row($type = 'object')
     {
@@ -361,6 +355,7 @@ class CI_DB_result
         if (isset($result[$this->current_row - 1])) {
             --$this->current_row;
         }
+
         return $result[$this->current_row];
     }
 
@@ -379,33 +374,40 @@ class CI_DB_result
     {
         return $this->num_rows;
     }
+
     public function num_fields()
     {
         return 0;
     }
+
     public function list_fields()
     {
-        return array();
+        return [];
     }
+
     public function field_data()
     {
-        return array();
+        return [];
     }
+
     public function free_result()
     {
         return true;
     }
+
     protected function _data_seek()
     {
         return true;
     }
+
     protected function _fetch_assoc()
     {
-        return array();
+        return [];
     }
+
     protected function _fetch_object()
     {
-        return array();
+        return [];
     }
 }
 // END DB_result class

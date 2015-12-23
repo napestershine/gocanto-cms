@@ -1,5 +1,5 @@
 <?php
-if (empty($wp_user) && $wp_user['id']=='') {
+if (empty($wp_user) && $wp_user['id'] == '') {
     redirect(base_url().'wpanel');
     die();
     exit();
@@ -30,7 +30,8 @@ if (empty($wp_user) && $wp_user['id']=='') {
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($services as $array) { ?>
+						<?php foreach ($services as $array) {
+    ?>
 						<tr id="tr_<?=$array['id']?>">
 							<td width="5%"><?=$array['id']?></td>
 							<td width="10%"><?=formatString($array['status'])?></td>
@@ -45,7 +46,8 @@ if (empty($wp_user) && $wp_user['id']=='') {
 								</div>
 							</td>
 						</tr>
-						<?php } ?>
+						<?php 
+} ?>
 					</tbody>
 				</table>
 

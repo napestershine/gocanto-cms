@@ -1,18 +1,20 @@
 </div>
 <aside class="large-2 columns" id="middle">
 <h5 class="color_grey01"><?=$language->line('header_admin_Area')?></h5>
-<?php if (isset($wp_user) && $wp_user['id']!='') {?>
+<?php if (isset($wp_user) && $wp_user['id'] != '') {
+    ?>
 <ul class="side-nav">
 	<?php foreach ($wpanelMenu as $menu) {
-	?>
+    ?>
 	<li>
-		<a href="<?=base_url().(is_null($menu['url'])?'content/body/'.$menu['id']:$menu['url'])?>">
+		<a href="<?=base_url().(is_null($menu['url']) ? 'content/body/'.$menu['id'] : $menu['url'])?>">
 			<img src="<?=base_url().$menu['icon']?>" alt="" width="24" height="24">&nbsp;<?=formatString($menu['title'])?>
 		</a>
 	</li>
 	<?php
-	}
-	?>
+
+}
+    ?>
 	<li>
 		<a href="<?=base_url().'wpanel/logout'?>">
 			<img src="<?=base_url().'img/exit.png'?>" alt="" width="24" height="24">&nbsp;<?=$language->line('header_logOut')?>
@@ -20,7 +22,9 @@
 	</li>
 </ul>
 <?php
-}else{?>
+
+} else {
+    ?>
 <ul class="side-nav">
 	<li>
 		<a href="<?=base_url().'wpanel'?>">
@@ -29,18 +33,20 @@
 	</li>
 </ul>
 
-<?php } ?>
+<?php 
+} ?>
 <!-- we Offer -->
 <h5 class="color_grey01" ><?=$language->line('sideBar_we_offer')?></h5>
 <ul class="side-nav" >
 	<?php foreach ($weOfferMenu as $menu) {
-	?>
+    ?>
 	<li>
-		<a href="<?=base_url().(is_null($menu['url'])?'content/body/'.$menu['id']:$menu['url'])?>">
+		<a href="<?=base_url().(is_null($menu['url']) ? 'content/body/'.$menu['id'] : $menu['url'])?>">
 			<img src="<?=base_url().$menu['icon']?>" alt="<?=$menu['title']?>" width="20" height="20">&nbsp;<?= str_replace('ECommerce', '<small>eCommerce</small>', formatString($menu['title'])) ?></a>
 	</li>
 	<?php
-	} ?>
+
+} ?>
 </ul>
 <!-- Newsletter -->
 <!-- <hr> -->

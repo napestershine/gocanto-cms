@@ -43,11 +43,11 @@
         <h5>Charge $10</h5>
         <!-- to display errors returned by createToken -->
         <div class="row">
-            <div data-alert class="alert-box alert radius" style="<?=$error?'':'display:none'?>">
+            <div data-alert class="alert-box alert radius" style="<?=$error ? '' : 'display:none'?>">
                 <?= $error ?>
                 <a href="#" class="close">&times;</a>
             </div>
-            <div data-alert class="alert-box success radius" style="<?=$success?'':'display:none'?>">
+            <div data-alert class="alert-box success radius" style="<?=$success ? '' : 'display:none'?>">
                 <?= $success ?>
                 <a href="#" class="close">&times;</a>
             </div>  

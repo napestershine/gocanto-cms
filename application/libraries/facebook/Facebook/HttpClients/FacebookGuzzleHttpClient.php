@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
@@ -33,12 +32,12 @@ class FacebookGuzzleHttpClient implements FacebookHttpable
     /**
    * @var array The headers to be sent with the request
    */
-  protected $requestHeaders = array();
+  protected $requestHeaders = [];
 
   /**
    * @var array The headers received from the response
    */
-  protected $responseHeaders = array();
+  protected $responseHeaders = [];
 
   /**
    * @var int The HTTP status code returned from the server
@@ -59,7 +58,7 @@ class FacebookGuzzleHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers we want to send with the request
+   * The headers we want to send with the request.
    *
    * @param string $key
    * @param string $value
@@ -70,7 +69,7 @@ class FacebookGuzzleHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers returned in the response
+   * The headers returned in the response.
    *
    * @return array
    */
@@ -80,7 +79,7 @@ class FacebookGuzzleHttpClient implements FacebookHttpable
   }
 
   /**
-   * The HTTP status response code
+   * The HTTP status response code.
    *
    * @return int
    */
@@ -90,24 +89,24 @@ class FacebookGuzzleHttpClient implements FacebookHttpable
   }
 
   /**
-   * Sends a request to the server
+   * Sends a request to the server.
    *
    * @param string $url The endpoint to send the request to
    * @param string $method The request method
    * @param array  $parameters The key value pairs to be sent in the body
    *
-   * @return string Raw response from the server
-   *
    * @throws \Facebook\FacebookSDKException
+   *
+   * @return string Raw response from the server
    */
-  public function send($url, $method = 'GET', $parameters = array())
+  public function send($url, $method = 'GET', $parameters = [])
   {
-      $options = array();
+      $options = [];
       if ($parameters) {
-          $options = array('body' => $parameters);
+          $options = ['body' => $parameters];
       }
 
-      $options['verify'] = __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem';
+      $options['verify'] = __DIR__.'/certs/DigiCertHighAssuranceEVRootCA.pem';
 
       $request = self::$guzzleClient->createRequest($method, $url, $options);
 

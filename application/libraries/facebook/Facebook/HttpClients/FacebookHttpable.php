@@ -19,18 +19,16 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
 /**
- * Interface FacebookHttpable
- * @package Facebook
+ * Interface FacebookHttpable.
  */
 interface FacebookHttpable
 {
     /**
-   * The headers we want to send with the request
+   * The headers we want to send with the request.
    *
    * @param string $key
    * @param string $value
@@ -38,29 +36,29 @@ interface FacebookHttpable
   public function addRequestHeader($key, $value);
 
   /**
-   * The headers returned in the response
+   * The headers returned in the response.
    *
    * @return array
    */
   public function getResponseHeaders();
 
   /**
-   * The HTTP status response code
+   * The HTTP status response code.
    *
    * @return int
    */
   public function getResponseHttpStatusCode();
 
   /**
-   * Sends a request to the server
+   * Sends a request to the server.
    *
    * @param string $url The endpoint to send the request to
    * @param string $method The request method
    * @param array  $parameters The key value pairs to be sent in the body
    *
-   * @return string Raw response from the server
-   *
    * @throws \Facebook\FacebookSDKException
+   *
+   * @return string Raw response from the server
    */
-  public function send($url, $method = 'GET', $parameters = array());
+  public function send($url, $method = 'GET', $parameters = []);
 }

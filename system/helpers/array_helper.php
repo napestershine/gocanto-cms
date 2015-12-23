@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter Array Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Element
  *
  * Lets you determine whether an array index is set and whether it has a value.
@@ -41,10 +42,10 @@
  * @param	mixed
  * @return	mixed	depends on what the array contains
  */
-if (! function_exists('element')) {
+if (!function_exists('element')) {
     function element($item, $array, $default = false)
     {
-        if (! isset($array[$item]) or $array[$item] == "") {
+        if (!isset($array[$item]) or $array[$item] == '') {
             return $default;
         }
 
@@ -54,17 +55,17 @@ if (! function_exists('element')) {
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Random Element - Takes an array as input and returns a random element
  *
  * @access	public
  * @param	array
  * @return	mixed	depends on what the array contains
  */
-if (! function_exists('random_element')) {
+if (!function_exists('random_element')) {
     function random_element($array)
     {
-        if (! is_array($array)) {
+        if (!is_array($array)) {
             return $array;
         }
 
@@ -74,7 +75,7 @@ if (! function_exists('random_element')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Elements
  *
  * Returns only the array items specified.  Will return a default value if
@@ -86,15 +87,15 @@ if (! function_exists('random_element')) {
  * @param	mixed
  * @return	mixed	depends on what the array contains
  */
-if (! function_exists('elements')) {
+if (!function_exists('elements')) {
     function elements($items, $array, $default = false)
     {
-        $return = array();
-        
-        if (! is_array($items)) {
-            $items = array($items);
+        $return = [];
+
+        if (!is_array($items)) {
+            $items = [$items];
         }
-        
+
         foreach ($items as $item) {
             if (isset($array[$item])) {
                 $return[$item] = $array[$item];

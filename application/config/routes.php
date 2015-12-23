@@ -1,4 +1,5 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /*
@@ -40,9 +41,9 @@
 |
 */
 
-$route['default_controller'] = "content";
+$route['default_controller'] = 'content';
 $route['404_override'] = '';
-$route['seo/sitemap\.xml'] = "seo/sitemap";
+$route['seo/sitemap\.xml'] = 'seo/sitemap';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

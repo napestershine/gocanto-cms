@@ -31,7 +31,7 @@
         'login_frm_email' => 'Email',
 
         'login_frm_email_error' => 'Email is required and has to be email format',
-        
-        'login_new_account' => 'New?, Get Started today'
-        
+
+        'login_new_account' => 'New?, Get Started today',
+
     ];

@@ -11,11 +11,13 @@
 	<tr>
 		<td colspan="2" style=" vertical-align: top; padding: 20px; height: 400px">
 			<table align="center" style="width: 90%; background-color: #FFF; border-radius: 3px;">
-				<?php if (isset($name) && trim($name)!=''){ ?>
+				<?php if (isset($name) && trim($name) != '') {
+    ?>
 				<tr>
 					<td style="padding:10px;"><?=$this->lang->line('email_dear')?>&nbsp;<strong><?=$name?></strong>,</td>
 				</tr>
-				<?php } ?>
+				<?php 
+} ?>
 				<tr>
 					<td style="padding:10px;"><?=$content?></td>
 				</tr>

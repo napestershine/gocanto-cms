@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class GraphPage
- * @package Facebook
+ * Class GraphPage.
+ *
  * @author Artur Luiz <artur@arturluiz.com.br>
  */
 class GraphPage extends GraphObject

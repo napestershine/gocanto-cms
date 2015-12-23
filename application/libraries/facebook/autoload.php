@@ -19,20 +19,18 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 /**
  * You only need this file if you are not using composer.
  * Why are you not using composer?
- * https://getcomposer.org/
+ * https://getcomposer.org/.
  */
-
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Exception('The Facebook SDK v4 requires PHP version 5.4 or higher.');
 }
 
-/**
+/*
  * Register the autoloader for the Facebook SDK classes.
  * Based off the official PSR-4 autoloader example found here:
  * https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
@@ -45,7 +43,7 @@ spl_autoload_register(function ($class) {
   $prefix = 'Facebook\\';
 
   // base directory for the namespace prefix
-  $base_dir = defined('FACEBOOK_SDK_V4_SRC_DIR') ? FACEBOOK_SDK_V4_SRC_DIR : __DIR__ . '/Facebook/';
+  $base_dir = defined('FACEBOOK_SDK_V4_SRC_DIR') ? FACEBOOK_SDK_V4_SRC_DIR : __DIR__.'/Facebook/';
 
   // does the class use the namespace prefix?
   $len = strlen($prefix);
@@ -60,7 +58,7 @@ spl_autoload_register(function ($class) {
   // replace the namespace prefix with the base directory, replace namespace
   // separators with directory separators in the relative class name, append
   // with .php
-  $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+  $file = $base_dir.str_replace('\\', '/', $relative_class).'.php';
 
   // if the file exists, require it
   if (file_exists($file)) {

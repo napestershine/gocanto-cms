@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -67,19 +69,19 @@ class contact extends CI_Controller
         $this->email->message($body);
 
         if (!$this->email->send()) {
-            $data = array(
-                'title' => 'Error',
-                'message' => 'there was an error when we tried to send the email, try again.',
-                'debugger' => '' //$this->email->print_debugger()
-            );
+            $data = [
+                'title'    => 'Error',
+                'message'  => 'there was an error when we tried to send the email, try again.',
+                'debugger' => '', //$this->email->print_debugger()
+            ];
         } else {
-            $data = array(
-                'title' => 'Thanks for your request!',
-                'message' => 'We have received your message. You will receive a message from us in 24 hours.',
-                'out' => 'ok',
-                'url' => $ci->config->config['head']['domain'].'/content/body/contact-us',
-                'debugger' => '' //$this->email->print_debugger()
-            );
+            $data = [
+                'title'    => 'Thanks for your request!',
+                'message'  => 'We have received your message. You will receive a message from us in 24 hours.',
+                'out'      => 'ok',
+                'url'      => $ci->config->config['head']['domain'].'/content/body/contact-us',
+                'debugger' => '', //$this->email->print_debugger()
+            ];
         }
 
         echo json_encode($data);
@@ -93,4 +95,3 @@ class contact extends CI_Controller
     May 2014
     Valencia, Venezuela
 */
-
