@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class GraphUserPage
- * @package Facebook
+ * Class GraphUserPage.
+ *
  * @author Artur Luiz <artur@arturluiz.com.br>
  */
 class GraphUserPage extends GraphObject
@@ -69,7 +68,7 @@ class GraphUserPage extends GraphObject
   {
       return $this->getProperty('access_token');
   }
-  
+
   /**
    * Returns the Permissions for the user's page as an array if present.
    *

@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
@@ -27,7 +26,6 @@ namespace Facebook\HttpClients;
  * Class FacebookStream
  * Abstraction for the procedural stream elements so that the functions can be
  * mocked and the implementation can be tested.
- * @package Facebook
  */
 class FacebookStream
 {
@@ -42,7 +40,7 @@ class FacebookStream
   protected $responseHeaders;
 
   /**
-   * Make a new context stream reference instance
+   * Make a new context stream reference instance.
    *
    * @param array $options
    */
@@ -52,7 +50,7 @@ class FacebookStream
   }
 
   /**
-   * The response headers from the stream wrapper
+   * The response headers from the stream wrapper.
    *
    * @return array|null
    */
@@ -62,7 +60,7 @@ class FacebookStream
   }
 
   /**
-   * Send a stream wrapped request
+   * Send a stream wrapped request.
    *
    * @param string $url
    *
@@ -72,6 +70,7 @@ class FacebookStream
   {
       $rawResponse = file_get_contents($url, false, $this->stream);
       $this->responseHeaders = $http_response_header;
+
       return $rawResponse;
   }
 }

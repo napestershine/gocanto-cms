@@ -13,9 +13,9 @@ class twitter extends CI_Controller
      * TwitterOauth class instance.
      */
     private $connection;
-    
+
     /**
-     * Controller constructor
+     * Controller constructor.
      */
     public function __construct()
     {
@@ -24,10 +24,10 @@ class twitter extends CI_Controller
         $this->load->library('twitteroauth');
         // Loading twitter configuration.
         $this->config->load('twitter');
-        
+
         if ($this->session->userdata('access_token') && $this->session->userdata('access_token_secret')) {
             // If user already logged in
-            $this->connection = $this->twitteroauth->create($this->config->item('twitter_consumer_token'), $this->config->item('twitter_consumer_secret'), $this->session->userdata('access_token'),  $this->session->userdata('access_token_secret'));
+            $this->connection = $this->twitteroauth->create($this->config->item('twitter_consumer_token'), $this->config->item('twitter_consumer_secret'), $this->session->userdata('access_token'), $this->session->userdata('access_token_secret'));
         } elseif ($this->session->userdata('request_token') && $this->session->userdata('request_token_secret')) {
             // If user in process of authentication
             $this->connection = $this->twitteroauth->create($this->config->item('twitter_consumer_token'), $this->config->item('twitter_consumer_secret'), $this->session->userdata('request_token'), $this->session->userdata('request_token_secret'));
@@ -36,11 +36,11 @@ class twitter extends CI_Controller
             $this->connection = $this->twitteroauth->create($this->config->item('twitter_consumer_token'), $this->config->item('twitter_consumer_secret'));
         }
     }
-    
+
     /**
      * Here comes authentication process begin.
-     * @access	public
-     * @return	void
+     *
+     * @return void
      */
     public function auth()
     {
@@ -53,7 +53,7 @@ class twitter extends CI_Controller
 
             $this->session->set_userdata('request_token', $request_token['oauth_token']);
             $this->session->set_userdata('request_token_secret', $request_token['oauth_token_secret']);
-            
+
             if ($this->connection->http_code == 200) {
                 $url = $this->connection->getAuthorizeURL($request_token);
                 redirect($url);
@@ -63,11 +63,11 @@ class twitter extends CI_Controller
             }
         }
     }
-    
+
     /**
      * Callback function, landing page for twitter.
-     * @access	public
-     * @return	void
+     *
+     * @return void
      */
     public function callback()
     {
@@ -76,7 +76,7 @@ class twitter extends CI_Controller
             redirect(base_url('/twitter/auth'));
         } else {
             $access_token = $this->connection->getAccessToken($this->input->get('oauth_verifier'));
-        
+
             if ($this->connection->http_code == 200) {
                 $this->session->set_userdata('access_token', $access_token['oauth_token']);
                 $this->session->set_userdata('access_token_secret', $access_token['oauth_token_secret']);
@@ -85,7 +85,7 @@ class twitter extends CI_Controller
 
                 $this->session->unset_userdata('request_token');
                 $this->session->unset_userdata('request_token_secret');
-                
+
                 redirect(base_url('/'));
             } else {
                 // An error occured. Add your notification code here.
@@ -93,7 +93,7 @@ class twitter extends CI_Controller
             }
         }
     }
-    
+
     public function post($in_reply_to)
     {
         $message = $this->input->post('message');
@@ -108,10 +108,10 @@ class twitter extends CI_Controller
                     $this->reset_session();
                     redirect(base_url('/twitter/auth'));
                 } else {
-                    $data = array(
-                        'status' => $message,
-                        'in_reply_to_status_id' => $in_reply_to
-                    );
+                    $data = [
+                        'status'                => $message,
+                        'in_reply_to_status_id' => $in_reply_to,
+                    ];
                     $result = $this->connection->post('statuses/update', $data);
 
                     if (!isset($result->errors)) {
@@ -128,11 +128,11 @@ class twitter extends CI_Controller
             }
         }
     }
-    
+
     /**
-     * Reset session data
-     * @access	private
-     * @return	void
+     * Reset session data.
+     *
+     * @return void
      */
     private function reset_session()
     {

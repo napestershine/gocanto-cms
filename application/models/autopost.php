@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -14,28 +16,29 @@ class autopost extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->last_id = '';
-        $this->table='autopost';
-        $this->current_user=false;
+        $this->table = 'autopost';
+        $this->current_user = false;
         if ($this->session->userdata('wp-user')) {
             $this->current_user = $this->session->userdata('wp-user');
-            $this->admin = $this->current_user['id_profile']==1?true:false;
+            $this->admin = $this->current_user['id_profile'] == 1 ? true : false;
         }
     }
 
-
-    public function get($id='')
+    public function get($id = '')
     {
         $query = $this->db->query("SELECT * FROM $this->table WHERE id = '".$id."' LIMIT 1 ");
+
         return $query->row();
     }
 
     public function getPrincipals()
     {
         $query = $this->db->query("SELECT id, url, patterns, ids_in, ids_out FROM $this->table WHERE  type = 'Principal' AND status is NULL ");
+
         return $query->result_array();
     }
 
-    public function getRandom($num_rows=1)
+    public function getRandom($num_rows = 1)
     {
         $query = $this->db->query("SELECT id, url, ids_in, ids_out
                                     FROM $this->table
@@ -43,34 +46,35 @@ class autopost extends CI_Model
                                     AND   TYPE   =  'Post'
                                     ORDER BY RAND( ) 
                                     LIMIT 1");
+
         return $query->result_array();
     }
 
     public function getIdsInOut($idsString)
     {
-        $ids=explode('/', $idsString);
+        $ids = explode('/', $idsString);
 
-        $exit=[];
+        $exit = [];
         foreach ($ids as $id) {
-            $values=explode(',', $id);
+            $values = explode(',', $id);
 
-            if (count($values)==1 && $values[0]!='') {
+            if (count($values) == 1 && $values[0] != '') {
                 $values[2] = $values[0];
                 $values[0] = 'div';
                 $values[1] = 'class';
-                
-            } elseif (count($values)==3) {
-                $values[0] = $values[0]!=''?$values[0]:'div';
-                $values[1] = $values[1]!=''?$values[1]:'class';
-                $values[2] = $values[2]!=''?$values[2]:'';
+            } elseif (count($values) == 3) {
+                $values[0] = $values[0] != '' ? $values[0] : 'div';
+                $values[1] = $values[1] != '' ? $values[1] : 'class';
+                $values[2] = $values[2] != '' ? $values[2] : '';
             } else {
                 $values[0] = '';
                 $values[1] = '';
                 $values[2] = '';
             }
 
-            $exit[]=['tag' => $values[0], 'attribute' => $values[1], 'value' => $values[2]];
+            $exit[] = ['tag' => $values[0], 'attribute' => $values[1], 'value' => $values[2]];
         }
+
         return $exit;
     }
 
@@ -81,13 +85,13 @@ class autopost extends CI_Model
                         		 	WHERE md5 = md5('$url')
                         		  ");
 
-        return $query->num_rows() ? true : false ;
+        return $query->num_rows() ? true : false;
     }
 
-    
     public function insert($array)
     {
         $this->db->insert($this->table, $array);
+
         return $this->last_id = $this->db->insert_id();
     }
 
@@ -95,37 +99,35 @@ class autopost extends CI_Model
     {
         foreach ($urls as $url) {
             if (!$this->exists($url)) {
-                $insert=[
+                $insert = [
                         'url'          => $url,
                         'md5'          => md5($url),
                         'id_principal' => $id,
                         'type'         => 'Post',
                         'status'       => 'Waiting',
                         'ids_in'       => $ids_in,
-                        'ids_out'      => $ids_out
+                        'ids_out'      => $ids_out,
                         ];
                 $this->insert($insert);
             }
         }
     }
 
-    public function removeTag($dom, $tags='script')
+    public function removeTag($dom, $tags = 'script')
     {
         if (is_string($tags)) {
-            $tags=[['tag'=>$tags]];
+            $tags = [['tag' => $tags]];
         }
-        
+
         foreach ($tags as $tag) {
-
-            if($tag['tag']!=''){ 
-
+            if ($tag['tag'] != '') {
                 $script = $dom->getElementsByTagName($tag['tag']);
 
                 $remove = [];
                 foreach ($script as $item) {
                     if (isset($tag['attribute'])) {
                         foreach ($item->attributes as $value) {
-                            if ($tag['attribute']==$value->name && $tag['value']==$value->value) {
+                            if ($tag['attribute'] == $value->name && $tag['value'] == $value->value) {
                                 $remove[] = $item;
                             }
                         }
@@ -134,18 +136,16 @@ class autopost extends CI_Model
                     }
                 }
 
-                
                 foreach ($remove as $item) {
                     $item->parentNode->removeChild($item);
                 }
-            } 
+            }
         }
     }
 
-
     public function getContent($dom, $content)
     {
-        $contentDefault = ['tag' => 'div', 'attribute' => 'class', 'value' =>''];
+        $contentDefault = ['tag' => 'div', 'attribute' => 'class', 'value' => ''];
 
         $content = $content + $contentDefault;
 
@@ -153,14 +153,12 @@ class autopost extends CI_Model
 
         $innerHTML = '';
         foreach ($tags as $tag) {
-
-
-            if ($content['attribute']=='') {
+            if ($content['attribute'] == '') {
                 return $tag->nodeValue;
             }
-            
-            $classes=explode(' ', $tag->getAttribute($content['attribute']));
-            $contentNode=false;
+
+            $classes = explode(' ', $tag->getAttribute($content['attribute']));
+            $contentNode = false;
 
             foreach ($classes as $value) {
                 if ($value == $content['value']) {
@@ -172,32 +170,30 @@ class autopost extends CI_Model
             if ($contentNode) {
                 $children = $tag->childNodes;
                 foreach ($children as $child) {
-                    $exitAux=$child->ownerDocument->saveHTML($child);
-                    if (trim(strip_tags($exitAux))!='') {
-
+                    $exitAux = $child->ownerDocument->saveHTML($child);
+                    if (trim(strip_tags($exitAux)) != '') {
                         $exitAux = trim($exitAux);
 
                         $exitAux = preg_replace('/^\s+|\n|\r|\s+$/m', '', $exitAux);
 
-                        $exitAux = str_replace('<a', '<a target="_blank"', $exitAux); 
+                        $exitAux = str_replace('<a', '<a target="_blank"', $exitAux);
 
-                        $exitAux = strip_tags($exitAux,'<p><a>');
-                        
+                        $exitAux = strip_tags($exitAux, '<p><a>');
+
                         $innerHTML .=  $exitAux;
                     }
                 }
             }
         }
 
-        return $innerHTML!='' ? $innerHTML : false;
+        return $innerHTML != '' ? $innerHTML : false;
     }
-
 
     public function getPost($url = '', $post = [], $toRemove = [])
     {
-        $file    = $this->getWebHtml($url);
+        $file = $this->getWebHtml($url);
         $infoUrl = $this->getUrlData($file);
-        $dom     = new DOMDocument();
+        $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         @$dom->loadHTML(mb_convert_encoding($file, 'HTML-ENTITIES', 'UTF-8'));
@@ -207,18 +203,16 @@ class autopost extends CI_Model
 
         $this->removeTag($dom, $toRemove);
 
-        $content='';
+        $content = '';
         foreach ($post as $value) {
             $content .= $this->getContent($dom, $value, $toRemove);
         }
-        
-        
 
-        return ['title'   => $this->getTitle($infoUrl),
-                'picture' => $this->getPicture($infoUrl),
-                'author'  => $this->getAuthor($infoUrl),
+        return ['title'       => $this->getTitle($infoUrl),
+                'picture'     => $this->getPicture($infoUrl),
+                'author'      => $this->getAuthor($infoUrl),
                 'description' => $this->getDescription($infoUrl),
-                'content' => $content ];
+                'content'     => $content, ];
     }
 
     public function getWebHtml($url)
@@ -271,7 +265,7 @@ class autopost extends CI_Model
         return false;
     }
 
-    public function getPicture($info=[])
+    public function getPicture($info = [])
     {
         if (isset($info['metaTags']['twitter:image:src']['value'])) {
             return $info['metaTags']['twitter:image:src']['value'];
@@ -282,7 +276,7 @@ class autopost extends CI_Model
         return false;
     }
 
-    public function getAuthor($info=[])
+    public function getAuthor($info = [])
     {
         if (isset($info['metaTags']['author']['value'])) {
             return $info['metaTags']['author']['value'];
@@ -291,7 +285,7 @@ class autopost extends CI_Model
         return false;
     }
 
-    public function getUrls($web, $keys=array())
+    public function getUrls($web, $keys = [])
     {
         // $web='http://www.el-nacional.com/'; // web a escanear
        // $keys= [ '.html']; //patrones a buscar en url de publicaciones
@@ -300,25 +294,23 @@ class autopost extends CI_Model
        //                    {{y}} = Ejemplos: 99 o 03
        //                    {{m}} = 01 hasta 12
        //                    {{n}} = 1 hasta 12
-        
-        list($keysAnd, $keysOr)  = explode('|', $keys);
+
+        list($keysAnd, $keysOr) = explode('|', $keys);
 
         $keysAnd = explode(',', $keysAnd);
-        $keysOr  = explode(',', $keysOr);
+        $keysOr = explode(',', $keysOr);
 
-        $keysAux  = [];
+        $keysAux = [];
         //reemplazo de patrones
         foreach ($keysAnd as $key) {
             $key = str_replace('{{Y}}', date('Y'), $key);
             $key = str_replace('{{y}}', date('y'), $key);
             $key = str_replace('{{m}}', date('m'), $key);
             $key = str_replace('{{n}}', date('n'), $key);
-            $keysAux[]=$key;
+            $keysAux[] = $key;
         }
 
         $keysAnd = $keysAux;
-
-        
 
        //print_r($keys);die();
 
@@ -334,15 +326,13 @@ class autopost extends CI_Model
         }
 
         // Optenemos la web, el html
-        $file =  $this->getWebHtml($web);
-
-
+        $file = $this->getWebHtml($web);
 
         $regex = '/https?\:\/\/[^\" ]+/i';
 
         //se extraen todos las urls en el html
         preg_match_all($regex, $file, $matches);
-        $matches=$matches[0];
+        $matches = $matches[0];
 
         $dom = new DOMDocument();
         @$dom->loadHTML($file);
@@ -350,32 +340,31 @@ class autopost extends CI_Model
         //segunda  extraccion de las urls en el html
         $tags = $dom->getElementsByTagName('a');
         foreach ($tags as $tag) {
-            $matches[] =  $tag->getAttribute('href');
+            $matches[] = $tag->getAttribute('href');
         }
 
-        $urls=[];
+        $urls = [];
         foreach ($matches as $url) {
-            $save=true;
+            $save = true;
 
             foreach ($keysOr as $key) {
                 //etiquetas requeriadas, al menos una
                 if (stripos(' '.$url, $key)) {
-                    $save=true;
+                    $save = true;
                     break;
                 }
 
-                $save=false;
+                $save = false;
             }
 
             foreach ($keysAnd as $key) {
                 //etiquetas obligatorias
                 if (!stripos(' '.$url, $key)) {
-                    $save=false;
+                    $save = false;
                     break;
                 }
             }
 
-            
             //se eliminan # del la url
             if (stripos($url, '#')) {
                 $url = explode('#', $url);
@@ -386,54 +375,53 @@ class autopost extends CI_Model
             if (stripos(' '.$url, '//')) {
                 $urlAux = explode('//', $url);
                 if (!stripos(' '.$urlAux[1], '/')) {
-                    $save=false;
+                    $save = false;
                 }
             }
 
             if (!stripos(' '.$url, 'http://')) {
                 //no contiene link principal
-                    
-                    $url=$principal.'/'.ltrim($url, '/');
+
+                    $url = $principal.'/'.ltrim($url, '/');
             } elseif (!stripos(' '.$url, $principal)) { //eliminando link externos
-                $save=false;
+                $save = false;
             }
 
             if (!in_array($url, $urls) && $save) { //evitando repeticiones
 
-                
-                $urls[]=$url;
+                $urls[] = $url;
             }
         }
 
         return $urls;
     }
 
-    public function getUrlData($contents, $raw=false) // $raw - enable for raw display
+    public function getUrlData($contents, $raw = false) // $raw - enable for raw display
     {
         $result = false;
-       
+
         $contents = $this->getUrlContents($contents);
 
         if (isset($contents) && is_string($contents)) {
             $title = null;
             $metaTags = null;
             $metaProperties = null;
-           
+
             preg_match('/<title>([^>]*)<\/title>/si', $contents, $match);
 
             if (isset($match) && is_array($match) && count($match) > 0) {
                 $title = strip_tags($match[1]);
             }
-           
-            preg_match_all('/<[\s]*meta[\s]*(name|property)="?' . '([^>"]*)"?[\s]*' . 'content="?([^>"]*)"?[\s]*[\/]?[\s]*>/si', $contents, $match);
-           
+
+            preg_match_all('/<[\s]*meta[\s]*(name|property)="?'.'([^>"]*)"?[\s]*'.'content="?([^>"]*)"?[\s]*[\/]?[\s]*>/si', $contents, $match);
+
             if (isset($match) && is_array($match) && count($match) == 4) {
                 $originals = $match[0];
                 $names = $match[2];
                 $values = $match[3];
-               
+
                 if (count($originals) == count($names) && count($names) == count($values)) {
-                    $metaTags = array();
+                    $metaTags = [];
                     $metaProperties = $metaTags;
                     if ($raw) {
                         if (version_compare(PHP_VERSION, '5.4.0') == -1) {
@@ -442,64 +430,64 @@ class autopost extends CI_Model
                             $flags = ENT_COMPAT | ENT_HTML401;
                         }
                     }
-                   
-                    for ($i=0, $limiti=count($names); $i < $limiti; $i++) {
+
+                    for ($i = 0, $limiti = count($names); $i < $limiti; $i++) {
                         if ($match[1][$i] == 'name') {
                             $meta_type = 'metaTags';
                         } else {
                             $meta_type = 'metaProperties';
                         }
                         if ($raw) {
-                            ${$meta_type}[$names[$i]] = array(
-                                'html' => htmlentities($originals[$i], $flags, 'UTF-8'),
-                                'value' => $values[$i]
-                            );
+                            ${$meta_type}[$names[$i]] = [
+                                'html'  => htmlentities($originals[$i], $flags, 'UTF-8'),
+                                'value' => $values[$i],
+                            ];
                         } else {
-                            ${$meta_type}[$names[$i]] = array(
-                                'html' => $originals[$i],
-                                'value' => $values[$i]
-                            );
+                            ${$meta_type}[$names[$i]] = [
+                                'html'  => $originals[$i],
+                                'value' => $values[$i],
+                            ];
                         }
                     }
                 }
             }
-           
-            $result = array(
-                'title' => $title,
-                'metaTags' => $metaTags,
+
+            $result = [
+                'title'          => $title,
+                'metaTags'       => $metaTags,
                 'metaProperties' => $metaProperties,
-            );
+            ];
         }
-       
+
         return $result;
     }
 
     public function getUrlContents($contents, $maximumRedirections = null, $currentRedirection = 0)
     {
         $result = false;
-       
+
         //$contents = @file_get_contents($url);
-       
+
         // Check if we need to go somewhere else
-       
+
         if (isset($contents) && is_string($contents)) {
-            preg_match_all('/<[\s]*meta[\s]*http-equiv="?REFRESH"?' . '[\s]*content="?[0-9]*;[\s]*URL[\s]*=[\s]*([^>"]*)"?' . '[\s]*[\/]?[\s]*>/si', $contents, $match);
-           
+            preg_match_all('/<[\s]*meta[\s]*http-equiv="?REFRESH"?'.'[\s]*content="?[0-9]*;[\s]*URL[\s]*=[\s]*([^>"]*)"?'.'[\s]*[\/]?[\s]*>/si', $contents, $match);
+
             if (isset($match) && is_array($match) && count($match) == 2 && count($match[1]) == 1) {
                 if (!isset($maximumRedirections) || $currentRedirection < $maximumRedirections) {
                     return $this->getUrlContents($match[1][0], $maximumRedirections, ++$currentRedirection);
                 }
-               
+
                 $result = false;
             } else {
                 $result = $contents;
             }
         }
-       
+
         return $contents;
     }
 
-    public function update($array, $id='')
+    public function update($array, $id = '')
     {
         $this->db->where('id', $id);
         $this->db->update($this->table, $array);
@@ -516,6 +504,7 @@ class autopost extends CI_Model
                                    FROM $this->table $where
                                    LIMIT 1 ");
         $array = $query->row();
+
         return $array->$field;
     }
 }

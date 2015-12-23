@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,12 +19,12 @@
 // ------------------------------------------------------------------------
 
 /**
- * Parser Class
+ * Parser Class.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Parser
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/parser.html
  */
 class CI_Parser
@@ -33,20 +34,20 @@ class CI_Parser
     public $object;
 
     /**
-     *  Parse a template
+     *  Parse a template.
      *
      * Parses pseudo-variables contained in the specified template view,
      * replacing them with the data in the second param
      *
-     * @access	public
      * @param	string
      * @param	array
      * @param	bool
-     * @return	string
+     *
+     * @return string
      */
     public function parse($template, $data, $return = false)
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
         $template = $CI->load->view($template, $data, true);
 
         return $this->_parse($template, $data, $return);
@@ -55,16 +56,16 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Parse a String
+     *  Parse a String.
      *
      * Parses pseudo-variables contained in the specified string,
      * replacing them with the data in the second param
      *
-     * @access	public
      * @param	string
      * @param	array
      * @param	bool
-     * @return	string
+     *
+     * @return string
      */
     public function parse_string($template, $data, $return = false)
     {
@@ -74,16 +75,16 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Parse a template
+     *  Parse a template.
      *
      * Parses pseudo-variables contained in the specified template,
      * replacing them with the data in the second param
      *
-     * @access	public
      * @param	string
      * @param	array
      * @param	bool
-     * @return	string
+     *
+     * @return string
      */
     public function _parse($template, $data, $return = false)
     {
@@ -95,12 +96,12 @@ class CI_Parser
             if (is_array($val)) {
                 $template = $this->_parse_pair($key, $val, $template);
             } else {
-                $template = $this->_parse_single($key, (string)$val, $template);
+                $template = $this->_parse_single($key, (string) $val, $template);
             }
         }
 
         if ($return == false) {
-            $CI =& get_instance();
+            $CI = &get_instance();
             $CI->output->append_output($template);
         }
 
@@ -110,12 +111,12 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Set the left/right variable delimiters
+     *  Set the left/right variable delimiters.
      *
-     * @access	public
      * @param	string
      * @param	string
-     * @return	void
+     *
+     * @return void
      */
     public function set_delimiters($l = '{', $r = '}')
     {
@@ -126,13 +127,13 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Parse a single key/value
+     *  Parse a single key/value.
      *
-     * @access	private
      * @param	string
      * @param	string
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function _parse_single($key, $val, $string)
     {
@@ -142,15 +143,15 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Parse a tag pair
+     *  Parse a tag pair.
      *
      * Parses tag pairs:  {some_tag} string... {/some_tag}
      *
-     * @access	private
      * @param	string
      * @param	array
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function _parse_pair($variable, $data, $string)
     {
@@ -162,7 +163,7 @@ class CI_Parser
         foreach ($data as $row) {
             $temp = $match['1'];
             foreach ($row as $key => $val) {
-                if (! is_array($val)) {
+                if (!is_array($val)) {
                     $temp = $this->_parse_single($key, $val, $temp);
                 } else {
                     $temp = $this->_parse_pair($key, $val, $temp);
@@ -178,16 +179,16 @@ class CI_Parser
     // --------------------------------------------------------------------
 
     /**
-     *  Matches a variable pair
+     *  Matches a variable pair.
      *
-     * @access	private
      * @param	string
      * @param	string
-     * @return	mixed
+     *
+     * @return mixed
      */
     public function _match_pair($string, $variable)
     {
-        if (! preg_match("|" . preg_quote($this->l_delim) . $variable . preg_quote($this->r_delim) . "(.+?)". preg_quote($this->l_delim) . '/' . $variable . preg_quote($this->r_delim) . "|s", $string, $match)) {
+        if (!preg_match('|'.preg_quote($this->l_delim).$variable.preg_quote($this->r_delim).'(.+?)'.preg_quote($this->l_delim).'/'.$variable.preg_quote($this->r_delim).'|s', $string, $match)) {
             return false;
         }
 

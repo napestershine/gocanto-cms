@@ -19,20 +19,19 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class GraphLocation
- * @package Facebook
+ * Class GraphLocation.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
 class GraphLocation extends GraphObject
 {
     /**
-   * Returns the street component of the location
+   * Returns the street component of the location.
    *
    * @return string|null
    */
@@ -42,7 +41,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the city component of the location
+   * Returns the city component of the location.
    *
    * @return string|null
    */
@@ -52,7 +51,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the state component of the location
+   * Returns the state component of the location.
    *
    * @return string|null
    */
@@ -62,7 +61,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the country component of the location
+   * Returns the country component of the location.
    *
    * @return string|null
    */
@@ -72,7 +71,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the zipcode component of the location
+   * Returns the zipcode component of the location.
    *
    * @return string|null
    */
@@ -82,7 +81,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the latitude component of the location
+   * Returns the latitude component of the location.
    *
    * @return float|null
    */
@@ -92,7 +91,7 @@ class GraphLocation extends GraphObject
   }
 
   /**
-   * Returns the street component of the location
+   * Returns the street component of the location.
    *
    * @return float|null
    */

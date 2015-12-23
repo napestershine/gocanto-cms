@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -7,11 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Autoload the required files
-require_once(APPPATH . 'libraries/facebook/autoload.php');
+require_once APPPATH.'libraries/facebook/autoload.php';
 
 use Facebook\FacebookRedirectLoginHelper;
-use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
+use Facebook\FacebookSession;
 
 class facebook
 {
@@ -22,7 +24,7 @@ class facebook
 
     public function __construct()
     {
-        $this->ci =& get_instance();
+        $this->ci = &get_instance();
         $this->permissions = $this->ci->config->item('permissions', 'facebook');
 
     // Initialize the SDK
@@ -62,7 +64,7 @@ class facebook
   public function get_user()
   {
       if ($this->session) {
-          /**
+          /*
        * Retrieve User’s Profile Information
        */
       // Graph API to request user data
@@ -74,6 +76,7 @@ class facebook
           return $user;
       }
       echo 'out';
+
       return false;
   }
 }

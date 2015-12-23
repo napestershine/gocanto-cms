@@ -10,17 +10,17 @@
                 'signup_frm_email' => 'Email',
 
                 'signup_frm_signup' => 'Submit',
-                
+
                 'signup_frm_password_01' => 'Create your Password',
 
                 'signup_frm_password_02' => 'Confirm your Password',
-                
+
                 'signup_frm_name_error' => 'Name is required',
-                
+
                 'signup_frm_lastname_error' => 'Last Name',
-                
+
                 'signup_frm_email_error' => 'Email is required and has to be email format',
-                
+
                 'signup_frm_phone_error' => 'Phone Number is required',
 
                 'signup_frm_pass_error' => 'Password is required',

@@ -1,4 +1,5 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 
@@ -16,7 +17,7 @@
 | path to your installation.
 |
 */
-$config['local'] = !($_SERVER['SERVER_NAME'] == "www.g-canto.com" || $_SERVER['SERVER_NAME'] == "g-canto.com");
+$config['local'] = !($_SERVER['SERVER_NAME'] == 'www.g-canto.com' || $_SERVER['SERVER_NAME'] == 'g-canto.com');
 
 $config['base_url'] = !$config['local'] ? 'http://g-canto.com' : 'http://simple.web';
 /*
@@ -47,7 +48,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']    = 'AUTO';
+$config['uri_protocol'] = 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +73,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']    = 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -96,7 +97,6 @@ $config['charset'] = 'UTF-8';
 */
 $config['enable_hooks'] = false;
 
-
 /*
 |--------------------------------------------------------------------------
 | Class Extension Prefix
@@ -110,7 +110,6 @@ $config['enable_hooks'] = false;
 |
 */
 $config['subclass_prefix'] = 'MY_';
-
 
 /*
 |--------------------------------------------------------------------------
@@ -130,7 +129,6 @@ $config['subclass_prefix'] = 'MY_';
 |
 */
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
-
 
 /*
 |--------------------------------------------------------------------------
@@ -157,11 +155,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['allow_get_array']      = true;
+$config['allow_get_array'] = true;
 $config['enable_query_strings'] = false;
-$config['controller_trigger']   = 'c';
-$config['function_trigger']     = 'm';
-$config['directory_trigger']    = 'd'; // experimental not currently in use
+$config['controller_trigger'] = 'c';
+$config['function_trigger'] = 'm';
+$config['directory_trigger'] = 'd'; // experimental not currently in use
 
 /*
 |--------------------------------------------------------------------------
@@ -247,15 +245,15 @@ $config['encryption_key'] = 'd9f186eef81c6c7094d0c343c3ac0ec8'; //md5 ('mac pass
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']        = 'ci_session';
-$config['sess_expiration']         = 7200;
-$config['sess_expire_on_close']    = false;
-$config['sess_encrypt_cookie']     = false;
-$config['sess_use_database']       = false;
-$config['sess_table_name']         = 'ci_sessions';
-$config['sess_match_ip']           = true;
-$config['sess_match_useragent']    = true;
-$config['sess_time_to_update']     = 300;
+$config['sess_cookie_name'] = 'ci_session';
+$config['sess_expiration'] = 7200;
+$config['sess_expire_on_close'] = false;
+$config['sess_encrypt_cookie'] = false;
+$config['sess_use_database'] = false;
+$config['sess_table_name'] = 'ci_sessions';
+$config['sess_match_ip'] = true;
+$config['sess_match_useragent'] = true;
+$config['sess_time_to_update'] = 300;
 
 /*
 |--------------------------------------------------------------------------
@@ -268,10 +266,10 @@ $config['sess_time_to_update']     = 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']    = "";
-$config['cookie_domain']    = "";
-$config['cookie_path']      = "/";
-$config['cookie_secure']    = false;
+$config['cookie_prefix'] = '';
+$config['cookie_domain'] = '';
+$config['cookie_path'] = '/';
+$config['cookie_secure'] = false;
 
 /*
 |--------------------------------------------------------------------------
@@ -333,7 +331,6 @@ $config['compress_output'] = false;
 */
 $config['time_reference'] = 'local';
 
-
 /*
 |--------------------------------------------------------------------------
 | Rewrite PHP Short Tags
@@ -345,7 +342,6 @@ $config['time_reference'] = 'local';
 |
 */
 $config['rewrite_short_tags'] = false;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -372,7 +368,7 @@ $config['proxy_ips'] = '';
 $config['facebook']['api_id'] = '721118124680770';
 $config['facebook']['app_secret'] = 'c9fed6574b7d81dad574c729d8430865';
 $config['facebook']['redirect_url'] = 'http://g-canto.com/wpanel/login'; //callback url to be processed after facebook login
-$config['facebook']['permissions'] = array('email','public_profile','user_friends');
+$config['facebook']['permissions'] = ['email', 'public_profile', 'user_friends'];
 
 /*
 |--------------------------------------------------------------------------
@@ -383,40 +379,39 @@ $config['facebook']['permissions'] = array('email','public_profile','user_friend
 | These information is to allow users payments through stripe service
 |
 */
-$config['stripe']['mode']='test'; // test or live
+$config['stripe']['mode'] = 'test'; // test or live
 $config['stripe']['sk_test'] = 'sk_test_mxNNSfarNoA7rqtrEvx6Sqat';
 $config['stripe']['pk_test'] = 'pk_test_Q3VpM2oceh1JmWMWXBsMEkUC';
 $config['stripe']['sk_live'] = 'sk_live_NIISYOIWkdlfV7GvmuTNVmGJ';
 $config['stripe']['pk_live'] = 'pk_live_9gKpujzhtEwaldXVhHaHr8hv';
 $config['stripe']['currency'] = 'usd';
 
-
-$config['head'] = array(
-    'title' => 'CMS for startups by gcanto',
+$config['head'] = [
+    'title'       => 'CMS for startups by gcanto',
     'description' => 'This is a completely CMS solution out of the box. An one ready to be implemented by small and big companies',
-    'author' => 'gcanto',
-    'keywords' => 'web development or mobile app development,
+    'author'      => 'gcanto',
+    'keywords'    => 'web development or mobile app development,
                    website design and web development,
                    website development, blog development,
                    ecommerce development, web design company, web design, web design,
                    responsive web design, responsive web design',
-    'copyright' => '&copy; MIT License '.date('Y'),
-    'slogan' => 'passionate programmer',
-    'logo'   => 'img/logo_w.png',
-    'version' => '3.0',
-    'contact' => array('Information','gustavoocanto@gmail.com'),
-    'support' => array('Support','gustavoocanto@gmail.com'),
-    'no_reply' => array('no reply','no-reply@g-canto.com'),
-    'company' => 'g-canto',
-    'not_click' => 'javascript:void(0);',
-    'domain' => !$config['local'] ? 'http://g-canto.com' : $config['base_url'],
-    'db' => array('', ''),
-    'fb_app_id' => $config['facebook']['api_id'],
-    'disqus_id' => 'gocanto',
-    'twitter_user' => 'gocanto',
-    'google-site-verification' => 'Q4KkfK5lu5AXJ_kYviAbD-ivtal4W_UZ1AHWcy4HiU0'
+    'copyright'                => '&copy; MIT License '.date('Y'),
+    'slogan'                   => 'passionate programmer',
+    'logo'                     => 'img/logo_w.png',
+    'version'                  => '3.0',
+    'contact'                  => ['Information', 'gustavoocanto@gmail.com'],
+    'support'                  => ['Support', 'gustavoocanto@gmail.com'],
+    'no_reply'                 => ['no reply', 'no-reply@g-canto.com'],
+    'company'                  => 'g-canto',
+    'not_click'                => 'javascript:void(0);',
+    'domain'                   => !$config['local'] ? 'http://g-canto.com' : $config['base_url'],
+    'db'                       => ['', ''],
+    'fb_app_id'                => $config['facebook']['api_id'],
+    'disqus_id'                => 'gocanto',
+    'twitter_user'             => 'gocanto',
+    'google-site-verification' => 'Q4KkfK5lu5AXJ_kYviAbD-ivtal4W_UZ1AHWcy4HiU0',
 
-);
+];
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

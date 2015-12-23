@@ -1,5 +1,5 @@
 <?php
-    if (empty($wp_user) && $wp_user['id']=='') {
+    if (empty($wp_user) && $wp_user['id'] == '') {
         redirect(base_url().'wpanel');
         die();
         exit();

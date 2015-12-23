@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class FacebookRequestException
- * @package Facebook
+ * Class FacebookRequestException.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -77,7 +76,7 @@ class FacebookRequestException extends FacebookSDKException
   {
       $data = self::convertToArray($data);
       if (!isset($data['error']['code']) && isset($data['code'])) {
-          $data = array('error' => $data);
+          $data = ['error' => $data];
       }
       $code = (isset($data['error']['code']) ? (int) $data['error']['code'] : null);
 
@@ -150,11 +149,12 @@ class FacebookRequestException extends FacebookSDKException
       if (isset($this->responseData['error'][$key])) {
           return $this->responseData['error'][$key];
       }
+
       return $default;
   }
 
   /**
-   * Returns the HTTP status code
+   * Returns the HTTP status code.
    *
    * @return int
    */
@@ -164,7 +164,7 @@ class FacebookRequestException extends FacebookSDKException
   }
 
   /**
-   * Returns the sub-error code
+   * Returns the sub-error code.
    *
    * @return int
    */
@@ -174,7 +174,7 @@ class FacebookRequestException extends FacebookSDKException
   }
 
   /**
-   * Returns the error type
+   * Returns the error type.
    *
    * @return string
    */
@@ -204,7 +204,7 @@ class FacebookRequestException extends FacebookSDKException
   }
 
   /**
-   * Converts a stdClass object to an array
+   * Converts a stdClass object to an array.
    *
    * @param mixed $object
    *
@@ -215,6 +215,7 @@ class FacebookRequestException extends FacebookSDKException
       if ($object instanceof \stdClass) {
           return get_object_vars($object);
       }
+
       return $object;
   }
 }

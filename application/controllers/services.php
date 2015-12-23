@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -22,18 +24,18 @@ class services extends CI_Controller
         $this->lang->load('services', $this->session->userdata('ws-language'));
         $this->load->helper(['form', 'url', 'email']);
         $this->load->library(['form_validation', 'stripe', 'email']);
-        $this->current_user=false;
+        $this->current_user = false;
         if ($this->session->userdata('wp-user')) {
             $this->current_user = $this->session->userdata('wp-user');
-            $this->admin = $this->current_user['id_profile']==1?true:false;
+            $this->admin = $this->current_user['id_profile'] == 1 ? true : false;
         }
     }
 
     public function index()
     {
         $data = ['publishable_key' => $this->stripe->config['publishable_key'],
-                 'error' => $error,
-                 'success' => $success,
+                 'error'           => $error,
+                 'success'         => $success,
                 ];
 
         $this->load->layout('stripeTest', $data, []);
@@ -47,11 +49,11 @@ class services extends CI_Controller
         } else {
             $service = $this->Service->getRow($id);
             $data = [
-                'service' => $service,
-                'details' => $this->Service->getDetails(['id_plan' => $id]),
-                'content' => $this->ModelContents->getRow($service->content_id),
-                'email' => $this->current_user['email'],
-                'publishable_key' => $this->stripe->config['publishable_key']
+                'service'         => $service,
+                'details'         => $this->Service->getDetails(['id_plan' => $id]),
+                'content'         => $this->ModelContents->getRow($service->content_id),
+                'email'           => $this->current_user['email'],
+                'publishable_key' => $this->stripe->config['publishable_key'],
             ];
 
             $this->load->layout('services/show', $data, ['https://checkout.stripe.com/checkout.js', 'stripeEvents.js']);
@@ -63,6 +65,7 @@ class services extends CI_Controller
      * This method is responsible of registering and updating customers
      * it will insert and updates users in your system with new
      * information or retrieving the stripe data.
+     *
      * @return [type] [description]
      */
     public function process()
@@ -75,12 +78,12 @@ class services extends CI_Controller
                     redirect(base_url());
                 }
 
-            $email       = $this->current_user?$this->current_user['email']:$_POST['email'];
+            $email = $this->current_user ? $this->current_user['email'] : $_POST['email'];
             $description = 'WSIMPLE CUSTOMER '.$_POST['plan'];
-            $amount      = $this->Service->getPrice($_POST['plan']);
-            $plan        = $_POST['plan'];
-            $source      = $_POST['stripeToken'];
-            $client      = $this->User->getByEmail($email);
+            $amount = $this->Service->getPrice($_POST['plan']);
+            $plan = $_POST['plan'];
+            $source = $_POST['stripeToken'];
+            $client = $this->User->getByEmail($email);
 
                 //plan & email validation
                 if (!$amount || !valid_email($email)) {
@@ -89,23 +92,23 @@ class services extends CI_Controller
                 }
 
                 //facebook user without email
-                if (!$client && $this->current_user && $email!='') {
+                if (!$client && $this->current_user && $email != '') {
                     $userUpdate['email'] = $email;
-                    $client=$this->current_user;
+                    $client = $this->current_user;
                 }
 
                 //new customer
                 if (!$client) {
-                    $options_customer=['description' => $description,
-                                       'email'       => $email,
-                                       'source'      => $source ];
+                    $options_customer = ['description' => $description,
+                                       'email'         => $email,
+                                       'source'        => $source, ];
 
                     $customer = $this->stripe->addCustomer($options_customer);
 
                     $this->User->insert(['id_status'  => '1',
                                          'id_profile' => '2',
                                          'email'      => $email,
-                                         'stripe_id'  => $customer->id
+                                         'stripe_id'  => $customer->id,
                                         ]);
                 } else {
                     //g-ocanto-com customers
@@ -115,7 +118,7 @@ class services extends CI_Controller
                         $options_customer = [
                             'description' => $description,
                             'email'       => $email,
-                            'source'      => $source
+                            'source'      => $source,
                         ];
 
                         $customer = $this->stripe->addCustomer($options_customer);
@@ -124,24 +127,23 @@ class services extends CI_Controller
                         $customer = $this->stripe->getCustomer($this->User->getStripeId($client->id));
                     }
 
-                    $userUpdate['stripe_id']= $customer->id;
+                    $userUpdate['stripe_id'] = $customer->id;
                     $this->User->update($userUpdate, $client->id);
                 }
 
                 //selecting service plan
-                $options_subscription = ['plan' => $plan];//, 'trial_end' => 'now'
+                $options_subscription = ['plan' => $plan]; //, 'trial_end' => 'now'
 
                 //creating stripe suscription
                 $subscription = $customer->subscriptions->create($options_subscription);
 
                 //successfully registration
                 if ($subscription->status == 'trialing' || $subscription->status == 'active') {
-
                     $insert_subscription = [
                         'id_user'    => $client->id,
                         'id_service' => $plan,
                         'stripe_id'  => $subscription->id,
-                        'status'     => 'active'
+                        'status'     => 'active',
                     ];
 
                     $this->Subscription->insert($insert_subscription);
@@ -158,10 +160,12 @@ class services extends CI_Controller
     }
 
     //administrative method in process
+
     public function add()
     {
         if (!isset($this->admin)) {
             redirect(base_url().'wpanel');
+
             return;
         }
         $data = [];
@@ -169,40 +173,40 @@ class services extends CI_Controller
     }
 
     //administrative method in process
+
     public function insert()
     {
         if (!isset($this->admin)) {
             redirect(base_url().'wpanel');
+
             return;
         }
         if ($this->form_validation->run() === false) {
             $this->add();
         } else {
-            $preInsert =[];
-            $insert=[];
+            $preInsert = [];
+            $insert = [];
 
             foreach ($preInsert as  $key => $value) {
-                if (trim($value)!='') {
-                    $insert[$key]=$value;
+                if (trim($value) != '') {
+                    $insert[$key] = $value;
                 }
             }
 
             $this->Service->insert($insert);
             $last = $this->db->insert_id();
-            flash_message('successful_message', $this->admin? $this->lang->line('services_successful_message_admin') :$this->lang->line('services_successful_message'));
+            flash_message('successful_message', $this->admin ? $this->lang->line('services_successful_message_admin') : $this->lang->line('services_successful_message'));
             redirect('services');
         }
     }
 
     /**
-     *
-     * User services
-     *
-    */
+     * User services.
+     */
     public function mine()
     {
         $data = [
-            'services' => $this->Service->getSubscriptions()
+            'services' => $this->Service->getSubscriptions(),
         ];
 
         $this->load->layout('services/mine', $data, []);
@@ -210,8 +214,9 @@ class services extends CI_Controller
 
     /**
      * suspend
-     * Suspend customer services. It can be triggered by and an admin or an customer
-     * @param  string $id, services id
+     * Suspend customer services. It can be triggered by and an admin or an customer.
+     *
+     * @param string $id, services id
      */
     public function suspend($id = '')
     {
@@ -228,17 +233,19 @@ class services extends CI_Controller
 
     /**
      * reactive
-     * Allows the services activation. It can be triggered by and an admin or an customer
-     * @param  string $id, id services
+     * Allows the services activation. It can be triggered by and an admin or an customer.
+     *
+     * @param string $id, id services
      */
-    public function reactive($id='')
+    public function reactive($id = '')
     {
         if (!isset($this->admin) || !$this->service->is_owner($id)) {
             redirect(base_url().'wpanel/services');
+
             return;
         }
 
-        $update =['status' => 'Active'];
+        $update = ['status' => 'Active'];
 
         $this->service->update($update, $id);
 
@@ -247,17 +254,18 @@ class services extends CI_Controller
 
     /**
      * emailsSuccessfullyActivated
-     * Send an activation emails message to the customer
-     * @param  string $email, cutomer email
+     * Send an activation emails message to the customer.
+     *
+     * @param string $email, cutomer email
      */
-    public function emailsSuccessfullyActivated($email='')
+    public function emailsSuccessfullyActivated($email = '')
     {
-        $link=base_url().'services/myservices/';
+        $link = base_url().'services/myservices/';
 
-        if ($email!='') {
-            $message=$this->lang->line('services_email_message');
-            $tittle=$this->lang->line('services_email_tittle');
-            $name=$this->lang->line('services_email_tittle');
+        if ($email != '') {
+            $message = $this->lang->line('services_email_message');
+            $tittle = $this->lang->line('services_email_tittle');
+            $name = $this->lang->line('services_email_tittle');
         } else {
             return;
         }
@@ -279,11 +287,11 @@ class services extends CI_Controller
         $body = $this->load->view(
             'partial/email',
             [
-                'config' => $this->config->config['head'],
+                'config'   => $this->config->config['head'],
                 'language' => $this->session->userdata('ws-language'),
-                'title' => $tittle,
-                'name' => $name,
-                'content' => $content
+                'title'    => $tittle,
+                'name'     => $name,
+                'content'  => $content,
             ],
             true
         );

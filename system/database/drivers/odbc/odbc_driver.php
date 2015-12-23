@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,16 +19,16 @@
 // ------------------------------------------------------------------------
 
 /**
- * ODBC Database Adapter Class
+ * ODBC Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the active record
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_odbc_driver extends CI_DB
@@ -46,9 +47,8 @@ class CI_DB_odbc_driver extends CI_DB
      * database engines, so this string appears in each driver and is
      * used for the count_all() and count_all_results() functions.
      */
-    public $_count_string = "SELECT COUNT(*) AS ";
+    public $_count_string = 'SELECT COUNT(*) AS ';
     public $_random_keyword;
-
 
     public function __construct($params)
     {
@@ -58,10 +58,9 @@ class CI_DB_odbc_driver extends CI_DB
     }
 
     /**
-     * Non-persistent database connection
+     * Non-persistent database connection.
      *
-     * @access	private called by the base class
-     * @return	resource
+     * @return resource
      */
     public function db_connect()
     {
@@ -71,10 +70,9 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Persistent database connection
+     * Persistent database connection.
      *
-     * @access	private called by the base class
-     * @return	resource
+     * @return resource
      */
     public function db_pconnect()
     {
@@ -84,13 +82,12 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Reconnect
+     * Reconnect.
      *
      * Keep / reestablish the db connection if no queries have been
      * sent for a length of time exceeding the server's idle timeout
      *
-     * @access	public
-     * @return	void
+     * @return void
      */
     public function reconnect()
     {
@@ -100,10 +97,9 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Select the database
+     * Select the database.
      *
-     * @access	private called by the base class
-     * @return	resource
+     * @return resource
      */
     public function db_select()
     {
@@ -114,12 +110,12 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Set client character set
+     * Set client character set.
      *
-     * @access	public
      * @param	string
      * @param	string
-     * @return	resource
+     *
+     * @return resource
      */
     public function db_set_charset($charset, $collation)
     {
@@ -130,41 +126,41 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Version number query string
+     * Version number query string.
      *
-     * @access	public
-     * @return	string
+     * @return string
      */
     public function _version()
     {
-        return "SELECT version() AS ver";
+        return 'SELECT version() AS ver';
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Execute the query
+     * Execute the query.
      *
-     * @access	private called by the base class
      * @param	string	an SQL query
-     * @return	resource
+     *
+     * @return resource
      */
     public function _execute($sql)
     {
         $sql = $this->_prep_query($sql);
+
         return @odbc_exec($this->conn_id, $sql);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Prep the query
+     * Prep the query.
      *
      * If needed, each database adapter can prep the query string
      *
-     * @access	private called by execute()
      * @param	string	an SQL query
-     * @return	string
+     *
+     * @return string
      */
     public function _prep_query($sql)
     {
@@ -174,14 +170,13 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Begin Transaction
+     * Begin Transaction.
      *
-     * @access	public
-     * @return	bool
+     * @return bool
      */
     public function trans_begin($test_mode = false)
     {
-        if (! $this->trans_enabled) {
+        if (!$this->trans_enabled) {
             return true;
         }
 
@@ -201,14 +196,13 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Commit Transaction
+     * Commit Transaction.
      *
-     * @access	public
-     * @return	bool
+     * @return bool
      */
     public function trans_commit()
     {
-        if (! $this->trans_enabled) {
+        if (!$this->trans_enabled) {
             return true;
         }
 
@@ -219,20 +213,20 @@ class CI_DB_odbc_driver extends CI_DB
 
         $ret = odbc_commit($this->conn_id);
         odbc_autocommit($this->conn_id, true);
+
         return $ret;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Rollback Transaction
+     * Rollback Transaction.
      *
-     * @access	public
-     * @return	bool
+     * @return bool
      */
     public function trans_rollback()
     {
-        if (! $this->trans_enabled) {
+        if (!$this->trans_enabled) {
             return true;
         }
 
@@ -243,18 +237,19 @@ class CI_DB_odbc_driver extends CI_DB
 
         $ret = odbc_rollback($this->conn_id);
         odbc_autocommit($this->conn_id, true);
+
         return $ret;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Escape String
+     * Escape String.
      *
-     * @access	public
      * @param	string
      * @param	bool	whether or not the string will be used in a LIKE condition
-     * @return	string
+     *
+     * @return string
      */
     public function escape_str($str, $like = false)
     {
@@ -271,8 +266,8 @@ class CI_DB_odbc_driver extends CI_DB
 
         // escape LIKE condition wildcards
         if ($like === true) {
-            $str = str_replace(array('%', '_', $this->_like_escape_chr),
-                                array($this->_like_escape_chr.'%', $this->_like_escape_chr.'_', $this->_like_escape_chr.$this->_like_escape_chr),
+            $str = str_replace(['%', '_', $this->_like_escape_chr],
+                                [$this->_like_escape_chr.'%', $this->_like_escape_chr.'_', $this->_like_escape_chr.$this->_like_escape_chr],
                                 $str);
         }
 
@@ -282,10 +277,9 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Affected Rows
+     * Affected Rows.
      *
-     * @access	public
-     * @return	integer
+     * @return int
      */
     public function affected_rows()
     {
@@ -295,10 +289,9 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert ID
+     * Insert ID.
      *
-     * @access	public
-     * @return	integer
+     * @return int
      */
     public function insert_id()
     {
@@ -308,14 +301,14 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * "Count All" query
+     * "Count All" query.
      *
      * Generates a platform-specific query string that counts all records in
      * the specified database
      *
-     * @access	public
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function count_all($table = '')
     {
@@ -323,7 +316,7 @@ class CI_DB_odbc_driver extends CI_DB
             return 0;
         }
 
-        $query = $this->query($this->_count_string . $this->_protect_identifiers('numrows') . " FROM " . $this->_protect_identifiers($table, true, null, false));
+        $query = $this->query($this->_count_string.$this->_protect_identifiers('numrows').' FROM '.$this->_protect_identifiers($table, true, null, false));
 
         if ($query->num_rows() == 0) {
             return 0;
@@ -331,23 +324,24 @@ class CI_DB_odbc_driver extends CI_DB
 
         $row = $query->row();
         $this->_reset_select();
+
         return (int) $row->numrows;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Show table query
+     * Show table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @access	private
-     * @param	boolean
-     * @return	string
+     * @param	bool
+     *
+     * @return string
      */
     public function _list_tables($prefix_limit = false)
     {
-        $sql = "SHOW TABLES FROM `".$this->database."`";
+        $sql = 'SHOW TABLES FROM `'.$this->database.'`';
 
         if ($prefix_limit !== false and $this->dbprefix != '') {
             //$sql .= " LIKE '".$this->escape_like_str($this->dbprefix)."%' ".sprintf($this->_like_escape_str, $this->_like_escape_chr);
@@ -360,42 +354,41 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @access	public
      * @param	string	the table name
-     * @return	string
+     *
+     * @return string
      */
     public function _list_columns($table = '')
     {
-        return "SHOW COLUMNS FROM ".$table;
+        return 'SHOW COLUMNS FROM '.$table;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Field data query
+     * Field data query.
      *
      * Generates a platform-specific query so that the column data can be retrieved
      *
-     * @access	public
      * @param	string	the table name
-     * @return	object
+     *
+     * @return object
      */
     public function _field_data($table)
     {
-        return "SELECT TOP 1 FROM ".$table;
+        return 'SELECT TOP 1 FROM '.$table;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * The error message string
+     * The error message string.
      *
-     * @access	private
-     * @return	string
+     * @return string
      */
     public function _error_message()
     {
@@ -405,10 +398,9 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * The error message number
+     * The error message number.
      *
-     * @access	private
-     * @return	integer
+     * @return int
      */
     public function _error_number()
     {
@@ -418,13 +410,13 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Escape the SQL Identifiers
+     * Escape the SQL Identifiers.
      *
      * This function escapes column and table names
      *
-     * @access	private
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function _escape_identifiers($item)
     {
@@ -434,7 +426,7 @@ class CI_DB_odbc_driver extends CI_DB
 
         foreach ($this->_reserved_identifiers as $id) {
             if (strpos($item, '.'.$id) !== false) {
-                $str = $this->_escape_char. str_replace('.', $this->_escape_char.'.', $item);
+                $str = $this->_escape_char.str_replace('.', $this->_escape_char.'.', $item);
 
                 // remove duplicates if the user already included the escape
                 return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
@@ -454,19 +446,19 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * From Tables
+     * From Tables.
      *
      * This function implicitly groups FROM tables so there is no confusion
      * about operator precedence in harmony with SQL standards
      *
-     * @access	public
      * @param	type
-     * @return	type
+     *
+     * @return type
      */
     public function _from_tables($tables)
     {
-        if (! is_array($tables)) {
-            $tables = array($tables);
+        if (!is_array($tables)) {
+            $tables = [$tables];
         }
 
         return '('.implode(', ', $tables).')';
@@ -475,68 +467,67 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert statement
+     * Insert statement.
      *
      * Generates a platform-specific insert string from the supplied data
      *
-     * @access	public
      * @param	string	the table name
      * @param	array	the insert keys
      * @param	array	the insert values
-     * @return	string
+     *
+     * @return string
      */
     public function _insert($table, $keys, $values)
     {
-        return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
+        return 'INSERT INTO '.$table.' ('.implode(', ', $keys).') VALUES ('.implode(', ', $values).')';
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Update statement
+     * Update statement.
      *
      * Generates a platform-specific update string from the supplied data
      *
-     * @access	public
      * @param	string	the table name
      * @param	array	the update data
      * @param	array	the where clause
      * @param	array	the orderby clause
      * @param	array	the limit clause
-     * @return	string
+     *
+     * @return string
      */
-    public function _update($table, $values, $where, $orderby = array(), $limit = false)
+    public function _update($table, $values, $where, $orderby = [], $limit = false)
     {
         foreach ($values as $key => $val) {
-            $valstr[] = $key." = ".$val;
+            $valstr[] = $key.' = '.$val;
         }
 
-        $limit = (! $limit) ? '' : ' LIMIT '.$limit;
+        $limit = (!$limit) ? '' : ' LIMIT '.$limit;
 
-        $orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
+        $orderby = (count($orderby) >= 1) ? ' ORDER BY '.implode(', ', $orderby) : '';
 
-        $sql = "UPDATE ".$table." SET ".implode(', ', $valstr);
+        $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr);
 
-        $sql .= ($where != '' and count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
+        $sql .= ($where != '' and count($where) >= 1) ? ' WHERE '.implode(' ', $where) : '';
 
         $sql .= $orderby.$limit;
 
         return $sql;
     }
 
-
     // --------------------------------------------------------------------
 
     /**
-     * Truncate statement
+     * Truncate statement.
      *
      * Generates a platform-specific truncate string from the supplied data
      * If the database does not support the truncate() command
      * This function maps to "DELETE FROM table"
      *
-     * @access	public
      * @param	string	the table name
-     * @return	string
+     *
+     * @return string
      */
     public function _truncate($table)
     {
@@ -546,17 +537,17 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Delete statement
+     * Delete statement.
      *
      * Generates a platform-specific delete string from the supplied data
      *
-     * @access	public
      * @param	string	the table name
      * @param	array	the where clause
      * @param	string	the limit clause
-     * @return	string
+     *
+     * @return string
      */
-    public function _delete($table, $where = array(), $like = array(), $limit = false)
+    public function _delete($table, $where = [], $like = [], $limit = false)
     {
         $conditions = '';
 
@@ -565,28 +556,28 @@ class CI_DB_odbc_driver extends CI_DB
             $conditions .= implode("\n", $this->ar_where);
 
             if (count($where) > 0 && count($like) > 0) {
-                $conditions .= " AND ";
+                $conditions .= ' AND ';
             }
             $conditions .= implode("\n", $like);
         }
 
-        $limit = (! $limit) ? '' : ' LIMIT '.$limit;
+        $limit = (!$limit) ? '' : ' LIMIT '.$limit;
 
-        return "DELETE FROM ".$table.$conditions.$limit;
+        return 'DELETE FROM '.$table.$conditions.$limit;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Limit string
+     * Limit string.
      *
      * Generates a platform-specific LIMIT clause
      *
-     * @access	public
      * @param	string	the sql query string
-     * @param	integer	the number of rows to limit the query to
-     * @param	integer	the offset value
-     * @return	string
+     * @param	int	the number of rows to limit the query to
+     * @param	int	the offset value
+     *
+     * @return string
      */
     public function _limit($sql, $limit, $offset)
     {
@@ -597,19 +588,17 @@ class CI_DB_odbc_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Close DB Connection
+     * Close DB Connection.
      *
-     * @access	public
      * @param	resource
-     * @return	void
+     *
+     * @return void
      */
     public function _close($conn_id)
     {
         @odbc_close($conn_id);
     }
 }
-
-
 
 /* End of file odbc_driver.php */
 /* Location: ./system/database/drivers/odbc/odbc_driver.php */

@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -20,16 +22,16 @@ class customers extends CI_Model
 
     public function get_portafolio($arg)
     {
-        $options = array('where' => '',
+        $options = ['where'      => '',
                          'limit' => 30,
-                         'order' => 'name');
-        $options =  $arg + $options;
+                         'order' => 'name', ];
+        $options = $arg + $options;
 
-        $where = $options['where']!=''? 'WHERE '.$options['where']:'';
-        $order = $options['order']!=''? 'ORDER BY '.$options['order']:'';
-        $limit = $options['limit']!=''? 'LIMIT '.$options['limit']:'';
+        $where = $options['where'] != '' ? 'WHERE '.$options['where'] : '';
+        $order = $options['order'] != '' ? 'ORDER BY '.$options['order'] : '';
+        $limit = $options['limit'] != '' ? 'LIMIT '.$options['limit'] : '';
 
-        $sql="
+        $sql = "
 			SELECT
 				a.id AS id,
 				a.id_status AS id_status,
@@ -49,6 +51,7 @@ class customers extends CI_Model
 		";
 
         $query = $this->db->query($sql);
+
         return $query->result_array();
     }
 }

@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,21 +19,22 @@
 // ------------------------------------------------------------------------
 
 /**
- * MS SQL Result Class
+ * MS SQL Result Class.
  *
  * This class extends the parent result class: CI_DB_result
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_mssql_result extends CI_DB_result
 {
     /**
-     * Number of rows in the result set
+     * Number of rows in the result set.
      *
-     * @access	public
-     * @return	integer
+     * @return int
      */
     public function num_rows()
     {
@@ -42,10 +44,9 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Number of fields in the result set
+     * Number of fields in the result set.
      *
-     * @access	public
-     * @return	integer
+     * @return int
      */
     public function num_fields()
     {
@@ -55,16 +56,15 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Fetch Field Names
+     * Fetch Field Names.
      *
      * Generates an array of column names
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function list_fields()
     {
-        $field_names = array();
+        $field_names = [];
         while ($field = mssql_fetch_field($this->result_id)) {
             $field_names[] = $field->name;
         }
@@ -75,23 +75,22 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Field data
+     * Field data.
      *
      * Generates an array of objects containing field meta-data
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function field_data()
     {
-        $retval = array();
+        $retval = [];
         while ($field = mssql_fetch_field($this->result_id)) {
-            $F                = new stdClass();
-            $F->name        = $field->name;
-            $F->type        = $field->type;
-            $F->max_length    = $field->max_length;
+            $F = new stdClass();
+            $F->name = $field->name;
+            $F->type = $field->type;
+            $F->max_length = $field->max_length;
             $F->primary_key = 0;
-            $F->default        = '';
+            $F->default = '';
 
             $retval[] = $F;
         }
@@ -102,9 +101,9 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Free the result
+     * Free the result.
      *
-     * @return	null
+     * @return null
      */
     public function free_result()
     {
@@ -117,14 +116,13 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Data Seek
+     * Data Seek.
      *
      * Moves the internal pointer to the desired offset.  We call
      * this internally before fetching results to make sure the
      * result set starts at zero
      *
-     * @access	private
-     * @return	array
+     * @return array
      */
     public function _data_seek($n = 0)
     {
@@ -134,12 +132,11 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Result - associative array
+     * Result - associative array.
      *
      * Returns the result set as an array
      *
-     * @access	private
-     * @return	array
+     * @return array
      */
     public function _fetch_assoc()
     {
@@ -149,19 +146,17 @@ class CI_DB_mssql_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Result - object
+     * Result - object.
      *
      * Returns the result set as an object
      *
-     * @access	private
-     * @return	object
+     * @return object
      */
     public function _fetch_object()
     {
         return mssql_fetch_object($this->result_id);
     }
 }
-
 
 /* End of file mssql_result.php */
 /* Location: ./system/database/drivers/mssql/mssql_result.php */

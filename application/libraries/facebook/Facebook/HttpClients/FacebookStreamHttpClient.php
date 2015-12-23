@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
@@ -30,12 +29,12 @@ class FacebookStreamHttpClient implements FacebookHttpable
     /**
    * @var array The headers to be sent with the request
    */
-  protected $requestHeaders = array();
+  protected $requestHeaders = [];
 
   /**
    * @var array The headers received from the response
    */
-  protected $responseHeaders = array();
+  protected $responseHeaders = [];
 
   /**
    * @var int The HTTP status code returned from the server
@@ -56,7 +55,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers we want to send with the request
+   * The headers we want to send with the request.
    *
    * @param string $key
    * @param string $value
@@ -67,7 +66,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers returned in the response
+   * The headers returned in the response.
    *
    * @return array
    */
@@ -77,7 +76,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * The HTTP status response code
+   * The HTTP status response code.
    *
    * @return int
    */
@@ -87,31 +86,31 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * Sends a request to the server
+   * Sends a request to the server.
    *
    * @param string $url The endpoint to send the request to
    * @param string $method The request method
    * @param array  $parameters The key value pairs to be sent in the body
    *
-   * @return string Raw response from the server
-   *
    * @throws \Facebook\FacebookSDKException
+   *
+   * @return string Raw response from the server
    */
-  public function send($url, $method = 'GET', $parameters = array())
+  public function send($url, $method = 'GET', $parameters = [])
   {
-      $options = array(
-      'http' => array(
-        'method' => $method,
-        'timeout' => 60,
-        'ignore_errors' => true
-      ),
-      'ssl' => array(
-        'verify_peer' => true,
-        'verify_peer_name' => true,
+      $options = [
+      'http' => [
+        'method'        => $method,
+        'timeout'       => 60,
+        'ignore_errors' => true,
+      ],
+      'ssl' => [
+        'verify_peer'       => true,
+        'verify_peer_name'  => true,
         'allow_self_signed' => true, // All root certificates are self-signed
-        'cafile' => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem',
-      ),
-    );
+        'cafile'            => __DIR__.'/certs/DigiCertHighAssuranceEVRootCA.pem',
+      ],
+    ];
 
       if ($parameters) {
           $options['http']['content'] = http_build_query($parameters, null, '&');
@@ -136,7 +135,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * Formats the headers for use in the stream wrapper
+   * Formats the headers for use in the stream wrapper.
    *
    * @return string
    */
@@ -144,7 +143,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   {
       $header = [];
       foreach ($this->requestHeaders as $k => $v) {
-          $header[] = $k . ': ' . $v;
+          $header[] = $k.': '.$v;
       }
 
       return implode("\r\n", $header);
@@ -152,7 +151,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
 
   /**
    * Converts array of headers returned from the wrapper into
-   * something standard
+   * something standard.
    *
    * @param array $rawHeaders
    *
@@ -160,7 +159,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
    */
   public static function formatHeadersToArray(array $rawHeaders)
   {
-      $headers = array();
+      $headers = [];
 
       foreach ($rawHeaders as $line) {
           if (strpos($line, ':') === false) {
@@ -175,7 +174,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   }
 
   /**
-   * Pulls out the HTTP status code from a response header
+   * Pulls out the HTTP status code from a response header.
    *
    * @param string $header
    *
@@ -184,6 +183,7 @@ class FacebookStreamHttpClient implements FacebookHttpable
   public static function getStatusCodeFromHeader($header)
   {
       preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $header, $match);
+
       return (int) $match[1];
   }
 }

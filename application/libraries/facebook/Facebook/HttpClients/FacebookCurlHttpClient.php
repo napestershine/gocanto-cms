@@ -19,27 +19,25 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
 use Facebook\FacebookSDKException;
 
 /**
- * Class FacebookCurlHttpClient
- * @package Facebook
+ * Class FacebookCurlHttpClient.
  */
 class FacebookCurlHttpClient implements FacebookHttpable
 {
     /**
    * @var array The headers to be sent with the request
    */
-  protected $requestHeaders = array();
+  protected $requestHeaders = [];
 
   /**
    * @var array The headers received from the response
    */
-  protected $responseHeaders = array();
+  protected $responseHeaders = [];
 
   /**
    * @var int The HTTP status code returned from the server
@@ -57,7 +55,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   protected $curlErrorCode = 0;
 
   /**
-   * @var string|boolean The raw response from the server
+   * @var string|bool The raw response from the server
    */
   protected $rawResponse;
 
@@ -67,7 +65,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   protected $facebookCurl;
 
   /**
-   * @var boolean If IPv6 should be disabled
+   * @var bool If IPv6 should be disabled
    */
   protected static $disableIPv6;
 
@@ -91,7 +89,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Disable IPv6 resolution
+   * Disable IPv6 resolution.
    */
   public static function disableIPv6()
   {
@@ -99,7 +97,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers we want to send with the request
+   * The headers we want to send with the request.
    *
    * @param string $key
    * @param string $value
@@ -110,7 +108,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * The headers returned in the response
+   * The headers returned in the response.
    *
    * @return array
    */
@@ -120,7 +118,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * The HTTP status response code
+   * The HTTP status response code.
    *
    * @return int
    */
@@ -130,17 +128,17 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Sends a request to the server
+   * Sends a request to the server.
    *
    * @param string $url The endpoint to send the request to
    * @param string $method The request method
    * @param array  $parameters The key value pairs to be sent in the body
    *
-   * @return string Raw response from the server
-   *
    * @throws \Facebook\FacebookSDKException
+   *
+   * @return string Raw response from the server
    */
-  public function send($url, $method = 'GET', $parameters = array())
+  public function send($url, $method = 'GET', $parameters = [])
   {
       $this->openConnection($url, $method, $parameters);
       $this->tryToSendRequest();
@@ -160,15 +158,15 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Opens a new curl connection
+   * Opens a new curl connection.
    *
    * @param string $url The endpoint to send the request to
    * @param string $method The request method
    * @param array  $parameters The key value pairs to be sent in the body
    */
-  public function openConnection($url, $method = 'GET', array $parameters = array())
+  public function openConnection($url, $method = 'GET', array $parameters = [])
   {
-      $options = array(
+      $options = [
       CURLOPT_URL            => $url,
       CURLOPT_CONNECTTIMEOUT => 10,
       CURLOPT_TIMEOUT        => 60,
@@ -176,8 +174,8 @@ class FacebookCurlHttpClient implements FacebookHttpable
       CURLOPT_HEADER         => true, // Enable header processing
       CURLOPT_SSL_VERIFYHOST => 2,
       CURLOPT_SSL_VERIFYPEER => true,
-      CURLOPT_CAINFO         => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem',
-    );
+      CURLOPT_CAINFO         => __DIR__.'/certs/DigiCertHighAssuranceEVRootCA.pem',
+    ];
 
       if ($method !== 'GET') {
           $options[CURLOPT_POSTFIELDS] = !$this->paramsHaveFile($parameters) ? http_build_query($parameters, null, '&') : $parameters;
@@ -199,7 +197,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Closes an existing curl connection
+   * Closes an existing curl connection.
    */
   public function closeConnection()
   {
@@ -207,7 +205,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Try to send the request
+   * Try to send the request.
    */
   public function tryToSendRequest()
   {
@@ -218,7 +216,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Send the request and get the raw response from curl
+   * Send the request and get the raw response from curl.
    */
   public function sendRequest()
   {
@@ -226,23 +224,23 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Compiles the request headers into a curl-friendly format
+   * Compiles the request headers into a curl-friendly format.
    *
    * @return array
    */
   public function compileRequestHeaders()
   {
-      $return = array();
+      $return = [];
 
       foreach ($this->requestHeaders as $key => $value) {
-          $return[] = $key . ': ' . $value;
+          $return[] = $key.': '.$value;
       }
 
       return $return;
   }
 
   /**
-   * Extracts the headers and the body into a two-part array
+   * Extracts the headers and the body into a two-part array.
    *
    * @return array
    */
@@ -253,11 +251,11 @@ class FacebookCurlHttpClient implements FacebookHttpable
       $rawHeaders = mb_substr($this->rawResponse, 0, $headerSize);
       $rawBody = mb_substr($this->rawResponse, $headerSize);
 
-      return array(trim($rawHeaders), trim($rawBody));
+      return [trim($rawHeaders), trim($rawBody)];
   }
 
   /**
-   * Converts raw header responses into an array
+   * Converts raw header responses into an array.
    *
    * @param string $rawHeaders
    *
@@ -265,7 +263,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
    */
   public static function headersToArray($rawHeaders)
   {
-      $headers = array();
+      $headers = [];
 
     // Normalize line breaks
     $rawHeaders = str_replace("\r\n", "\n", $rawHeaders);
@@ -290,9 +288,9 @@ class FacebookCurlHttpClient implements FacebookHttpable
   }
 
   /**
-   * Return proper header size
+   * Return proper header size.
    *
-   * @return integer
+   * @return int
    */
   private function getHeaderSize()
   {
@@ -315,7 +313,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
    * Detect versions of Curl which report incorrect header lengths when
    * using Proxies.
    *
-   * @return boolean
+   * @return bool
    */
   private function needsCurlProxyFix()
   {
@@ -330,7 +328,7 @@ class FacebookCurlHttpClient implements FacebookHttpable
    *
    * @param array $params
    *
-   * @return boolean
+   * @return bool
    */
   private function paramsHaveFile(array $params)
   {

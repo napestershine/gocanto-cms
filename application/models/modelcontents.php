@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -18,35 +20,40 @@ class modelcontents extends CI_Model
         $this->load->database();
     }
 
-    public function getRows($where='', $limit='', $order=' ORDER BY sequence')
+    public function getRows($where = '', $limit = '', $order = ' ORDER BY sequence')
     {
         $query = $this->db->query("SELECT *, DATE_FORMAT(date, '%Y-%m-%dT%H:%i:%s0Z') as dateiso FROM contents $where $order $limit");
+
         return $query->result_array();
     }
 
     public function getRow($content)
     {
-        $query = $this->db->query("SELECT *, DATE_FORMAT(date, '%Y-%m-%dT%H:%i:%s0Z') as dateiso FROM contents ".$this->get_where($content)." LIMIT 1 ");
+        $query = $this->db->query("SELECT *, DATE_FORMAT(date, '%Y-%m-%dT%H:%i:%s0Z') as dateiso FROM contents ".$this->get_where($content).' LIMIT 1 ');
+
         return $query->row();
     }
 
     public function getField($field, $content)
     {
-        $query = $this->db->query("SELECT $field FROM contents ".$this->get_where($content)." LIMIT 1 ");
+        $query = $this->db->query("SELECT $field FROM contents ".$this->get_where($content).' LIMIT 1 ');
         $array = $query->row();
+
         return $array->$field;
     }
 
     public function get_reasons($id)
     {
         $query = $this->db->query("SELECT * FROM content_reason WHERE id_content = '".$id."' ORDER BY id");
+
         return $query->result_array();
     }
 
     public function get_status($id)
     {
-        $query = $this->db->query("SELECT id_status FROM contents WHERE id = ".$id);
-        $status=$query->row();
+        $query = $this->db->query('SELECT id_status FROM contents WHERE id = '.$id);
+        $status = $query->row();
+
         return $status->id_status;
     }
 
@@ -54,23 +61,26 @@ class modelcontents extends CI_Model
     {
         $query = $this->db->query("SELECT $field FROM content_reason WHERE id = '".$id."' LIMIT 1 ");
         $array = $query->row();
+
         return $array->$field;
     }
 
-    public function get_types($where='')
+    public function get_types($where = '')
     {
         $query = $this->db->query("SELECT * FROM content_type $where ORDER BY id");
+
         return $query->result_array();
     }
 
     public function get_joined_types()
     {
-        $query = $this->db->query("
+        $query = $this->db->query('
 			SELECT a.id AS id, a.name AS name
 			FROM content_type a JOIN contents b ON a.id = b.id_type
 			GROUP BY a.id
 			ORDER BY a.id
-		");
+		');
+
         return $query->result_array();
     }
 
@@ -93,6 +103,7 @@ class modelcontents extends CI_Model
             WHERE type LIKE '".$type."'
         ");
         $row = $query->row();
+
         return $row->num;
     }
 

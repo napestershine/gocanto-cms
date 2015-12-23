@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter Directory Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Create a Directory Map
  *
  * Reads the specified directory and builds an array
@@ -41,17 +42,17 @@
  * @param	int		depth of directories to traverse (0 = fully recursive, 1 = current dir, etc)
  * @return	array
  */
-if (! function_exists('directory_map')) {
+if (!function_exists('directory_map')) {
     function directory_map($source_dir, $directory_depth = 0, $hidden = false)
     {
         if ($fp = @opendir($source_dir)) {
-            $filedata    = array();
-            $new_depth    = $directory_depth - 1;
-            $source_dir    = rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+            $filedata = [];
+            $new_depth = $directory_depth - 1;
+            $source_dir = rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
             while (false !== ($file = readdir($fp))) {
                 // Remove '.', '..', and hidden files [optional]
-                if (! trim($file, '.') or ($hidden == false && $file[0] == '.')) {
+                if (!trim($file, '.') or ($hidden == false && $file[0] == '.')) {
                     continue;
                 }
 
@@ -63,13 +64,13 @@ if (! function_exists('directory_map')) {
             }
 
             closedir($fp);
+
             return $filedata;
         }
 
         return false;
     }
 }
-
 
 /* End of file directory_helper.php */
 /* Location: ./system/helpers/directory_helper.php */

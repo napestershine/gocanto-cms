@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -11,34 +13,35 @@
 */
 
 if (!function_exists('formatString')) {
-    function formatString($st, $type=1)
+    function formatString($st, $type = 1)
     {
         switch ($type) {
-            case 1:return ucwords($st);break;
-            case 2:return ucfirst($st);break;
-            case 3:return strtolower($st);break;
-            case 4:return strtoupper($st);break;
+            case 1:return ucwords($st); break;
+            case 2:return ucfirst($st); break;
+            case 3:return strtolower($st); break;
+            case 4:return strtoupper($st); break;
         }
     }
 }
 
 if (!function_exists('formatDate')) {
-    function formatDate($date, $type=1)
+    function formatDate($date, $type = 1)
     {
         switch ($type) {
             case 1: $format = 'F j, Y'; break; // - November 6, 2010
             case 2: $format = 'F j, Y g:i a'; break; // - November 6, 2010 12:50 am
             case 3: $format = 'F, Y'; break; // - November, 2010
         }
+
         return date($format, strtotime($date));
     }
 }
 
 if (!function_exists('_imprimir')) {
-    function _imprimir($array='', $die=false)
+    function _imprimir($array = '', $die = false)
     {
-        if ($array=='') {
-            $array=$_REQUEST;
+        if ($array == '') {
+            $array = $_REQUEST;
         }
         echo '<pre>';
         print_r($array);
@@ -50,15 +53,16 @@ if (!function_exists('_imprimir')) {
 }
 
 if (!function_exists('getPosSplit')) {
-    function getPosSplit($st, $pos=0, $char='.')
+    function getPosSplit($st, $pos = 0, $char = '.')
     {
         $array = explode($char, $st);
+
         return $array[$pos];
     }
 }
 
 if (!function_exists('numberFormat')) {
-    function numberFormat($num, $type=1)
+    function numberFormat($num, $type = 1)
     {
         switch ($type) {
             case 1:
@@ -75,6 +79,7 @@ if (!function_exists('showDate')) {
     function showDate($date)
     {
         $date = explode('-', $date);
+
         return $date[2].' / '.$date[1].' / '.$date[0];
     }
 }
@@ -101,8 +106,8 @@ if (!function_exists('paginationSetting')) {
         $config['base_url'] = $data['base_url'];
         $config['total_rows'] = $data['total_rows'];
         $config['per_page'] = $data['per_page'];
-        $config["uri_segment"] = $data['uri_segment'];
-        $config["num_links"] = round($config["total_rows"] / $config["per_page"]);
+        $config['uri_segment'] = $data['uri_segment'];
+        $config['num_links'] = round($config['total_rows'] / $config['per_page']);
 
         //style
         $config['full_tag_open'] = '<ul class="pagination">';
@@ -150,7 +155,7 @@ if (!function_exists('comments')) {
 }
 
 if (!function_exists('getCkEditorToolbar')) {
-    function getCkEditorToolbar($advanced=false)
+    function getCkEditorToolbar($advanced = false)
     {
         $insert = "
 			{
@@ -194,7 +199,7 @@ if (!function_exists('getCkEditorToolbar')) {
 			},
 			'/',
 
-			".($advanced?$insert:'')."
+			".($advanced ? $insert : '')."
 
 			{
 				name: 'styles',
@@ -208,10 +213,10 @@ if (!function_exists('new_directory')) {
     function new_directory($path)
     {
         if (!is_dir($path)) {
-            $old=umask(0);
+            $old = umask(0);
             mkdir($path, 0777);
             umask($old);
-            $fp=fopen($path.'index.html', 'w');
+            $fp = fopen($path.'index.html', 'w');
             fclose($fp);
         }
     }
@@ -226,13 +231,13 @@ if (!function_exists('upload_file')) {
         // $config['max_size']	= '100';
         // $config['max_width']  = '1024';
         // $config['max_height']  = '768';
-        $config['overwrite']  = true;
-        $config['file_name']  = md5(mt_rand(1, 9999999)*microtime());
+        $config['overwrite'] = true;
+        $config['file_name'] = md5(mt_rand(1, 9999999) * microtime());
 
         $ci->load->library('upload', $config);
         $ci->upload->initialize($config);
 
-        $photo = array();
+        $photo = [];
 
         try {
             if ($ci->upload->do_upload($file)) {
@@ -249,7 +254,7 @@ if (!function_exists('upload_file')) {
 }
 
 if (!function_exists('resize_image')) {
-    function resize_image($image, $width, $height=0)
+    function resize_image($image, $width, $height = 0)
     {
         $ci = get_instance();
         $img_nueva_anchura = $width;
@@ -258,22 +263,22 @@ if (!function_exists('resize_image')) {
         list($img_original_anchura, $img_original_altura) = getimagesize($image);
 
         if ($img_original_anchura > $img_nueva_anchura && $img_nueva_anchura > 0) {
-            $percent = (double)(($img_nueva_anchura * 100) / $img_original_anchura);
+            $percent = (double) (($img_nueva_anchura * 100) / $img_original_anchura);
         }
 
         if ($img_original_anchura <= $img_nueva_anchura) {
             $percent = 100;
         }
 
-        if (floor(($img_original_altura * $percent)/100) > $img_nueva_altura && $img_nueva_altura > 0) {
-            $percent = (double)(($img_nueva_altura * 100) / $img_original_altura);
+        if (floor(($img_original_altura * $percent) / 100) > $img_nueva_altura && $img_nueva_altura > 0) {
+            $percent = (double) (($img_nueva_altura * 100) / $img_original_altura);
         }
 
-        $img_nueva_anchura = ($img_original_anchura*$percent)/100;
-        $img_nueva_altura = ($img_original_altura*$percent)/100;
+        $img_nueva_anchura = ($img_original_anchura * $percent) / 100;
+        $img_nueva_altura = ($img_original_altura * $percent) / 100;
 
         $config['image_library'] = 'gd2';
-        $config['source_image']    = $image;
+        $config['source_image'] = $image;
         $config['create_thumb'] = false;
         $config['maintain_ratio'] = false;
         $config['width'] = intval($img_nueva_anchura);
@@ -288,14 +293,14 @@ if (!function_exists('resize_image')) {
 }
 
 if (!function_exists('get_language')) {
-    function get_language($print=false)
+    function get_language($print = false)
     {
         return 'english';
         if ($print) {
-            _imprimir($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+            _imprimir($_SERVER['HTTP_ACCEPT_LANGUAGE']);
         }
 
-        switch (substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2)) {
+        switch (substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)) {
             case 'en':
                 return 'english';
             break;
@@ -312,14 +317,15 @@ if (!function_exists('get_language')) {
 }
 
 if (!function_exists('postLimit')) {
-    function postLimit($post, $limit=100)
+    function postLimit($post, $limit = 100)
     {
         $array = explode(' ', $post);
         $out = '';
-        for ($i=0; $i<count($array) && $i<=$limit; $i++) {
+        for ($i = 0; $i < count($array) && $i <= $limit; $i++) {
             $out .= $array[$i].' ';
         }
         $out = rtrim($out, ', ');
+
         return rtrim($out, ' ');
     }
 }
@@ -376,10 +382,8 @@ if (!function_exists('stripEvents')) {
           */
 
         //strip buttons events
-        foreach ($data as $key => $value)
-        {
-            if ($key != 'config')
-            {
+        foreach ($data as $key => $value) {
+            if ($key != 'config') {
                 $content .= "
                     $('#".$value['btn_id']."').on('click', function(e) {
                             handler.open({
@@ -404,13 +408,9 @@ if (!function_exists('stripEvents')) {
             });
         ";
 
-        if (!write_file('js/stripeEvents.js', $content))
-        {
+        if (!write_file('js/stripeEvents.js', $content)) {
             return false;
-        }
-
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -421,11 +421,11 @@ if (!function_exists('enum')) {
     {
         $result = mysql_query("SELECT COLUMN_TYPE
                               FROM INFORMATION_SCHEMA.COLUMNS
-                              WHERE TABLE_NAME = '$table_name' AND COLUMN_NAME = '$column_name'")or die(mysql_error());
+                              WHERE TABLE_NAME = '$table_name' AND COLUMN_NAME = '$column_name'") or die(mysql_error());
 
         $row = mysql_fetch_array($result);
-        $enumList = explode(",", str_replace("'", "", substr($row['COLUMN_TYPE'], 5, (strlen($row['COLUMN_TYPE'])-6))));
-        $values=[];
+        $enumList = explode(',', str_replace("'", '', substr($row['COLUMN_TYPE'], 5, (strlen($row['COLUMN_TYPE']) - 6))));
+        $values = [];
         foreach ($enumList as $value) {
             $values[] = $value;
         }
@@ -434,37 +434,33 @@ if (!function_exists('enum')) {
     }
 }
 if (!function_exists('flash_message')) {
-
-    function flash_message($keys, $value='')
+    function flash_message($keys, $value = '')
     {
         @session_start();
         if (is_string($keys)) {
+            $_SESSION['flash_message'][$keys] = $value;
 
-            $_SESSION['flash_message'][$keys]=$value;
             return;
-
-        }else{
-
-            if (count($keys)==1) {
-                $return='';
-                if(isset($_SESSION['flash_message'][$keys[0]])){
-                    $return=$_SESSION['flash_message'][$keys[0]];
+        } else {
+            if (count($keys) == 1) {
+                $return = '';
+                if (isset($_SESSION['flash_message'][$keys[0]])) {
+                    $return = $_SESSION['flash_message'][$keys[0]];
                     unset($_SESSION['flash_message'][$keys[0]]);
                 }
+
                 return  $return;
             }
 
-            foreach ($keys as $key ) {
+            foreach ($keys as $key) {
+                $return[$key] = '';
 
-                $return[$key]='';
-
-                if(isset($_SESSION['flash_message'][$key])){
-                    $return[$key]=$_SESSION['flash_message'][$key];
+                if (isset($_SESSION['flash_message'][$key])) {
+                    $return[$key] = $_SESSION['flash_message'][$key];
                     unset($_SESSION['flash_message'][$key]);
                 }
-
-
             }
+
             return $return;
         }
     }
@@ -473,20 +469,19 @@ if (!function_exists('flash_message')) {
 if (!function_exists('uploadImgFromUrl')) {
     function uploadImgFromUrl($path, $url)
     {
-        $url_arr = explode ('/', $url);
+        $url_arr = explode('/', $url);
         $ct = count($url_arr);
-        $name = $url_arr[$ct-1];
+        $name = $url_arr[$ct - 1];
         $name_div = explode('.', $name);
         $ct_dot = count($name_div);
-        $img_type = $name_div[$ct_dot -1];
+        $img_type = $name_div[$ct_dot - 1];
 
-        $new = $path.md5($name.rand ()). "." . $img_type;
+        $new = $path.md5($name.rand()).'.'.$img_type;
 
         $data = file_get_contents($url);
 
         file_put_contents($new, $data);
 
         return $new;
-
     }
 }

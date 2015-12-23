@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class GraphObject
- * @package Facebook
+ * Class GraphObject.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -63,16 +62,16 @@ class GraphObject
    *
    * @param string $type The GraphObject subclass to cast to
    *
-   * @return GraphObject
-   *
    * @throws FacebookSDKException
+   *
+   * @return GraphObject
    */
   public function cast($type)
   {
       if ($this instanceof $type) {
           return $this;
       }
-      if (is_subclass_of($type, GraphObject::className())) {
+      if (is_subclass_of($type, self::className())) {
           return new $type($this->backingData);
       } else {
           throw new FacebookSDKException(
@@ -107,10 +106,10 @@ class GraphObject
           if (is_scalar($value)) {
               return $value;
           } else {
-              return (new GraphObject($value))->cast($type);
+              return (new self($value))->cast($type);
           }
       } else {
-          return null;
+          return;
       }
   }
 
@@ -129,21 +128,22 @@ class GraphObject
    */
   public function getPropertyAsArray($name, $type = 'Facebook\GraphObject')
   {
-      $target = array();
+      $target = [];
       if (isset($this->backingData[$name]['data'])) {
           $target = $this->backingData[$name]['data'];
       } elseif (isset($this->backingData[$name])
       && !is_scalar($this->backingData[$name])) {
           $target = $this->backingData[$name];
       }
-      $out = array();
+      $out = [];
       foreach ($target as $key => $value) {
           if (is_scalar($value)) {
               $out[$key] = $value;
           } else {
-              $out[$key] = (new GraphObject($value))->cast($type);
+              $out[$key] = (new self($value))->cast($type);
           }
       }
+
       return $out;
   }
 

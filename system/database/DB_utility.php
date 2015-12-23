@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * Code Igniter
+ * Code Igniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,39 +19,39 @@
 // ------------------------------------------------------------------------
 
 /**
- * Database Utility Class
+ * Database Utility Class.
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_utility extends CI_DB_forge
 {
     public $db;
-    public $data_cache        = array();
+    public $data_cache = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * Grabs the CI super object instance so we can access it.
-     *
      */
     public function __construct()
     {
         // Assign the main database object to $this->db
-        $CI =& get_instance();
-        $this->db =& $CI->db;
+        $CI = &get_instance();
+        $this->db = &$CI->db;
 
-        log_message('debug', "Database Utility Class Initialized");
+        log_message('debug', 'Database Utility Class Initialized');
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * List databases
+     * List databases.
      *
-     * @access	public
-     * @return	bool
+     * @return bool
      */
     public function list_databases()
     {
@@ -60,7 +61,7 @@ class CI_DB_utility extends CI_DB_forge
         }
 
         $query = $this->db->query($this->_list_databases());
-        $dbs = array();
+        $dbs = [];
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
                 $dbs[] = current($row);
@@ -68,17 +69,18 @@ class CI_DB_utility extends CI_DB_forge
         }
 
         $this->data_cache['db_names'] = $dbs;
+
         return $this->data_cache['db_names'];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Determine if a particular database exists
+     * Determine if a particular database exists.
      *
-     * @access	public
      * @param	string
-     * @return	boolean
+     *
+     * @return bool
      */
     public function database_exists($database_name)
     {
@@ -88,19 +90,18 @@ class CI_DB_utility extends CI_DB_forge
         if (method_exists($this, '_database_exists')) {
             return $this->_database_exists($database_name);
         } else {
-            return (! in_array($database_name, $this->list_databases())) ? false : true;
+            return (!in_array($database_name, $this->list_databases())) ? false : true;
         }
     }
-
 
     // --------------------------------------------------------------------
 
     /**
-     * Optimize Table
+     * Optimize Table.
      *
-     * @access	public
      * @param	string	the table name
-     * @return	bool
+     *
+     * @return bool
      */
     public function optimize_table($table_name)
     {
@@ -121,14 +122,13 @@ class CI_DB_utility extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Optimize Database
+     * Optimize Database.
      *
-     * @access	public
-     * @return	array
+     * @return array
      */
     public function optimize_database()
     {
-        $result = array();
+        $result = [];
         foreach ($this->db->list_tables() as $table_name) {
             $sql = $this->_optimize_table($table_name);
 
@@ -156,11 +156,11 @@ class CI_DB_utility extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Repair Table
+     * Repair Table.
      *
-     * @access	public
      * @param	string	the table name
-     * @return	bool
+     *
+     * @return bool
      */
     public function repair_table($table_name)
     {
@@ -175,24 +175,25 @@ class CI_DB_utility extends CI_DB_forge
         // Note: Due to a bug in current() that affects some versions
         // of PHP we can not pass function call directly into it
         $res = $query->result_array();
+
         return current($res);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Generate CSV from a query result object
+     * Generate CSV from a query result object.
      *
-     * @access	public
      * @param	object	The query result object
      * @param	string	The delimiter - comma by default
      * @param	string	The newline character - \n by default
      * @param	string	The enclosure - double quote by default
-     * @return	string
+     *
+     * @return string
      */
-    public function csv_from_result($query, $delim = ",", $newline = "\n", $enclosure = '"')
+    public function csv_from_result($query, $delim = ',', $newline = "\n", $enclosure = '"')
     {
-        if (! is_object($query) or ! method_exists($query, 'list_fields')) {
+        if (!is_object($query) or !method_exists($query, 'list_fields')) {
             show_error('You must submit a valid result object');
         }
 
@@ -221,22 +222,22 @@ class CI_DB_utility extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Generate XML data from a query result object
+     * Generate XML data from a query result object.
      *
-     * @access	public
      * @param	object	The query result object
      * @param	array	Any preferences
-     * @return	string
+     *
+     * @return string
      */
-    public function xml_from_result($query, $params = array())
+    public function xml_from_result($query, $params = [])
     {
-        if (! is_object($query) or ! method_exists($query, 'list_fields')) {
+        if (!is_object($query) or !method_exists($query, 'list_fields')) {
             show_error('You must submit a valid result object');
         }
 
         // Set our default values
-        foreach (array('root' => 'root', 'element' => 'element', 'newline' => "\n", 'tab' => "\t") as $key => $val) {
-            if (! isset($params[$key])) {
+        foreach (['root' => 'root', 'element' => 'element', 'newline' => "\n", 'tab' => "\t"] as $key => $val) {
+            if (!isset($params[$key])) {
                 $params[$key] = $val;
             }
         }
@@ -245,7 +246,7 @@ class CI_DB_utility extends CI_DB_forge
         extract($params);
 
         // Load the xml helper
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->load->helper('xml');
 
         // Generate the result
@@ -266,32 +267,31 @@ class CI_DB_utility extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Database Backup
+     * Database Backup.
      *
-     * @access	public
-     * @return	void
+     * @return void
      */
-    public function backup($params = array())
+    public function backup($params = [])
     {
         // If the parameters have not been submitted as an
         // array then we know that it is simply the table
         // name, which is a valid short cut.
         if (is_string($params)) {
-            $params = array('tables' => $params);
+            $params = ['tables' => $params];
         }
 
         // ------------------------------------------------------
 
         // Set up our default preferences
-        $prefs = array(
-                            'tables'        => array(),
-                            'ignore'        => array(),
+        $prefs = [
+                            'tables'          => [],
+                            'ignore'          => [],
                             'filename'        => '',
-                            'format'        => 'gzip', // gzip, zip, txt
+                            'format'          => 'gzip', // gzip, zip, txt
                             'add_drop'        => true,
-                            'add_insert'    => true,
-                            'newline'        => "\n"
-                        );
+                            'add_insert'      => true,
+                            'newline'         => "\n",
+                        ];
 
         // Did the user submit any preferences? If so set them....
         if (count($params) > 0) {
@@ -313,7 +313,7 @@ class CI_DB_utility extends CI_DB_forge
         // ------------------------------------------------------
 
         // Validate the format
-        if (! in_array($prefs['format'], array('gzip', 'zip', 'txt'), true)) {
+        if (!in_array($prefs['format'], ['gzip', 'zip', 'txt'], true)) {
             $prefs['format'] = 'txt';
         }
 
@@ -321,8 +321,8 @@ class CI_DB_utility extends CI_DB_forge
 
         // Is the encoder supported?  If not, we'll either issue an
         // error or use plain text depending on the debug settings
-        if (($prefs['format'] == 'gzip' and ! @function_exists('gzencode'))
-        or ($prefs['format'] == 'zip'  and ! @function_exists('gzcompress'))) {
+        if (($prefs['format'] == 'gzip' and !@function_exists('gzencode'))
+        or ($prefs['format'] == 'zip'  and !@function_exists('gzcompress'))) {
             if ($this->db->db_debug) {
                 return $this->db->display_error('db_unsuported_compression');
             }
@@ -362,20 +362,20 @@ class CI_DB_utility extends CI_DB_forge
             }
 
             // Tack on the ".sql" file extension if needed
-            if (! preg_match("|.+?\.sql$|", $prefs['filename'])) {
+            if (!preg_match("|.+?\.sql$|", $prefs['filename'])) {
                 $prefs['filename'] .= '.sql';
             }
 
             // Load the Zip class and output it
 
-            $CI =& get_instance();
+            $CI = &get_instance();
             $CI->load->library('zip');
             $CI->zip->add_data($prefs['filename'], $this->_backup($prefs));
+
             return $CI->zip->get_zip();
         }
     }
 }
-
 
 /* End of file DB_utility.php */
 /* Location: ./system/database/DB_utility.php */

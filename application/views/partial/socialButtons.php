@@ -11,15 +11,15 @@ fjs.parentNode.insertBefore(js, fjs);
   <div class="large-6 columns">
     <small>
     <?php
-    if ($content->type=='Blog') {
-    if (isset($content->author) && trim($content->author)!='') {
-    echo '<strong>'.$language->line('general_published_by').'</strong> <a href="'.$config['not_click'].'">'.formatString($content->author).'</a> ';
-    }
-    if (isset($content->date) && trim($content->date)!='') {
-    echo 'on '.formatDate($content->date);
-    }
+    if ($content->type == 'Blog') {
+        if (isset($content->author) && trim($content->author) != '') {
+            echo '<strong>'.$language->line('general_published_by').'</strong> <a href="'.$config['not_click'].'">'.formatString($content->author).'</a> ';
+        }
+        if (isset($content->date) && trim($content->date) != '') {
+            echo 'on '.formatDate($content->date);
+        }
     } else {
-    echo formatString($language->line('general_lets_get_started'), 2).'&nbsp;<strong class="color_green">'.$companyInfo->tlf.'</strong>';
+        echo formatString($language->line('general_lets_get_started'), 2).'&nbsp;<strong class="color_green">'.$companyInfo->tlf.'</strong>';
     }
     ?>
     </small>

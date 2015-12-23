@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -15,99 +16,97 @@
  * @filesource
  */
 
-if (! function_exists('xml_parser_create')) {
+if (!function_exists('xml_parser_create')) {
     show_error('Your PHP installation does not support XML');
 }
-
 
 // ------------------------------------------------------------------------
 
 /**
- * XML-RPC request handler class
+ * XML-RPC request handler class.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	XML-RPC
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/xmlrpc.html
  */
 class CI_Xmlrpc
 {
-    public $debug            = false;    // Debugging on or off
-    public $xmlrpcI4        = 'i4';
-    public $xmlrpcInt        = 'int';
-    public $xmlrpcBoolean    = 'boolean';
-    public $xmlrpcDouble    = 'double';
-    public $xmlrpcString    = 'string';
-    public $xmlrpcDateTime    = 'dateTime.iso8601';
-    public $xmlrpcBase64    = 'base64';
-    public $xmlrpcArray    = 'array';
-    public $xmlrpcStruct    = 'struct';
+    public $debug = false;    // Debugging on or off
+    public $xmlrpcI4 = 'i4';
+    public $xmlrpcInt = 'int';
+    public $xmlrpcBoolean = 'boolean';
+    public $xmlrpcDouble = 'double';
+    public $xmlrpcString = 'string';
+    public $xmlrpcDateTime = 'dateTime.iso8601';
+    public $xmlrpcBase64 = 'base64';
+    public $xmlrpcArray = 'array';
+    public $xmlrpcStruct = 'struct';
 
-    public $xmlrpcTypes    = array();
-    public $valid_parents    = array();
-    public $xmlrpcerr        = array();    // Response numbers
-    public $xmlrpcstr        = array();  // Response strings
+    public $xmlrpcTypes = [];
+    public $valid_parents = [];
+    public $xmlrpcerr = [];    // Response numbers
+    public $xmlrpcstr = [];  // Response strings
 
     public $xmlrpc_defencoding = 'UTF-8';
-    public $xmlrpcName            = 'XML-RPC for CodeIgniter';
-    public $xmlrpcVersion        = '1.1';
-    public $xmlrpcerruser        = 800; // Start of user errors
-    public $xmlrpcerrxml        = 100; // Start of XML Parse errors
-    public $xmlrpc_backslash    = ''; // formulate backslashes for escaping regexp
+    public $xmlrpcName = 'XML-RPC for CodeIgniter';
+    public $xmlrpcVersion = '1.1';
+    public $xmlrpcerruser = 800; // Start of user errors
+    public $xmlrpcerrxml = 100; // Start of XML Parse errors
+    public $xmlrpc_backslash = ''; // formulate backslashes for escaping regexp
 
     public $client;
     public $method;
     public $data;
-    public $message            = '';
-    public $error                = '';        // Error string for request
+    public $message = '';
+    public $error = '';        // Error string for request
     public $result;
-    public $response            = array();  // Response from remote server
+    public $response = [];  // Response from remote server
 
-    public $xss_clean            = true;
+    public $xss_clean = true;
 
     //-------------------------------------
     //  VALUES THAT MULTIPLE CLASSES NEED
     //-------------------------------------
 
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
-        $this->xmlrpcName        = $this->xmlrpcName;
+        $this->xmlrpcName = $this->xmlrpcName;
         $this->xmlrpc_backslash = chr(92).chr(92);
 
         // Types for info sent back and forth
-        $this->xmlrpcTypes = array(
+        $this->xmlrpcTypes = [
             $this->xmlrpcI4            => '1',
-            $this->xmlrpcInt        => '1',
-            $this->xmlrpcBoolean    => '1',
+            $this->xmlrpcInt           => '1',
+            $this->xmlrpcBoolean       => '1',
             $this->xmlrpcString        => '1',
             $this->xmlrpcDouble        => '1',
-            $this->xmlrpcDateTime    => '1',
+            $this->xmlrpcDateTime      => '1',
             $this->xmlrpcBase64        => '1',
-            $this->xmlrpcArray        => '2',
-            $this->xmlrpcStruct        => '3'
-            );
+            $this->xmlrpcArray         => '2',
+            $this->xmlrpcStruct        => '3',
+            ];
 
         // Array of Valid Parents for Various XML-RPC elements
-        $this->valid_parents = array('BOOLEAN'            => array('VALUE'),
-                                     'I4'                => array('VALUE'),
-                                     'INT'                => array('VALUE'),
-                                     'STRING'            => array('VALUE'),
-                                     'DOUBLE'            => array('VALUE'),
-                                     'DATETIME.ISO8601'    => array('VALUE'),
-                                     'BASE64'            => array('VALUE'),
-                                     'ARRAY'            => array('VALUE'),
-                                     'STRUCT'            => array('VALUE'),
-                                     'PARAM'            => array('PARAMS'),
-                                     'METHODNAME'        => array('METHODCALL'),
-                                     'PARAMS'            => array('METHODCALL', 'METHODRESPONSE'),
-                                     'MEMBER'            => array('STRUCT'),
-                                     'NAME'                => array('MEMBER'),
-                                     'DATA'                => array('ARRAY'),
-                                     'FAULT'            => array('METHODRESPONSE'),
-                                     'VALUE'            => array('MEMBER', 'DATA', 'PARAM', 'FAULT')
-                                     );
-
+        $this->valid_parents = ['BOOLEAN'                  => ['VALUE'],
+                                     'I4'                  => ['VALUE'],
+                                     'INT'                 => ['VALUE'],
+                                     'STRING'              => ['VALUE'],
+                                     'DOUBLE'              => ['VALUE'],
+                                     'DATETIME.ISO8601'    => ['VALUE'],
+                                     'BASE64'              => ['VALUE'],
+                                     'ARRAY'               => ['VALUE'],
+                                     'STRUCT'              => ['VALUE'],
+                                     'PARAM'               => ['PARAMS'],
+                                     'METHODNAME'          => ['METHODCALL'],
+                                     'PARAMS'              => ['METHODCALL', 'METHODRESPONSE'],
+                                     'MEMBER'              => ['STRUCT'],
+                                     'NAME'                => ['MEMBER'],
+                                     'DATA'                => ['ARRAY'],
+                                     'FAULT'               => ['METHODRESPONSE'],
+                                     'VALUE'               => ['MEMBER', 'DATA', 'PARAM', 'FAULT'],
+                                     ];
 
         // XML-RPC Responses
         $this->xmlrpcerr['unknown_method'] = '1';
@@ -117,23 +116,22 @@ class CI_Xmlrpc
         $this->xmlrpcerr['incorrect_params'] = '3';
         $this->xmlrpcstr['incorrect_params'] = 'Incorrect parameters were passed to method';
         $this->xmlrpcerr['introspect_unknown'] = '4';
-        $this->xmlrpcstr['introspect_unknown'] = "Cannot inspect signature for request: method unknown";
+        $this->xmlrpcstr['introspect_unknown'] = 'Cannot inspect signature for request: method unknown';
         $this->xmlrpcerr['http_error'] = '5';
         $this->xmlrpcstr['http_error'] = "Did not receive a '200 OK' response from remote server.";
         $this->xmlrpcerr['no_data'] = '6';
-        $this->xmlrpcstr['no_data'] ='No data received from server.';
+        $this->xmlrpcstr['no_data'] = 'No data received from server.';
 
         $this->initialize($config);
 
-        log_message('debug', "XML-RPC Class Initialized");
+        log_message('debug', 'XML-RPC Class Initialized');
     }
-
 
     //-------------------------------------
     //  Initialize Prefs
     //-------------------------------------
 
-    public function initialize($config = array())
+    public function initialize($config = [])
     {
         if (count($config) > 0) {
             foreach ($config as $key => $val) {
@@ -143,21 +141,22 @@ class CI_Xmlrpc
             }
         }
     }
+
     // END
 
     //-------------------------------------
     //  Take URL and parse it
     //-------------------------------------
 
-    public function server($url, $port=80)
+    public function server($url, $port = 80)
     {
-        if (substr($url, 0, 4) != "http") {
-            $url = "http://".$url;
+        if (substr($url, 0, 4) != 'http') {
+            $url = 'http://'.$url;
         }
 
         $parts = parse_url($url);
 
-        $path = (! isset($parts['path'])) ? '/' : $parts['path'];
+        $path = (!isset($parts['path'])) ? '/' : $parts['path'];
 
         if (isset($parts['query']) && $parts['query'] != '') {
             $path .= '?'.$parts['query'];
@@ -165,18 +164,20 @@ class CI_Xmlrpc
 
         $this->client = new XML_RPC_Client($path, $parts['host'], $port);
     }
+
     // END
 
     //-------------------------------------
     //  Set Timeout
     //-------------------------------------
 
-    public function timeout($seconds=5)
+    public function timeout($seconds = 5)
     {
-        if (! is_null($this->client) && is_int($seconds)) {
+        if (!is_null($this->client) && is_int($seconds)) {
             $this->client->timeout = $seconds;
         }
     }
+
     // END
 
     //-------------------------------------
@@ -187,6 +188,7 @@ class CI_Xmlrpc
     {
         $this->method = $function;
     }
+
     // END
 
     //-------------------------------------
@@ -195,18 +197,18 @@ class CI_Xmlrpc
 
     public function request($incoming)
     {
-        if (! is_array($incoming)) {
+        if (!is_array($incoming)) {
             // Send Error
         }
 
-        $this->data = array();
+        $this->data = [];
 
         foreach ($incoming as $key => $value) {
             $this->data[$key] = $this->values_parsing($value);
         }
     }
-    // END
 
+    // END
 
     //-------------------------------------
     //  Set Debug
@@ -224,7 +226,7 @@ class CI_Xmlrpc
     public function values_parsing($value, $return = false)
     {
         if (is_array($value) && array_key_exists(0, $value)) {
-            if (! isset($value['1']) or (! isset($this->xmlrpcTypes[$value['1']]))) {
+            if (!isset($value['1']) or (!isset($this->xmlrpcTypes[$value['1']]))) {
                 if (is_array($value[0])) {
                     $temp = new XML_RPC_Values($value['0'], 'array');
                 } else {
@@ -245,8 +247,8 @@ class CI_Xmlrpc
 
         return $temp;
     }
-    // END
 
+    // END
 
     //-------------------------------------
     //  Sends XML-RPC Request
@@ -257,11 +259,13 @@ class CI_Xmlrpc
         $this->message = new XML_RPC_Message($this->method, $this->data);
         $this->message->debug = $this->debug;
 
-        if (! $this->result = $this->client->send($this->message)) {
+        if (!$this->result = $this->client->send($this->message)) {
             $this->error = $this->result->errstr;
+
             return false;
-        } elseif (! is_object($this->result->val)) {
+        } elseif (!is_object($this->result->val)) {
             $this->error = $this->result->errstr;
+
             return false;
         }
 
@@ -269,6 +273,7 @@ class CI_Xmlrpc
 
         return true;
     }
+
     // END
 
     //-------------------------------------
@@ -279,6 +284,7 @@ class CI_Xmlrpc
     {
         return $this->error;
     }
+
     // END
 
     //-------------------------------------
@@ -289,6 +295,7 @@ class CI_Xmlrpc
     {
         return $this->response;
     }
+
     // END
 
     //-------------------------------------
@@ -299,8 +306,8 @@ class CI_Xmlrpc
     {
         return new XML_RPC_Response('0', $number, $message);
     }
-    // END
 
+    // END
 
     //-------------------------------------
     //  Send Response for Server Request
@@ -315,29 +322,30 @@ class CI_Xmlrpc
 
         return new XML_RPC_Response($response);
     }
+
     // END
 } // END XML_RPC Class
 
-
-
 /**
- * XML-RPC Client class
+ * XML-RPC Client class.
  *
  * @category	XML-RPC
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/xmlrpc.html
  */
 class XML_RPC_Client extends CI_Xmlrpc
 {
-    public $path            = '';
-    public $server            = '';
-    public $port            = 80;
-    public $errno            = '';
-    public $errstring        = '';
-    public $timeout        = 5;
-    public $no_multicall    = false;
+    public $path = '';
+    public $server = '';
+    public $port = 80;
+    public $errno = '';
+    public $errstring = '';
+    public $timeout = 5;
+    public $no_multicall = false;
 
-    public function __construct($path, $server, $port=80)
+    public function __construct($path, $server, $port = 80)
     {
         parent::__construct();
 
@@ -351,6 +359,7 @@ class XML_RPC_Client extends CI_Xmlrpc
         if (is_array($msg)) {
             // Multi-call disabled
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['multicall_recursion'], $this->xmlrpcstr['multicall_recursion']);
+
             return $r;
         }
 
@@ -361,9 +370,10 @@ class XML_RPC_Client extends CI_Xmlrpc
     {
         $fp = @fsockopen($this->server, $this->port, $this->errno, $this->errstr, $this->timeout);
 
-        if (! is_resource($fp)) {
+        if (!is_resource($fp)) {
             error_log($this->xmlrpcstr['http_error']);
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error']);
+
             return $r;
         }
 
@@ -373,31 +383,33 @@ class XML_RPC_Client extends CI_Xmlrpc
         }
 
         $r = "\r\n";
-        $op  = "POST {$this->path} HTTP/1.0$r";
+        $op = "POST {$this->path} HTTP/1.0$r";
         $op .= "Host: {$this->server}$r";
         $op .= "Content-Type: text/xml$r";
         $op .= "User-Agent: {$this->xmlrpcName}$r";
-        $op .= "Content-Length: ".strlen($msg->payload). "$r$r";
+        $op .= 'Content-Length: '.strlen($msg->payload)."$r$r";
         $op .= $msg->payload;
 
-
-        if (! fputs($fp, $op, strlen($op))) {
+        if (!fwrite($fp, $op, strlen($op))) {
             error_log($this->xmlrpcstr['http_error']);
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error']);
+
             return $r;
         }
         $resp = $msg->parseResponse($fp);
         fclose($fp);
+
         return $resp;
     }
 } // end class XML_RPC_Client
 
-
 /**
- * XML-RPC Response class
+ * XML-RPC Response class.
  *
  * @category	XML-RPC
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/xmlrpc.html
  */
 class XML_RPC_Response
@@ -405,7 +417,7 @@ class XML_RPC_Response
     public $val = 0;
     public $errno = 0;
     public $errstr = '';
-    public $headers = array();
+    public $headers = [];
     public $xss_clean = true;
 
     public function __construct($val, $code = 0, $fstr = '')
@@ -414,9 +426,9 @@ class XML_RPC_Response
             // error
             $this->errno = $code;
             $this->errstr = htmlentities($fstr);
-        } elseif (! is_object($val)) {
+        } elseif (!is_object($val)) {
             // programmer error, not an object
-            error_log("Invalid type '" . gettype($val) . "' (value: $val) passed to XML_RPC_Response.  Defaulting to empty value.");
+            error_log("Invalid type '".gettype($val)."' (value: $val) passed to XML_RPC_Response.  Defaulting to empty value.");
             $this->val = new XML_RPC_Values();
         } else {
             $this->val = $val;
@@ -447,28 +459,29 @@ class XML_RPC_Response
 		<struct>
 			<member>
 				<name>faultCode</name>
-				<value><int>' . $this->errno . '</int></value>
+				<value><int>'.$this->errno.'</int></value>
 			</member>
 			<member>
 				<name>faultString</name>
-				<value><string>' . $this->errstr . '</string></value>
+				<value><string>'.$this->errstr.'</string></value>
 			</member>
 		</struct>
 	</value>
 </fault>';
         } else {
-            $result .= "<params>\n<param>\n" .
-                    $this->val->serialize_class() .
+            $result .= "<params>\n<param>\n".
+                    $this->val->serialize_class().
                     "</param>\n</params>";
         }
         $result .= "\n</methodResponse>";
+
         return $result;
     }
 
-    public function decode($array=false)
+    public function decode($array = false)
     {
-        $CI =& get_instance();
-        
+        $CI = &get_instance();
+
         if ($array !== false && is_array($array)) {
             while (list($key) = each($array)) {
                 if (is_array($array[$key])) {
@@ -492,8 +505,6 @@ class XML_RPC_Response
         return $result;
     }
 
-
-
     //-------------------------------------
     //  XML-RPC Object to PHP Types
     //-------------------------------------
@@ -509,29 +520,30 @@ class XML_RPC_Response
             list($a, $b) = each($xmlrpc_val->me);
             $size = count($b);
 
-            $arr = array();
+            $arr = [];
 
             for ($i = 0; $i < $size; $i++) {
                 $arr[] = $this->xmlrpc_decoder($xmlrpc_val->me['array'][$i]);
             }
+
             return $arr;
         } elseif ($kind == 'struct') {
             reset($xmlrpc_val->me['struct']);
-            $arr = array();
+            $arr = [];
 
             while (list($key, $value) = each($xmlrpc_val->me['struct'])) {
                 $arr[$key] = $this->xmlrpc_decoder($value);
             }
+
             return $arr;
         }
     }
-
 
     //-------------------------------------
     //  ISO-8601 time to server or UTC time
     //-------------------------------------
 
-    public function iso8601_decode($time, $utc=0)
+    public function iso8601_decode($time, $utc = 0)
     {
         // return a timet in the localtime, or UTC
         $t = 0;
@@ -539,33 +551,34 @@ class XML_RPC_Response
             $fnc = ($utc == 1) ? 'gmmktime' : 'mktime';
             $t = $fnc($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
+
         return $t;
     }
 } // End Response Class
 
-
-
 /**
- * XML-RPC Message class
+ * XML-RPC Message class.
  *
  * @category	XML-RPC
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/xmlrpc.html
  */
 class XML_RPC_Message extends CI_Xmlrpc
 {
     public $payload;
     public $method_name;
-    public $params            = array();
-    public $xh                = array();
+    public $params = [];
+    public $xh = [];
 
-    public function __construct($method, $pars=0)
+    public function __construct($method, $pars = 0)
     {
         parent::__construct();
 
         $this->method_name = $method;
         if (is_array($pars) && count($pars) > 0) {
-            for ($i=0; $i<count($pars); $i++) {
+            for ($i = 0; $i < count($pars); $i++) {
                 // $pars[$i] = XML_RPC_Values
                 $this->params[] = $pars[$i];
             }
@@ -578,11 +591,11 @@ class XML_RPC_Message extends CI_Xmlrpc
 
     public function createPayload()
     {
-        $this->payload = "<?xml version=\"1.0\"?".">\r\n<methodCall>\r\n";
-        $this->payload .= '<methodName>' . $this->method_name . "</methodName>\r\n";
+        $this->payload = '<?xml version="1.0"?'.">\r\n<methodCall>\r\n";
+        $this->payload .= '<methodName>'.$this->method_name."</methodName>\r\n";
         $this->payload .= "<params>\r\n";
 
-        for ($i=0; $i<count($this->params); $i++) {
+        for ($i = 0; $i < count($this->params); $i++) {
             // $p = XML_RPC_Values
             $p = $this->params[$i];
             $this->payload .= "<param>\r\n".$p->serialize_class()."</param>\r\n";
@@ -608,29 +621,30 @@ class XML_RPC_Message extends CI_Xmlrpc
         //-------------------------------------
 
         if ($this->debug === true) {
-            echo "<pre>";
-            echo "---DATA---\n" . htmlspecialchars($data) . "\n---END DATA---\n\n";
-            echo "</pre>";
+            echo '<pre>';
+            echo "---DATA---\n".htmlspecialchars($data)."\n---END DATA---\n\n";
+            echo '</pre>';
         }
 
         //-------------------------------------
         //  Check for data
         //-------------------------------------
 
-        if ($data == "") {
+        if ($data == '') {
             error_log($this->xmlrpcstr['no_data']);
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['no_data'], $this->xmlrpcstr['no_data']);
+
             return $r;
         }
-
 
         //-------------------------------------
         //  Check for HTTP 200 Response
         //-------------------------------------
 
-        if (strncmp($data, 'HTTP', 4) == 0 && ! preg_match('/^HTTP\/[0-9\.]+ 200 /', $data)) {
-            $errstr= substr($data, 0, strpos($data, "\n")-1);
-            $r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error']. ' (' . $errstr . ')');
+        if (strncmp($data, 'HTTP', 4) == 0 && !preg_match('/^HTTP\/[0-9\.]+ 200 /', $data)) {
+            $errstr = substr($data, 0, strpos($data, "\n") - 1);
+            $r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error'].' ('.$errstr.')');
+
             return $r;
         }
 
@@ -640,20 +654,19 @@ class XML_RPC_Message extends CI_Xmlrpc
 
         $parser = xml_parser_create($this->xmlrpc_defencoding);
 
-        $this->xh[$parser]                    = array();
-        $this->xh[$parser]['isf']            = 0;
-        $this->xh[$parser]['ac']            = '';
-        $this->xh[$parser]['headers']        = array();
-        $this->xh[$parser]['stack']            = array();
-        $this->xh[$parser]['valuestack']    = array();
-        $this->xh[$parser]['isf_reason']    = 0;
+        $this->xh[$parser] = [];
+        $this->xh[$parser]['isf'] = 0;
+        $this->xh[$parser]['ac'] = '';
+        $this->xh[$parser]['headers'] = [];
+        $this->xh[$parser]['stack'] = [];
+        $this->xh[$parser]['valuestack'] = [];
+        $this->xh[$parser]['isf_reason'] = 0;
 
         xml_set_object($parser, $this);
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, true);
         xml_set_element_handler($parser, 'open_tag', 'closing_tag');
         xml_set_character_data_handler($parser, 'character_data');
         //xml_set_default_handler($parser, 'default_handler');
-
 
         //-------------------------------------
         //  GET HEADERS
@@ -668,18 +681,18 @@ class XML_RPC_Message extends CI_Xmlrpc
         }
         $data = implode("\r\n", $lines);
 
-
         //-------------------------------------
         //  PARSE XML DATA
         //-------------------------------------
 
-        if (! xml_parse($parser, $data, count($data))) {
+        if (!xml_parse($parser, $data, count($data))) {
             $errstr = sprintf('XML error: %s at line %d',
                     xml_error_string(xml_get_error_code($parser)),
                     xml_get_current_line_number($parser));
             //error_log($errstr);
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['invalid_return'], $this->xmlrpcstr['invalid_return']);
             xml_parser_free($parser);
+
             return $r;
         }
         xml_parser_free($parser);
@@ -696,9 +709,11 @@ class XML_RPC_Message extends CI_Xmlrpc
             }
 
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['invalid_return'], $this->xmlrpcstr['invalid_return'].' '.$this->xh[$parser]['isf_reason']);
+
             return $r;
-        } elseif (! is_object($this->xh[$parser]['value'])) {
+        } elseif (!is_object($this->xh[$parser]['value'])) {
             $r = new XML_RPC_Response(0, $this->xmlrpcerr['invalid_return'], $this->xmlrpcstr['invalid_return'].' '.$this->xh[$parser]['isf_reason']);
+
             return $r;
         }
 
@@ -707,7 +722,7 @@ class XML_RPC_Message extends CI_Xmlrpc
         //-------------------------------------
 
         if ($this->debug === true) {
-            echo "<pre>";
+            echo '<pre>';
 
             if (count($this->xh[$parser]['headers'] > 0)) {
                 echo "---HEADERS---\n";
@@ -717,9 +732,9 @@ class XML_RPC_Message extends CI_Xmlrpc
                 echo "---END HEADERS---\n\n";
             }
 
-            echo "---DATA---\n" . htmlspecialchars($data) . "\n---END DATA---\n\n";
+            echo "---DATA---\n".htmlspecialchars($data)."\n---END DATA---\n\n";
 
-            echo "---PARSED---\n" ;
+            echo "---PARSED---\n";
             var_dump($this->xh[$parser]['value']);
             echo "\n---END PARSED---</pre>";
         }
@@ -746,6 +761,7 @@ class XML_RPC_Message extends CI_Xmlrpc
         }
 
         $r->headers = $this->xh[$parser]['headers'];
+
         return $r;
     }
 
@@ -780,13 +796,15 @@ class XML_RPC_Message extends CI_Xmlrpc
             if ($name != 'METHODRESPONSE' && $name != 'METHODCALL') {
                 $this->xh[$the_parser]['isf'] = 2;
                 $this->xh[$the_parser]['isf_reason'] = 'Top level XML-RPC element is missing';
+
                 return;
             }
         } else {
             // not top level element: see if parent is OK
-            if (! in_array($this->xh[$the_parser]['stack'][0], $this->valid_parents[$name], true)) {
+            if (!in_array($this->xh[$the_parser]['stack'][0], $this->valid_parents[$name], true)) {
                 $this->xh[$the_parser]['isf'] = 2;
                 $this->xh[$the_parser]['isf_reason'] = "XML-RPC element $name cannot be child of ".$this->xh[$the_parser]['stack'][0];
+
                 return;
             }
         }
@@ -796,8 +814,8 @@ class XML_RPC_Message extends CI_Xmlrpc
             case 'ARRAY':
                 // Creates array for child elements
 
-                $cur_val = array('value' => array(),
-                                 'type'     => $name);
+                $cur_val = ['value'         => [],
+                                 'type'     => $name, ];
 
                 array_unshift($this->xh[$the_parser]['valuestack'], $cur_val);
             break;
@@ -826,7 +844,8 @@ class XML_RPC_Message extends CI_Xmlrpc
                 if ($this->xh[$the_parser]['vt'] != 'value') {
                     //two data elements inside a value: an error occurred!
                     $this->xh[$the_parser]['isf'] = 2;
-                    $this->xh[$the_parser]['isf_reason'] = "'Twas a $name element following a ".$this->xh[$the_parser]['vt']." element inside a single value";
+                    $this->xh[$the_parser]['isf_reason'] = "'Twas a $name element following a ".$this->xh[$the_parser]['vt'].' element inside a single value';
+
                     return;
                 }
 
@@ -859,8 +878,8 @@ class XML_RPC_Message extends CI_Xmlrpc
             $this->xh[$the_parser]['lv'] = 0;
         }
     }
-    // END
 
+    // END
 
     //-------------------------------------
     //  End Element Handler
@@ -883,8 +902,8 @@ class XML_RPC_Message extends CI_Xmlrpc
             case 'STRUCT':
             case 'ARRAY':
                 $cur_val = array_shift($this->xh[$the_parser]['valuestack']);
-                $this->xh[$the_parser]['value'] = (! isset($cur_val['values'])) ? array() : $cur_val['values'];
-                $this->xh[$the_parser]['vt']    = strtolower($name);
+                $this->xh[$the_parser]['value'] = (!isset($cur_val['values'])) ? [] : $cur_val['values'];
+                $this->xh[$the_parser]['vt'] = strtolower($name);
             break;
             case 'NAME':
                 $this->xh[$the_parser]['valuestack'][0]['name'] = $this->xh[$the_parser]['ac'];
@@ -900,33 +919,33 @@ class XML_RPC_Message extends CI_Xmlrpc
 
                 if ($name == 'STRING') {
                     $this->xh[$the_parser]['value'] = $this->xh[$the_parser]['ac'];
-                } elseif ($name=='DATETIME.ISO8601') {
-                    $this->xh[$the_parser]['vt']    = $this->xmlrpcDateTime;
+                } elseif ($name == 'DATETIME.ISO8601') {
+                    $this->xh[$the_parser]['vt'] = $this->xmlrpcDateTime;
                     $this->xh[$the_parser]['value'] = $this->xh[$the_parser]['ac'];
-                } elseif ($name=='BASE64') {
+                } elseif ($name == 'BASE64') {
                     $this->xh[$the_parser]['value'] = base64_decode($this->xh[$the_parser]['ac']);
-                } elseif ($name=='BOOLEAN') {
+                } elseif ($name == 'BOOLEAN') {
                     // Translated BOOLEAN values to TRUE AND FALSE
                     if ($this->xh[$the_parser]['ac'] == '1') {
                         $this->xh[$the_parser]['value'] = true;
                     } else {
                         $this->xh[$the_parser]['value'] = false;
                     }
-                } elseif ($name=='DOUBLE') {
+                } elseif ($name == 'DOUBLE') {
                     // we have a DOUBLE
                     // we must check that only 0123456789-.<space> are characters here
-                    if (! preg_match('/^[+-]?[eE0-9\t \.]+$/', $this->xh[$the_parser]['ac'])) {
+                    if (!preg_match('/^[+-]?[eE0-9\t \.]+$/', $this->xh[$the_parser]['ac'])) {
                         $this->xh[$the_parser]['value'] = 'ERROR_NON_NUMERIC_FOUND';
                     } else {
-                        $this->xh[$the_parser]['value'] = (double)$this->xh[$the_parser]['ac'];
+                        $this->xh[$the_parser]['value'] = (double) $this->xh[$the_parser]['ac'];
                     }
                 } else {
                     // we have an I4/INT
                     // we must check that only 0123456789-<space> are characters here
-                    if (! preg_match('/^[+-]?[0-9\t ]+$/', $this->xh[$the_parser]['ac'])) {
+                    if (!preg_match('/^[+-]?[0-9\t ]+$/', $this->xh[$the_parser]['ac'])) {
                         $this->xh[$the_parser]['value'] = 'ERROR_NON_NUMERIC_FOUND';
                     } else {
-                        $this->xh[$the_parser]['value'] = (int)$this->xh[$the_parser]['ac'];
+                        $this->xh[$the_parser]['value'] = (int) $this->xh[$the_parser]['ac'];
                     }
                 }
                 $this->xh[$the_parser]['ac'] = '';
@@ -934,9 +953,9 @@ class XML_RPC_Message extends CI_Xmlrpc
             break;
             case 'VALUE':
                 // This if() detects if no scalar was inside <VALUE></VALUE>
-                if ($this->xh[$the_parser]['vt']=='value') {
-                    $this->xh[$the_parser]['value']    = $this->xh[$the_parser]['ac'];
-                    $this->xh[$the_parser]['vt']    = $this->xmlrpcString;
+                if ($this->xh[$the_parser]['vt'] == 'value') {
+                    $this->xh[$the_parser]['value'] = $this->xh[$the_parser]['ac'];
+                    $this->xh[$the_parser]['vt'] = $this->xmlrpcString;
                 }
 
                 // build the XML-RPC value out of the data received, and substitute it
@@ -951,7 +970,7 @@ class XML_RPC_Message extends CI_Xmlrpc
                 }
             break;
             case 'MEMBER':
-                $this->xh[$the_parser]['ac']='';
+                $this->xh[$the_parser]['ac'] = '';
 
                 // If value add to array in the stack for the last element built
                 if ($this->xh[$the_parser]['value']) {
@@ -959,7 +978,7 @@ class XML_RPC_Message extends CI_Xmlrpc
                 }
             break;
             case 'DATA':
-                $this->xh[$the_parser]['ac']='';
+                $this->xh[$the_parser]['ac'] = '';
             break;
             case 'PARAM':
                 if ($this->xh[$the_parser]['value']) {
@@ -997,7 +1016,7 @@ class XML_RPC_Message extends CI_Xmlrpc
                 $this->xh[$the_parser]['lv'] = 2; // Found a value
             }
 
-            if (! @isset($this->xh[$the_parser]['ac'])) {
+            if (!@isset($this->xh[$the_parser]['ac'])) {
                 $this->xh[$the_parser]['ac'] = '';
             }
 
@@ -1005,16 +1024,15 @@ class XML_RPC_Message extends CI_Xmlrpc
         }
     }
 
-
     public function addParam($par)
     {
-        $this->params[]=$par;
+        $this->params[] = $par;
     }
 
-    public function output_parameters($array=false)
+    public function output_parameters($array = false)
     {
-        $CI =& get_instance();
-        
+        $CI = &get_instance();
+
         if ($array !== false && is_array($array)) {
             while (list($key) = each($array)) {
                 if (is_array($array[$key])) {
@@ -1028,7 +1046,7 @@ class XML_RPC_Message extends CI_Xmlrpc
 
             $parameters = $array;
         } else {
-            $parameters = array();
+            $parameters = [];
 
             for ($i = 0; $i < count($this->params); $i++) {
                 $a_param = $this->decode_message($this->params[$i]);
@@ -1044,7 +1062,6 @@ class XML_RPC_Message extends CI_Xmlrpc
         return $parameters;
     }
 
-
     public function decode_message($param)
     {
         $kind = $param->kindOf();
@@ -1055,7 +1072,7 @@ class XML_RPC_Message extends CI_Xmlrpc
             reset($param->me);
             list($a, $b) = each($param->me);
 
-            $arr = array();
+            $arr = [];
 
             for ($i = 0; $i < count($b); $i++) {
                 $arr[] = $this->decode_message($param->me['array'][$i]);
@@ -1065,7 +1082,7 @@ class XML_RPC_Message extends CI_Xmlrpc
         } elseif ($kind == 'struct') {
             reset($param->me['struct']);
 
-            $arr = array();
+            $arr = [];
 
             while (list($key, $value) = each($param->me['struct'])) {
                 $arr[$key] = $this->decode_message($value);
@@ -1076,21 +1093,21 @@ class XML_RPC_Message extends CI_Xmlrpc
     }
 } // End XML_RPC_Messages class
 
-
-
 /**
- * XML-RPC Values class
+ * XML-RPC Values class.
  *
  * @category	XML-RPC
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/libraries/xmlrpc.html
  */
 class XML_RPC_Values extends CI_Xmlrpc
 {
-    public $me        = array();
-    public $mytype    = 0;
+    public $me = [];
+    public $mytype = 0;
 
-    public function __construct($val=-1, $type='')
+    public function __construct($val = -1, $type = '')
     {
         parent::__construct();
 
@@ -1107,61 +1124,68 @@ class XML_RPC_Values extends CI_Xmlrpc
         }
     }
 
-    public function addScalar($val, $type='string')
+    public function addScalar($val, $type = 'string')
     {
         $typeof = $this->xmlrpcTypes[$type];
 
-        if ($this->mytype==1) {
+        if ($this->mytype == 1) {
             echo '<strong>XML_RPC_Values</strong>: scalar can have only one value<br />';
+
             return 0;
         }
 
         if ($typeof != 1) {
             echo '<strong>XML_RPC_Values</strong>: not a scalar type (${typeof})<br />';
+
             return 0;
         }
 
         if ($type == $this->xmlrpcBoolean) {
-            if (strcasecmp($val, 'true')==0 or $val==1 or ($val==true && strcasecmp($val, 'false'))) {
+            if (strcasecmp($val, 'true') == 0 or $val == 1 or ($val == true && strcasecmp($val, 'false'))) {
                 $val = 1;
             } else {
-                $val=0;
+                $val = 0;
             }
         }
 
         if ($this->mytype == 2) {
             // adding to an array here
             $ar = $this->me['array'];
-            $ar[] = new XML_RPC_Values($val, $type);
+            $ar[] = new self($val, $type);
             $this->me['array'] = $ar;
         } else {
             // a scalar, so set the value and remember we're scalar
             $this->me[$type] = $val;
             $this->mytype = $typeof;
         }
+
         return 1;
     }
 
     public function addArray($vals)
     {
         if ($this->mytype != 0) {
-            echo '<strong>XML_RPC_Values</strong>: already initialized as a [' . $this->kindOf() . ']<br />';
+            echo '<strong>XML_RPC_Values</strong>: already initialized as a ['.$this->kindOf().']<br />';
+
             return 0;
         }
 
         $this->mytype = $this->xmlrpcTypes['array'];
         $this->me['array'] = $vals;
+
         return 1;
     }
 
     public function addStruct($vals)
     {
         if ($this->mytype != 0) {
-            echo '<strong>XML_RPC_Values</strong>: already initialized as a [' . $this->kindOf() . ']<br />';
+            echo '<strong>XML_RPC_Values</strong>: already initialized as a ['.$this->kindOf().']<br />';
+
             return 0;
         }
         $this->mytype = $this->xmlrpcTypes['struct'];
         $this->me['struct'] = $vals;
+
         return 1;
     }
 
@@ -1201,22 +1225,22 @@ class XML_RPC_Values extends CI_Xmlrpc
             case 2:
                 // array
                 $rs .= "<array>\n<data>\n";
-                for ($i=0; $i < count($val); $i++) {
+                for ($i = 0; $i < count($val); $i++) {
                     $rs .= $this->serializeval($val[$i]);
                 }
-                $rs.="</data>\n</array>\n";
+                $rs .= "</data>\n</array>\n";
                 break;
             case 1:
                 // others
                 switch ($typ) {
                     case $this->xmlrpcBase64:
-                        $rs .= "<{$typ}>" . base64_encode((string)$val) . "</{$typ}>\n";
+                        $rs .= "<{$typ}>".base64_encode((string) $val)."</{$typ}>\n";
                     break;
                     case $this->xmlrpcBoolean:
-                        $rs .= "<{$typ}>" . ((bool)$val ? '1' : '0') . "</{$typ}>\n";
+                        $rs .= "<{$typ}>".((bool) $val ? '1' : '0')."</{$typ}>\n";
                     break;
                     case $this->xmlrpcString:
-                        $rs .= "<{$typ}>" . htmlspecialchars((string)$val). "</{$typ}>\n";
+                        $rs .= "<{$typ}>".htmlspecialchars((string) $val)."</{$typ}>\n";
                     break;
                     default:
                         $rs .= "<{$typ}>{$val}</{$typ}>\n";
@@ -1225,6 +1249,7 @@ class XML_RPC_Values extends CI_Xmlrpc
             default:
             break;
         }
+
         return $rs;
     }
 
@@ -1240,6 +1265,7 @@ class XML_RPC_Values extends CI_Xmlrpc
 
         list($typ, $val) = each($ar);
         $rs = "<value>\n".$this->serializedata($typ, $val)."</value>\n";
+
         return $rs;
     }
 
@@ -1247,9 +1273,9 @@ class XML_RPC_Values extends CI_Xmlrpc
     {
         reset($this->me);
         list($a, $b) = each($this->me);
+
         return $b;
     }
-
 
     //-------------------------------------
     // Encode time in ISO-8601 form.
@@ -1257,17 +1283,18 @@ class XML_RPC_Values extends CI_Xmlrpc
 
     // Useful for sending time in XML-RPC
 
-    public function iso8601_encode($time, $utc=0)
+    public function iso8601_encode($time, $utc = 0)
     {
         if ($utc == 1) {
-            $t = strftime("%Y%m%dT%H:%i:%s", $time);
+            $t = strftime('%Y%m%dT%H:%i:%s', $time);
         } else {
             if (function_exists('gmstrftime')) {
-                $t = gmstrftime("%Y%m%dT%H:%i:%s", $time);
+                $t = gmstrftime('%Y%m%dT%H:%i:%s', $time);
             } else {
-                $t = strftime("%Y%m%dT%H:%i:%s", $time - date('Z'));
+                $t = strftime('%Y%m%dT%H:%i:%s', $time - date('Z'));
             }
         }
+
         return $t;
     }
 }

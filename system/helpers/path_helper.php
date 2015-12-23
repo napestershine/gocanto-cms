@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter Path Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Set Realpath
  *
  * @access	public
@@ -37,7 +38,7 @@
  * @param	bool	checks to see if the path exists
  * @return	string
  */
-if (! function_exists('set_realpath')) {
+if (!function_exists('set_realpath')) {
     function set_realpath($path, $check_existance = false)
     {
         // Security check to make sure the path is NOT a URL.  No remote file inclusion!
@@ -51,11 +52,11 @@ if (! function_exists('set_realpath')) {
         }
 
         // Add a trailing slash
-        $path = preg_replace("#([^/])/*$#", "\\1/", $path);
+        $path = preg_replace('#([^/])/*$#', '\\1/', $path);
 
         // Make sure the path exists
         if ($check_existance == true) {
-            if (! is_dir($path)) {
+            if (!is_dir($path)) {
                 show_error('Not a valid path: '.$path);
             }
         }
@@ -63,7 +64,6 @@ if (! function_exists('set_realpath')) {
         return $path;
     }
 }
-
 
 /* End of file path_helper.php */
 /* Location: ./system/helpers/path_helper.php */

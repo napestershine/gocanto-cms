@@ -19,15 +19,13 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 use Facebook\Entities\SignedRequest;
 
 /**
- * Class FacebookSignedRequestFromInputHelper
- * @package Facebook
+ * Class FacebookSignedRequestFromInputHelper.
  */
 abstract class FacebookSignedRequestFromInputHelper
 {
@@ -91,7 +89,8 @@ abstract class FacebookSignedRequestFromInputHelper
       if ($this->signedRequest && $this->signedRequest->hasOAuthData()) {
           return FacebookSession::newSessionFromSignedRequest($this->signedRequest);
       }
-      return null;
+
+      return;
   }
 
   /**
@@ -132,7 +131,7 @@ abstract class FacebookSignedRequestFromInputHelper
           return $_GET['signed_request'];
       }
 
-      return null;
+      return;
   }
 
   /**
@@ -146,7 +145,7 @@ abstract class FacebookSignedRequestFromInputHelper
           return $_POST['signed_request'];
       }
 
-      return null;
+      return;
   }
 
   /**
@@ -156,10 +155,11 @@ abstract class FacebookSignedRequestFromInputHelper
    */
   public function getRawSignedRequestFromCookie()
   {
-      $strCookieKey = 'fbsr_' . $this->appId;
+      $strCookieKey = 'fbsr_'.$this->appId;
       if (isset($_COOKIE[$strCookieKey])) {
           return $_COOKIE[$strCookieKey];
       }
-      return null;
+
+      return;
   }
 }

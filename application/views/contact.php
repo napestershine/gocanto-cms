@@ -36,7 +36,7 @@
 								<select name="cboContactReason" id="cboContactReason">
 									<?php foreach ($reasons as $value) {
     ?>
-									<option value="<?=$value['id']?>" <?php if (isset($op) && $op==$value['id']) {
+									<option value="<?=$value['id']?>" <?php if (isset($op) && $op == $value['id']) {
     echo 'selected';
 }
     ?>  ><?=formatString($value['name'], 2)?></option>
@@ -78,7 +78,7 @@
 					<div class="row">
 						<div class="large-12 columns">
 							<label><?=$language->line('support_message')?>&nbsp;<small>(<?=$language->line('general_required')?>)</small>
-								<textarea name="txtContactMsg" id="txtContactMsg" style = "height: 150px" placeholder="Your <?=$language->line('support_message')?>" required><?=(isset($plan)&&$plan!=''?'I would like to get a #'.$plan.' plan and ...':'')?></textarea>
+								<textarea name="txtContactMsg" id="txtContactMsg" style = "height: 150px" placeholder="Your <?=$language->line('support_message')?>" required><?=(isset($plan) && $plan != '' ? 'I would like to get a #'.$plan.' plan and ...' : '')?></textarea>
 							</label>
 							<small class="error"><?=$language->line('support_message_lblerror')?>.</small>
 						</div>

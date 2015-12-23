@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\HttpClients;
 
@@ -27,7 +26,6 @@ namespace Facebook\HttpClients;
  * Class FacebookCurl
  * Abstraction for the procedural curl elements so that curl can be mocked
  * and the implementation can be tested.
- * @package Facebook
  */
 class FacebookCurl
 {
@@ -37,7 +35,7 @@ class FacebookCurl
   protected $curl = null;
 
   /**
-   * Make a new curl reference instance
+   * Make a new curl reference instance.
    */
   public function init()
   {
@@ -47,7 +45,7 @@ class FacebookCurl
   }
 
   /**
-   * Set a curl option
+   * Set a curl option.
    *
    * @param $key
    * @param $value
@@ -58,7 +56,7 @@ class FacebookCurl
   }
 
   /**
-   * Set an array of options to a curl resource
+   * Set an array of options to a curl resource.
    *
    * @param array $options
    */
@@ -68,7 +66,7 @@ class FacebookCurl
   }
 
   /**
-   * Send a curl request
+   * Send a curl request.
    *
    * @return mixed
    */
@@ -78,7 +76,7 @@ class FacebookCurl
   }
 
   /**
-   * Return the curl error number
+   * Return the curl error number.
    *
    * @return int
    */
@@ -88,7 +86,7 @@ class FacebookCurl
   }
 
   /**
-   * Return the curl error message
+   * Return the curl error message.
    *
    * @return string
    */
@@ -98,7 +96,7 @@ class FacebookCurl
   }
 
   /**
-   * Get info from a curl reference
+   * Get info from a curl reference.
    *
    * @param $type
    *
@@ -110,7 +108,7 @@ class FacebookCurl
   }
 
   /**
-   * Get the currently installed curl version
+   * Get the currently installed curl version.
    *
    * @return array
    */
@@ -120,7 +118,7 @@ class FacebookCurl
   }
 
   /**
-   * Close the resource connection to curl
+   * Close the resource connection to curl.
    */
   public function close()
   {

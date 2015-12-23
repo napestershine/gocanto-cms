@@ -1,10 +1,10 @@
 <?php
-if (empty($wp_user) && $wp_user['id']=='') {
+if (empty($wp_user) && $wp_user['id'] == '') {
     redirect(base_url().'wpanel');
     die();
     exit();
 }
-$ci = & get_instance();
+$ci = &get_instance();
 $ci->load->library('stripe');
 //getSubscription($customer_id, $subscription_id)
 ?>
@@ -34,18 +34,19 @@ $ci->load->library('stripe');
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($services as $array) { ?>
+						<?php foreach ($services as $array) {
+    ?>
 						<tr id="tr_<?=$array['id']?>">
 							<td><?=$array['name']?></td>
-							<td><span class="label radius <?=$array['sub_status']=='active'?'success':'alert'?>"><?=formatString($array['sub_status'])?></span></td>
+							<td><span class="label radius <?=$array['sub_status'] == 'active' ? 'success' : 'alert'?>"><?=formatString($array['sub_status'])?></span></td>
 							<td>
 								<?php
-									$plan = $ci->stripe->getSubscription($array['user_stripe_id'], $array['sub_stripe_id']);	
-									echo $plan->plan->name;
-								?>
+                                    $plan = $ci->stripe->getSubscription($array['user_stripe_id'], $array['sub_stripe_id']);
+    echo $plan->plan->name;
+    ?>
 							</td>
 							<td><?=formatDate($array['sub_created_at'])?></td>
-							<td><?=$array['sub_updated_at']=='0000-00-00 00:00:00'?$language->line('services_label_no_updates'):formatDate($array['sub_updated_at'])?></td>
+							<td><?=$array['sub_updated_at'] == '0000-00-00 00:00:00' ? $language->line('services_label_no_updates') : formatDate($array['sub_updated_at'])?></td>
 							<td>
 								<a href="#" class="button split tiny secondary radius right"><?=$language->line('services_label_actions_menu')?><span data-dropdown="drop"></span></a><br>
 									<ul id="drop" class="f-dropdown" data-dropdown-content>
@@ -57,7 +58,8 @@ $ci->load->library('stripe');
 								</div>
 							</td>
 						</tr>
-						<?php } ?>
+						<?php 
+} ?>
 					</tbody>
 				</table>
 

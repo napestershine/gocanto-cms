@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -20,24 +22,24 @@ class newsletters extends CI_Controller
 
     public function sent()
     {
-        if (trim($this->input->post('txtNewslettersName'))!='' && trim($this->input->post('txtNewslettersEmail'))!='') {
+        if (trim($this->input->post('txtNewslettersName')) != '' && trim($this->input->post('txtNewslettersEmail')) != '') {
             if (!$this->ModelNewsletters->exists($this->input->post('txtNewslettersEmail'))) {
                 $this->ModelNewsletters->insert(0, $this->input->post('txtNewslettersName'), $this->input->post('txtNewslettersEmail'));
-                $data = array(
-                    'title' => 'Thanks for choosing us!',
-                    'message' => 'We have received your subscription successfully.'
-                );
+                $data = [
+                    'title'   => 'Thanks for choosing us!',
+                    'message' => 'We have received your subscription successfully.',
+                ];
             } else {
-                $data = array(
-                    'title' => 'Error',
-                    'message' => 'The email provided is in our records already.'
-                );
+                $data = [
+                    'title'   => 'Error',
+                    'message' => 'The email provided is in our records already.',
+                ];
             }
         } else {
-            $data = array(
-                'title' => 'Error',
-                'message' => 'The information provided is wrong, try again!.'
-            );
+            $data = [
+                'title'   => 'Error',
+                'message' => 'The information provided is wrong, try again!.',
+            ];
         }
 
         echo json_encode($data);
@@ -51,4 +53,3 @@ class newsletters extends CI_Controller
     May 2014
     Valencia, Venezuela
 */
-

@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		EllisLab Dev Team
  * @copyright	Copyright (c) 2006 - 2012, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,44 +19,45 @@
 // ------------------------------------------------------------------------
 
 /**
- * CodeIgniter Driver Library Class
+ * CodeIgniter Driver Library Class.
  *
  * This class enables you to create "Driver" libraries that add runtime ability
  * to extend the capabilities of a class via additional driver objects
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Libraries
+ *
  * @author		EllisLab Dev Team
+ *
  * @link
  */
 class CI_Driver_Library
 {
-    protected $valid_drivers    = array();
+    protected $valid_drivers = [];
     protected $lib_name;
 
     // The first time a child is used it won't exist, so we instantiate it
     // subsequents calls will go straight to the proper child.
+
     public function __get($child)
     {
-        if (! isset($this->lib_name)) {
+        if (!isset($this->lib_name)) {
             $this->lib_name = get_class($this);
         }
 
         // The class will be prefixed with the parent lib
         $child_class = $this->lib_name.'_'.$child;
-    
+
         // Remove the CI_ prefix and lowercase
         $lib_name = ucfirst(strtolower(str_replace('CI_', '', $this->lib_name)));
         $driver_name = strtolower(str_replace('CI_', '', $child_class));
-        
+
         if (in_array($driver_name, array_map('strtolower', $this->valid_drivers))) {
             // check and see if the driver is in a separate file
-            if (! class_exists($child_class)) {
+            if (!class_exists($child_class)) {
                 // check application path first
                 foreach (get_instance()->load->get_package_paths(true) as $path) {
                     // loves me some nesting!
-                    foreach (array(ucfirst($driver_name), $driver_name) as $class) {
+                    foreach ([ucfirst($driver_name), $driver_name] as $class) {
                         $filepath = $path.'libraries/'.$lib_name.'/drivers/'.$class.'.php';
 
                         if (file_exists($filepath)) {
@@ -66,56 +68,57 @@ class CI_Driver_Library
                 }
 
                 // it's a valid driver, but the file simply can't be found
-                if (! class_exists($child_class)) {
-                    log_message('error', "Unable to load the requested driver: ".$child_class);
-                    show_error("Unable to load the requested driver: ".$child_class);
+                if (!class_exists($child_class)) {
+                    log_message('error', 'Unable to load the requested driver: '.$child_class);
+                    show_error('Unable to load the requested driver: '.$child_class);
                 }
             }
 
-            $obj = new $child_class;
+            $obj = new $child_class();
             $obj->decorate($this);
             $this->$child = $obj;
+
             return $this->$child;
         }
 
         // The requested driver isn't valid!
-        log_message('error', "Invalid driver requested: ".$child_class);
-        show_error("Invalid driver requested: ".$child_class);
+        log_message('error', 'Invalid driver requested: '.$child_class);
+        show_error('Invalid driver requested: '.$child_class);
     }
 
     // --------------------------------------------------------------------
 }
 // END CI_Driver_Library CLASS
 
-
 /**
- * CodeIgniter Driver Class
+ * CodeIgniter Driver Class.
  *
  * This class enables you to create drivers for a Library based on the Driver Library.
  * It handles the drivers' access to the parent library
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Libraries
+ *
  * @author		EllisLab Dev Team
+ *
  * @link
  */
 class CI_Driver
 {
     protected $parent;
 
-    private $methods = array();
-    private $properties = array();
+    private $methods = [];
+    private $properties = [];
 
-    private static $reflections = array();
+    private static $reflections = [];
 
     /**
-     * Decorate
+     * Decorate.
      *
      * Decorates the child with the parent driver lib's methods and properties
      *
      * @param	object
-     * @return	void
+     *
+     * @return void
      */
     public function decorate($parent)
     {
@@ -126,7 +129,7 @@ class CI_Driver
 
         $class_name = get_class($parent);
 
-        if (! isset(self::$reflections[$class_name])) {
+        if (!isset(self::$reflections[$class_name])) {
             $r = new ReflectionObject($parent);
 
             foreach ($r->getMethods() as $method) {
@@ -141,7 +144,7 @@ class CI_Driver
                 }
             }
 
-            self::$reflections[$class_name] = array($this->methods, $this->properties);
+            self::$reflections[$class_name] = [$this->methods, $this->properties];
         } else {
             list($this->methods, $this->properties) = self::$reflections[$class_name];
         }
@@ -150,19 +153,19 @@ class CI_Driver
     // --------------------------------------------------------------------
 
     /**
-     * __call magic method
+     * __call magic method.
      *
      * Handles access to the parent driver library's methods
      *
-     * @access	public
      * @param	string
      * @param	array
-     * @return	mixed
+     *
+     * @return mixed
      */
-    public function __call($method, $args = array())
+    public function __call($method, $args = [])
     {
         if (in_array($method, $this->methods)) {
-            return call_user_func_array(array($this->parent, $method), $args);
+            return call_user_func_array([$this->parent, $method], $args);
         }
 
         $trace = debug_backtrace();
@@ -173,12 +176,13 @@ class CI_Driver
     // --------------------------------------------------------------------
 
     /**
-     * __get magic method
+     * __get magic method.
      *
      * Handles reading of the parent driver library's properties
      *
      * @param	string
-     * @return	mixed
+     *
+     * @return mixed
      */
     public function __get($var)
     {
@@ -190,13 +194,14 @@ class CI_Driver
     // --------------------------------------------------------------------
 
     /**
-     * __set magic method
+     * __set magic method.
      *
      * Handles writing to the parent driver library's properties
      *
      * @param	string
      * @param	array
-     * @return	mixed
+     *
+     * @return mixed
      */
     public function __set($var, $val)
     {

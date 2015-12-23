@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,7 +19,7 @@
 // ------------------------------------------------------------------------
 
 /**
- * SHA1 Encoding Class
+ * SHA1 Encoding Class.
  *
  * Purpose: Provides 160 bit hashing using The Secure Hash Algorithm
  * developed at the National Institute of Standards and Technology. The 40
@@ -38,25 +39,25 @@
  * I encapsulated the functions and wrote one additional method to fix
  * a hex conversion bug. - Rick Ellis
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Encryption
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/user_guide/general/encryption.html
  */
 class CI_SHA1
 {
     public function __construct()
     {
-        log_message('debug', "SHA1 Class Initialized");
+        log_message('debug', 'SHA1 Class Initialized');
     }
 
     /**
-     * Generate the Hash
+     * Generate the Hash.
      *
-     * @access	public
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function generate($str)
     {
@@ -74,10 +75,10 @@ class CI_SHA1
 
         $x[$n * 16 - 1] = strlen($str) * 8;
 
-        $a =  1732584193;
+        $a = 1732584193;
         $b = -271733879;
         $c = -1732584194;
-        $d =  271733878;
+        $d = 271733878;
         $e = -1009589776;
 
         for ($i = 0; $i < count($x); $i += 16) {
@@ -116,11 +117,11 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     * Convert a decimal to hex
+     * Convert a decimal to hex.
      *
-     * @access	private
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     public function _hex($str)
     {
@@ -136,10 +137,9 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     *  Return result based on iteration
+     *  Return result based on iteration.
      *
-     * @access	private
-     * @return	string
+     * @return string
      */
     public function _ft($t, $b, $c, $d)
     {
@@ -159,10 +159,9 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     * Determine the additive constant
+     * Determine the additive constant.
      *
-     * @access	private
-     * @return	string
+     * @return string
      */
     public function _kt($t)
     {
@@ -180,10 +179,9 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     * Add integers, wrapping at 2^32
+     * Add integers, wrapping at 2^32.
      *
-     * @access	private
-     * @return	string
+     * @return string
      */
     public function _safe_add($x, $y)
     {
@@ -196,10 +194,9 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     * Bitwise rotate a 32-bit number
+     * Bitwise rotate a 32-bit number.
      *
-     * @access	private
-     * @return	integer
+     * @return int
      */
     public function _rol($num, $cnt)
     {
@@ -209,10 +206,9 @@ class CI_SHA1
     // --------------------------------------------------------------------
 
     /**
-     * Pad string with zero
+     * Pad string with zero.
      *
-     * @access	private
-     * @return	string
+     * @return string
      */
     public function _zero_fill($a, $b)
     {
@@ -224,8 +220,8 @@ class CI_SHA1
             $bin = substr($bin, 0, strlen($bin) - $b);
         }
 
-        for ($i=0; $i < $b; $i++) {
-            $bin = "0".$bin;
+        for ($i = 0; $i < $b; $i++) {
+            $bin = '0'.$bin;
         }
 
         return bindec($bin);

@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -18,18 +20,19 @@ class sales extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->data = array();
+        $this->data = [];
         $this->load->model('ModelContents');
     }
 
     //home page
+
     public function index()
     {
-        $this->data = array(
-            'blogBox' => 1,
-            'blogList' => $this->ModelContents->getRows(" WHERE type = 'Blog' AND id_status = '1' ", " LIMIT 6", " ORDER BY id DESC"),
-            'index' => '1'
-        );
+        $this->data = [
+            'blogBox'  => 1,
+            'blogList' => $this->ModelContents->getRows(" WHERE type = 'Blog' AND id_status = '1' ", ' LIMIT 6', ' ORDER BY id DESC'),
+            'index'    => '1',
+        ];
 
         //wpanel session
         if ($this->session->userdata('wp-user')) {
@@ -47,4 +50,3 @@ class sales extends CI_Controller
     May 2014
     Valencia, Venezuela
 */
-

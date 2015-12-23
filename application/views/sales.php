@@ -5,15 +5,15 @@
 $(document).foundation();
 </script>
 <?php 
-$get='';
+$get = '';
 foreach ($_GET as $key => $value) {
-	if ($key!='product') {
-		$get.='&'.$key.'='.$value;
-	}
+    if ($key != 'product') {
+        $get .= '&'.$key.'='.$value;
+    }
 }
-$product='';
-if(isset($_GET['product'])){
-	$product=$_GET['product'];
+$product = '';
+if (isset($_GET['product'])) {
+    $product = $_GET['product'];
 }
  ?>
     <iframe src="http://www.secureserver.net/<?=$product?>?prog_id=wsimple<?=$get?>" 

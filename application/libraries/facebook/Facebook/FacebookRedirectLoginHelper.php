@@ -19,13 +19,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook;
 
 /**
- * Class FacebookRedirectLoginHelper
- * @package Facebook
+ * Class FacebookRedirectLoginHelper.
+ *
  * @author Fosco Marotto <fjm@fb.com>
  * @author David Poll <depoll@fb.com>
  */
@@ -57,7 +56,7 @@ class FacebookRedirectLoginHelper
   protected $state;
 
   /**
-   * @var boolean Toggle for PHP session status check
+   * @var bool Toggle for PHP session status check
    */
   protected $checkForSessionStatus = true;
 
@@ -83,34 +82,34 @@ class FacebookRedirectLoginHelper
    *
    * @param array $scope List of permissions to request during login
    * @param string $version Optional Graph API version if not default (v2.0)
-   * @param boolean $displayAsPopup Indicate if the page will be displayed as a popup
+   * @param bool $displayAsPopup Indicate if the page will be displayed as a popup
    * @param bool|string $authType 'reauthenticate' or 'https', true is equivalent to 'reauthenticate',
    *                              false or invalid value will not add auth type parameter
    *
    * @return string
    */
-  public function getLoginUrl(array $scope = array(), $version = null, $displayAsPopup = false, $authType = false)
+  public function getLoginUrl(array $scope = [], $version = null, $displayAsPopup = false, $authType = false)
   {
       $version = ($version ?: FacebookRequest::GRAPH_API_VERSION);
       $this->state = $this->random(16);
       $this->storeState($this->state);
-      $params = array(
-      'client_id' => $this->appId,
+      $params = [
+      'client_id'    => $this->appId,
       'redirect_uri' => $this->redirectUrl,
-      'state' => $this->state,
-      'sdk' => 'php-sdk-' . FacebookRequest::VERSION,
-      'scope' => implode(',', $scope)
-    );
+      'state'        => $this->state,
+      'sdk'          => 'php-sdk-'.FacebookRequest::VERSION,
+      'scope'        => implode(',', $scope),
+    ];
 
-      if (in_array($authType, array(true, 'reauthenticate', 'https'), true)) {
+      if (in_array($authType, [true, 'reauthenticate', 'https'], true)) {
           $params['auth_type'] = $authType === true ? 'reauthenticate' : $authType;
       }
-    
+
       if ($displayAsPopup) {
           $params['display'] = 'popup';
       }
-    
-      return 'https://www.facebook.com/' . $version . '/dialog/oauth?' .
+
+      return 'https://www.facebook.com/'.$version.'/dialog/oauth?'.
       http_build_query($params, null, '&');
   }
 
@@ -122,20 +121,21 @@ class FacebookRedirectLoginHelper
    *
    * @return string
    */
-  public function getReRequestUrl(array $scope = array(), $version = null)
+  public function getReRequestUrl(array $scope = [], $version = null)
   {
       $version = ($version ?: FacebookRequest::GRAPH_API_VERSION);
       $this->state = $this->random(16);
       $this->storeState($this->state);
-      $params = array(
-      'client_id' => $this->appId,
+      $params = [
+      'client_id'    => $this->appId,
       'redirect_uri' => $this->redirectUrl,
-      'state' => $this->state,
-      'sdk' => 'php-sdk-' . FacebookRequest::VERSION,
-      'auth_type' => 'rerequest',
-      'scope' => implode(',', $scope)
-    );
-      return 'https://www.facebook.com/' . $version . '/dialog/oauth?' .
+      'state'        => $this->state,
+      'sdk'          => 'php-sdk-'.FacebookRequest::VERSION,
+      'auth_type'    => 'rerequest',
+      'scope'        => implode(',', $scope),
+    ];
+
+      return 'https://www.facebook.com/'.$version.'/dialog/oauth?'.
       http_build_query($params, null, '&');
   }
 
@@ -146,9 +146,9 @@ class FacebookRedirectLoginHelper
    * @param string $next The url Facebook should redirect the user to after
    *   a successful logout
    *
-   * @return string
-   *
    * @throws FacebookSDKException
+   *
+   * @return string
    */
   public function getLogoutUrl(FacebookSession $session, $next)
   {
@@ -157,11 +157,12 @@ class FacebookRedirectLoginHelper
         'Cannot generate a Logout URL with an App Session.', 722
       );
       }
-      $params = array(
-      'next' => $next,
-      'access_token' => $session->getToken()
-    );
-      return 'https://www.facebook.com/logout.php?' . http_build_query($params, null, '&');
+      $params = [
+      'next'         => $next,
+      'access_token' => $session->getToken(),
+    ];
+
+      return 'https://www.facebook.com/logout.php?'.http_build_query($params, null, '&');
   }
 
   /**
@@ -173,13 +174,12 @@ class FacebookRedirectLoginHelper
   public function getSessionFromRedirect()
   {
       if ($this->isValidRedirect()) {
-          $params = array(
-        'client_id' => FacebookSession::_getTargetAppId($this->appId),
-        'redirect_uri' => $this->redirectUrl,
-        'client_secret' =>
-          FacebookSession::_getTargetAppSecret($this->appSecret),
-        'code' => $this->getCode()
-      );
+          $params = [
+        'client_id'     => FacebookSession::_getTargetAppId($this->appId),
+        'redirect_uri'  => $this->redirectUrl,
+        'client_secret' => FacebookSession::_getTargetAppSecret($this->appSecret),
+        'code'          => $this->getCode(),
+      ];
           $response = (new FacebookRequest(
         FacebookSession::newAppSession($this->appId, $this->appSecret),
         'GET',
@@ -199,7 +199,8 @@ class FacebookRedirectLoginHelper
               return new FacebookSession($accessToken);
           }
       }
-      return null;
+
+      return;
   }
 
   /**
@@ -223,6 +224,7 @@ class FacebookRedirectLoginHelper
       for ($i = 0; $i < $savedLen; $i++) {
           $result |= ord($savedState[$i]) ^ ord($givenState[$i]);
       }
+
       return $result === 0;
   }
 
@@ -253,7 +255,7 @@ class FacebookRedirectLoginHelper
         'Session not active, could not store state.', 720
       );
       }
-      $_SESSION[$this->sessionPrefix . 'state'] = $state;
+      $_SESSION[$this->sessionPrefix.'state'] = $state;
   }
 
   /**
@@ -261,9 +263,9 @@ class FacebookRedirectLoginHelper
    *   null if no object exists.  Developers should subclass and override this
    *   method if they want to load the state from a different location.
    *
-   * @return string|null
-   *
    * @throws FacebookSDKException
+   *
+   * @return string|null
    */
   protected function loadState()
   {
@@ -273,21 +275,23 @@ class FacebookRedirectLoginHelper
         'Session not active, could not load state.', 721
       );
       }
-      if (isset($_SESSION[$this->sessionPrefix . 'state'])) {
-          $this->state = $_SESSION[$this->sessionPrefix . 'state'];
+      if (isset($_SESSION[$this->sessionPrefix.'state'])) {
+          $this->state = $_SESSION[$this->sessionPrefix.'state'];
+
           return $this->state;
       }
-      return null;
+
+      return;
   }
-  
+
   /**
-   * Generate a cryptographically secure pseudrandom number
+   * Generate a cryptographically secure pseudrandom number.
    *
-   * @param integer $bytes - number of bytes to return
-   *
-   * @return string
+   * @param int $bytes - number of bytes to return
    *
    * @throws FacebookSDKException
+   *
+   * @return string
    *
    * @todo Support Windows platforms
    */
@@ -323,16 +327,17 @@ class FacebookRedirectLoginHelper
               return bin2hex($buf);
           }
       }
-    
+
       while (strlen($buf) < $bytes) {
           $buf .= md5(uniqid(mt_rand(), true), true);
       // We are appending raw binary
       }
+
       return bin2hex(substr($buf, 0, $bytes));
   }
 
   /**
-   * Disables the session_status() check when using $_SESSION
+   * Disables the session_status() check when using $_SESSION.
    */
   public function disableSessionStatusCheck()
   {

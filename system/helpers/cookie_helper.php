@@ -1,7 +1,8 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
-/**
+/*
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
@@ -17,7 +18,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * CodeIgniter Cookie Helpers
  *
  * @package		CodeIgniter
@@ -29,7 +30,7 @@
 
 // ------------------------------------------------------------------------
 
-/**
+/*
  * Set cookie
  *
  * Accepts six parameter, or you can submit an associative
@@ -44,18 +45,18 @@
  * @param	string	the cookie prefix
  * @return	void
  */
-if (! function_exists('set_cookie')) {
+if (!function_exists('set_cookie')) {
     function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = false)
     {
         // Set the config file options
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->input->set_cookie($name, $value, $expire, $domain, $path, $prefix, $secure);
     }
 }
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Fetch an item from the COOKIE array
  *
  * @access	public
@@ -63,14 +64,14 @@ if (! function_exists('set_cookie')) {
  * @param	bool
  * @return	mixed
  */
-if (! function_exists('get_cookie')) {
+if (!function_exists('get_cookie')) {
     function get_cookie($index = '', $xss_clean = false)
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
 
         $prefix = '';
 
-        if (! isset($_COOKIE[$index]) && config_item('cookie_prefix') != '') {
+        if (!isset($_COOKIE[$index]) && config_item('cookie_prefix') != '') {
             $prefix = config_item('cookie_prefix');
         }
 
@@ -80,7 +81,7 @@ if (! function_exists('get_cookie')) {
 
 // --------------------------------------------------------------------
 
-/**
+/*
  * Delete a COOKIE
  *
  * @param	mixed
@@ -89,13 +90,12 @@ if (! function_exists('get_cookie')) {
  * @param	string	the cookie prefix
  * @return	void
  */
-if (! function_exists('delete_cookie')) {
+if (!function_exists('delete_cookie')) {
     function delete_cookie($name = '', $domain = '', $path = '/', $prefix = '')
     {
         set_cookie($name, '', '', $domain, $path, $prefix);
     }
 }
-
 
 /* End of file cookie_helper.php */
 /* Location: ./system/helpers/cookie_helper.php */

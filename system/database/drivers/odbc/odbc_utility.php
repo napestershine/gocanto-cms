@@ -1,15 +1,16 @@
-<?php  if (! defined('BASEPATH')) {
+<?php
+ if (!defined('BASEPATH')) {
      exit('No direct script access allowed');
  }
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
+ *
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -18,19 +19,20 @@
 // ------------------------------------------------------------------------
 
 /**
- * ODBC Utility Class
+ * ODBC Utility Class.
  *
  * @category	Database
+ *
  * @author		ExpressionEngine Dev Team
+ *
  * @link		http://codeigniter.com/database/
  */
 class CI_DB_odbc_utility extends CI_DB_utility
 {
     /**
-     * List databases
+     * List databases.
      *
-     * @access	private
-     * @return	bool
+     * @return bool
      */
     public function _list_databases()
     {
@@ -38,19 +40,20 @@ class CI_DB_odbc_utility extends CI_DB_utility
         if ($this->db->db_debug) {
             return $this->db->display_error('db_unsuported_feature');
         }
+
         return false;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Optimize table query
+     * Optimize table query.
      *
      * Generates a platform-specific query so that a table can be optimized
      *
-     * @access	private
      * @param	string	the table name
-     * @return	object
+     *
+     * @return object
      */
     public function _optimize_table($table)
     {
@@ -58,19 +61,20 @@ class CI_DB_odbc_utility extends CI_DB_utility
         if ($this->db->db_debug) {
             return $this->db->display_error('db_unsuported_feature');
         }
+
         return false;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Repair table query
+     * Repair table query.
      *
      * Generates a platform-specific query so that a table can be repaired
      *
-     * @access	private
      * @param	string	the table name
-     * @return	object
+     *
+     * @return object
      */
     public function _repair_table($table)
     {
@@ -78,19 +82,20 @@ class CI_DB_odbc_utility extends CI_DB_utility
         if ($this->db->db_debug) {
             return $this->db->display_error('db_unsuported_feature');
         }
+
         return false;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * ODBC Export
+     * ODBC Export.
      *
-     * @access	private
      * @param	array	Preferences
-     * @return	mixed
+     *
+     * @return mixed
      */
-    public function _backup($params = array())
+    public function _backup($params = [])
     {
         // Currently unsupported
         return $this->db->display_error('db_unsuported_feature');

@@ -17,40 +17,48 @@
       <hr>
       <div class="large-12 columns">
         <ul class="breadcrumbs">
-          <?php foreach ($firstMenuSideBar as $array) { ?>
+          <?php foreach ($firstMenuSideBar as $array) {
+    ?>
           <li>
             <a href="<?=base_url().'content/body/'.$array['id']?>">
               <?=formatString($array['title'])?>
             </a>
           </li>
-          <?php }
-          foreach ($secondMenuSideBar as $array) { ?>
+          <?php 
+}
+          foreach ($secondMenuSideBar as $array) {
+              ?>
           <li>
             <a href="<?=base_url().'content/body/'.$array['id']?>">
               <?=formatString($array['title'])?>
             </a>
           </li>
-          <?php }
-          
-          foreach ($weOfferMenu as $menu) { ?>
+          <?php 
+          }
+
+          foreach ($weOfferMenu as $menu) {
+              ?>
           <li>
-            <a href="<?=base_url().(is_null($menu['url'])?'content/body/'.$menu['id']:$menu['url'])?>">
+            <a href="<?=base_url().(is_null($menu['url']) ? 'content/body/'.$menu['id'] : $menu['url'])?>">
               <?=formatString($menu['title'])?>
             </a>
           </li>
-          <?php } ?>
+          <?php 
+          } ?>
           
           
           
         </ul>
         <ul class="breadcrumbs">
-        <?php foreach ($Terms as $menu) { ?>
+        <?php foreach ($Terms as $menu) {
+    ?>
           <li>
-            <a href="<?=base_url().(is_null($menu['url'])?'content/body/'.$menu['id']:$menu['url'])?>">
+            <a href="<?=base_url().(is_null($menu['url']) ? 'content/body/'.$menu['id'] : $menu['url'])?>">
               <?=formatString($menu['title'])?>
             </a>
           </li>
-          <?php } ?>
+          <?php 
+} ?>
           <li>
             <a href="<?=base_url()?>content/body/contact-us">
               <?=formatString($language->line('header_support'))?>
@@ -83,29 +91,23 @@
 </script>
 
 <?php
-  if (isset($jsLibraries) && count($jsLibraries)>0)
-  {
-      foreach ($jsLibraries as $file)
-      {
-          if (trim($file)!='')
-          {
+  if (isset($jsLibraries) && count($jsLibraries) > 0) {
+      foreach ($jsLibraries as $file) {
+          if (trim($file) != '') {
               $src = base_url().'js/'.$file;
 
-              if (strpos($file, 'checkout.stripe') !== false)
-              {
+              if (strpos($file, 'checkout.stripe') !== false) {
                   $src = $file;
               }
 
-              if (strpos($file, 'http://maps.google.com') !== false)
-              {
+              if (strpos($file, 'http://maps.google.com') !== false) {
                   $src = $file;
               }
-              
-              if (strpos($file, 'ckeditor') !== false)
-              {
+
+              if (strpos($file, 'ckeditor') !== false) {
                   $src = base_url().$file;
               }
-              
+
               echo '<script type="text/javascript" src="'.$src.'"></script>';
           }
       }

@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 namespace Facebook\Entities;
 
@@ -27,8 +26,7 @@ use Facebook\FacebookSDKException;
 use Facebook\FacebookSession;
 
 /**
- * Class SignedRequest
- * @package Facebook
+ * Class SignedRequest.
  */
 class SignedRequest
 {
@@ -92,6 +90,7 @@ class SignedRequest
       if (isset($this->payload[$key])) {
           return $this->payload[$key];
       }
+
       return $default;
   }
 
@@ -108,7 +107,7 @@ class SignedRequest
   /**
    * Checks for OAuth data in the payload.
    *
-   * @return boolean
+   * @return bool
    */
   public function hasOAuthData()
   {
@@ -201,9 +200,9 @@ class SignedRequest
    *
    * @param string $encodedSig
    *
-   * @return string
-   *
    * @throws FacebookSDKException
+   *
+   * @return string
    */
   public static function decodeSignature($encodedSig)
   {
@@ -223,9 +222,9 @@ class SignedRequest
    *
    * @param string $encodedPayload
    *
-   * @return array
-   *
    * @throws FacebookSDKException
+   *
+   * @return array
    */
   public static function decodePayload($encodedPayload)
   {
@@ -268,9 +267,9 @@ class SignedRequest
    * @param string $encodedData
    * @param string|null $appSecret
    *
-   * @return string
-   *
    * @throws FacebookSDKException
+   *
+   * @return string
    */
   public static function hashSignature($encodedData, $appSecret = null)
   {
@@ -345,7 +344,8 @@ class SignedRequest
   /**
    * Base64 decoding which replaces characters:
    *   + instead of -
-   *   / instead of _
+   *   / instead of _.
+   *
    * @link http://en.wikipedia.org/wiki/Base64#URL_applications
    *
    * @param string $input base64 url encoded input
@@ -356,13 +356,15 @@ class SignedRequest
   {
       $urlDecodedBase64 = strtr($input, '-_', '+/');
       static::validateBase64($urlDecodedBase64);
+
       return base64_decode($urlDecodedBase64);
   }
 
   /**
    * Base64 encoding which replaces characters:
    *   + instead of -
-   *   / instead of _
+   *   / instead of _.
+   *
    * @link http://en.wikipedia.org/wiki/Base64#URL_applications
    *
    * @param string $input string to encode
